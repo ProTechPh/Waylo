@@ -105,7 +105,7 @@ picks correctly on its own. Android 8 or newer, package `app.waylo`.
 One signing key covers every Waylo build on every channel. Its certificate fingerprint:
 
 ```
-SHA-256  86:B8:1F:DF:A3:CF:7E:96:B1:9A:DA:62:31:B9:6F:4F:C1:18:1C:1C:7E:6E:86:FA:E5:39:CA:B1:90:40:6D:BB
+SHA-256  CF:07:EB:D6:9C:AA:83:06:88:64:7F:00:26:6B:A8:7F:76:41:95:1F:D5:43:65:BA:73:DF:2F:E7:90:23:25:B9
 ```
 
 Check a file against it first:
@@ -119,7 +119,7 @@ package name then the fingerprint:
 
 ```
 app.waylo
-86:B8:1F:DF:A3:CF:7E:96:B1:9A:DA:62:31:B9:6F:4F:C1:18:1C:1C:7E:6E:86:FA:E5:39:CA:B1:90:40:6D:BB
+CF:07:EB:D6:9C:AA:83:06:88:64:7F:00:26:6B:A8:7F:76:41:95:1F:D5:43:65:BA:73:DF:2F:E7:90:23:25:B9
 ```
 
 Android checks the key itself from the second install onward, refusing anything signed differently.
