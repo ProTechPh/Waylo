@@ -171,7 +171,7 @@ class BrowserHeadersTest {
     @Test fun `the community identifier is not a browser string`() {
         // Community services (FOSSGIS OSRM, Nominatim, Photon, Overpass) must get a contactable UA.
         assertTrue(WayloConfig.WAYLO_UA.startsWith("WayloMaps/"))
-        assertTrue(WayloConfig.WAYLO_UA.contains("github.com/PimpinPumpkin/Waylo"))
+        assertTrue(WayloConfig.WAYLO_UA.contains("github.com/ProTechPh/Waylo"))
         assertTrue("must not masquerade as a browser", !WayloConfig.WAYLO_UA.contains("Mozilla"))
     }
 

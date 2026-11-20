@@ -8,15 +8,15 @@
 
 Live traffic, real place data and turn-by-turn navigation, with no Google account, no Play Services and no Google code on your phone.
 
-[![Stable release](https://img.shields.io/github/v/release/PimpinPumpkin/Waylo?label=stable&color=149387)](https://github.com/PimpinPumpkin/Waylo/releases/latest)
-[![Build](https://img.shields.io/github/actions/workflow/status/PimpinPumpkin/Waylo/ci.yml?branch=main&label=build)](https://github.com/PimpinPumpkin/Waylo/actions/workflows/ci.yml)
-[![License: GPL v3](https://img.shields.io/github/license/PimpinPumpkin/Waylo?color=blue)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/PimpinPumpkin/Waylo?style=flat&color=ffd43b)](https://github.com/PimpinPumpkin/Waylo/stargazers)
-[![Translation status](https://hosted.weblate.org/widget/vela-maps/app/svg-badge.svg)](https://hosted.weblate.org/engage/vela-maps/)
+[![Stable release](https://img.shields.io/github/v/release/ProTechPh/Waylo?label=stable&color=149387)](https://github.com/ProTechPh/Waylo/releases/latest)
+[![Build](https://img.shields.io/github/actions/workflow/status/ProTechPh/Waylo/ci.yml?branch=main&label=build)](https://github.com/ProTechPh/Waylo/actions/workflows/ci.yml)
+[![License: GPL v3](https://img.shields.io/github/license/ProTechPh/Waylo?color=blue)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/ProTechPh/Waylo?style=flat&color=ffd43b)](https://github.com/ProTechPh/Waylo/stargazers)
+[![Translation status](https://hosted.weblate.org/widget/waylo/app/svg-badge.svg)](https://hosted.weblate.org/engage/waylo/)
 
-[Install](#install) · [What you get](#what-you-get) · [Docs](https://pimpinpumpkin.github.io/Waylo/docs/) · [FAQ](docs/FAQ.md) · [The book](docs/book/README.md) · [Privacy](#privacy) · [How it works](SPEC.md) · [Build](docs/BUILDING.md) · [Discussions](https://github.com/PimpinPumpkin/Waylo/discussions) · [Translate](https://hosted.weblate.org/engage/vela-maps/)
+[Install](#install) · [What you get](#what-you-get) · [Docs](https://protechph.github.io/Waylo/docs/) · [FAQ](docs/FAQ.md) · [The book](docs/book/README.md) · [Privacy](#privacy) · [How it works](SPEC.md) · [Build](docs/BUILDING.md) · [Discussions](https://github.com/ProTechPh/Waylo/discussions) · [Translate](https://hosted.weblate.org/engage/waylo/)
 
-[<img src="https://img.shields.io/badge/VISIT%20THE%20WEBSITE-149387?style=for-the-badge" alt="Visit the website">](https://velamaps.org/)
+[<img src="https://img.shields.io/badge/VISIT%20THE%20WEBSITE-149387?style=for-the-badge" alt="Visit the website">](https://protechph.github.io/Waylo/)
 
 </div>
 
@@ -80,13 +80,13 @@ the stop list for every route. Light and dark themes, set in the app.*
 
 ## Install
 
-[<img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="54">](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/PimpinPumpkin/Waylo)
+[<img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="54">](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/ProTechPh/Waylo)
 
 Obtainium tracks the **weekly stable** release. Turn on "include prereleases" for
 the **nightly** channel.
 
 Or take an APK straight from
-[Releases](https://github.com/PimpinPumpkin/Waylo/releases): releases from the
+[Releases](https://github.com/ProTechPh/Waylo/releases): releases from the
 nightly of October 22, 2026 on carry one APK per chip type, and almost every phone
 wants `waylo-maps-arm64.apk`. `waylo-maps-all.apk` runs on any phone. Obtainium and
 the in-app updater pick the right one by themselves.
@@ -122,11 +122,11 @@ from the same place this one did.
 This is the certificate the app is signed with, and it stays the same across
 releases. It is not a checksum of a particular APK.
 
-The website is **[velamaps.org](https://velamaps.org/)**, and the docs in this
+The website is **[protechph.github.io/Waylo](https://protechph.github.io/Waylo/)**, and the docs in this
 repository are published as a searchable site at
-**[pimpinpumpkin.github.io/Waylo/docs](https://pimpinpumpkin.github.io/Waylo/docs/)**.
+**[protechph.github.io/Waylo/docs](https://protechph.github.io/Waylo/docs/)**.
 
-[![Support Waylo on Buy Me a Coffee](https://img.shields.io/badge/support%20waylo-buy%20me%20a%20coffee-ffdd00)](https://buymeacoffee.com/PimpinPumpkin)
+[![Support Waylo on Buy Me a Coffee](https://img.shields.io/badge/support%20waylo-buy%20me%20a%20coffee-ffdd00)](https://buymeacoffee.com/ProTechPh)
 
 ---
 
@@ -268,7 +268,7 @@ plainer words.
 | [`docs/FAQ.md`](docs/FAQ.md) | The questions people ask first |
 | [`ROADMAP.md`](ROADMAP.md) | What is open. What shipped or was dropped is in [`docs/ROADMAP-HISTORY.md`](docs/ROADMAP-HISTORY.md) |
 | [`docs/BUILDING.md`](docs/BUILDING.md) | Building from source |
-| [`docs/TRANSLATING.md`](docs/TRANSLATING.md) | The languages, and how to translate (in the browser on [Weblate](https://hosted.weblate.org/engage/vela-maps/)) |
+| [`docs/TRANSLATING.md`](docs/TRANSLATING.md) | The languages, and how to translate (in the browser on [Weblate](https://hosted.weblate.org/engage/waylo/)) |
 | [`docs/dpad.md`](docs/dpad.md) | Operation without a touchscreen |
 | [`CLAUDE.md`](CLAUDE.md) | Rules and traps for anyone changing the code, human or AI |
 

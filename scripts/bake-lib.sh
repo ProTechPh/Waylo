@@ -10,7 +10,9 @@
 # and every `--limit N` query saw the same window), so the data releases are created on the repo's
 # root commit and sort to the bottom, under every app release. Checked 2026-09-28: a release on this
 # commit listed last of 33.
-CELLS_RELEASE_TARGET=5e9cee460e0da3a0ec2a488eec2dbba372d0c1b7
+# Waylo's root commit (git rev-list --max-parents=0 HEAD). The old repository's SHA does not exist
+# here, and `gh release create --target` rejects it.
+CELLS_RELEASE_TARGET=818d2ffef4a60e619bf1a564888e9839e76e7a94
 
 bake_bytes() { stat -f%z "$1" 2>/dev/null || stat -c%s "$1"; }
 
@@ -28,14 +30,14 @@ bake_header_bbox() {
 # The pinned OsmAndMapCreator from the obf-tools release (forks fall back upstream) unpacked into
 # <dir>/mapcreator, and WayloObfShim compiled into <dir>. MAPCREATOR_ZIP points at a local copy.
 bake_mapcreator() {
-  local dir="$1" repo="${WAYLO_REPO:-PimpinPumpkin/Waylo}" root
+  local dir="$1" repo="${WAYLO_REPO:-ProTechPh/Waylo}" root
   root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
   if [ ! -f "$dir/mapcreator/OsmAndMapCreator.jar" ]; then
     if [ -n "${MAPCREATOR_ZIP:-}" ]; then
       cp "$MAPCREATOR_ZIP" "$dir/mapcreator.zip"
     else
       curl -fSL -o "$dir/mapcreator.zip" "https://github.com/$repo/releases/download/obf-tools/mapcreator.zip" \
-        || curl -fSL -o "$dir/mapcreator.zip" "https://github.com/PimpinPumpkin/Waylo/releases/download/obf-tools/mapcreator.zip"
+        || curl -fSL -o "$dir/mapcreator.zip" "https://github.com/ProTechPh/Waylo/releases/download/obf-tools/mapcreator.zip"
     fi
     unzip -q "$dir/mapcreator.zip" -d "$dir/mapcreator"
   fi

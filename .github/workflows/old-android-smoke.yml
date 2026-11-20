@@ -48,21 +48,19 @@ jobs:
       - uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
 
       - name: Fetch the runtimes CI fetches
+        # gh, not curl: the repository is private and an unauthenticated asset URL answers 404.
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p core/libs app/libs
-          # This repository's fixed-tag releases first, the upstream ones when a fork has none.
-          for f in osmand-java.jar osmand-shared-jvm.jar gnu-trove-osmand.jar kxml2-vela.jar; do
-            curl -fSL -o "core/libs/$f" "https://github.com/${{ github.repository }}/releases/download/obf-runtime/$f" \
-            || curl -fSL -o "core/libs/$f" "https://github.com/PimpinPumpkin/Vela/releases/download/obf-runtime/$f"
-          done
-          curl -fSL -o app/libs/sherpa-onnx-1.13.3.aar \
-            "https://github.com/${{ github.repository }}/releases/download/tts-runtime/sherpa-onnx-1.13.3.aar" \
-          || curl -fSL -o app/libs/sherpa-onnx-1.13.3.aar \
-            "https://github.com/PimpinPumpkin/Vela/releases/download/tts-runtime/sherpa-onnx-1.13.3.aar"
+          gh release download obf-runtime --repo "${{ github.repository }}" \
+            --pattern '*.jar' --dir core/libs --clobber
+          gh release download tts-runtime --repo "${{ github.repository }}" \
+            --pattern 'sherpa-onnx-1.13.3.aar' --dir app/libs --clobber
           v=$(sed -n 's/^waylo.cronetVersion=//p' gradle.properties)
-          curl -fSL -o "app/libs/cronet-$v.aar" "https://github.com/${{ github.repository }}/releases/download/cronet-runtime/cronet-$v.aar" \
-            || curl -fSL -o "app/libs/cronet-$v.aar" "https://github.com/PimpinPumpkin/Vela/releases/download/cronet-runtime/cronet-$v.aar" \
-            || bash scripts/build-cronet-aar.sh "$v" app/libs
+          gh release download cronet-runtime --repo "${{ github.repository }}" \
+            --pattern "cronet-$v.aar" --dir app/libs --clobber \
+          || bash scripts/build-cronet-aar.sh "$v" app/libs
 
       - name: Build the per-chip release APKs
         run: ./gradlew :app:assembleRelease -PabiSplits -PappVersionCode=100 -PappVersionName=smoke --no-daemon

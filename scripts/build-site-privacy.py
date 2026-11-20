@@ -2,7 +2,7 @@
 """Builds the website's privacy page from PRIVACY.md.
 
 PRIVACY.md is the only place the privacy text is written. This renders it into the website's
-own layout (site/style.css, the same header and footer as the landing page) so velamaps.org has
+own layout (site/style.css, the same header and footer as the landing page) so protechph.github.io/Waylo has
 a privacy page that cannot drift from the document in the repository.
 
     python3 scripts/build-site-privacy.py <out.html>
@@ -16,7 +16,7 @@ import sys
 import markdown
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BLOB = "https://github.com/PimpinPumpkin/Waylo/blob/main/"
+BLOB = "https://github.com/ProTechPh/Waylo/blob/main/"
 
 HEAD = """<!doctype html>
 <html lang="en">
@@ -25,7 +25,7 @@ HEAD = """<!doctype html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Privacy · Waylo Maps</title>
   <meta name="description" content="What leaves your phone when you use Waylo Maps, where it goes, and what does not: every service the app contacts and what each one receives.">
-  <link rel="canonical" href="https://velamaps.org/privacy">
+  <link rel="canonical" href="https://protechph.github.io/Waylo/privacy">
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -39,7 +39,7 @@ HEAD = """<!doctype html>
     <a href="./#install">Install</a>
     <a href="./#docs">Docs</a>
     <a href="press.html">Press</a>
-    <a href="https://github.com/PimpinPumpkin/Waylo">GitHub</a>
+    <a href="https://github.com/ProTechPh/Waylo">GitHub</a>
   </nav>
 </header>
 
@@ -49,13 +49,13 @@ HEAD = """<!doctype html>
 """
 
 FOOT = """
-  <p class="small">This page is built from <a href="https://github.com/PimpinPumpkin/Waylo/blob/main/PRIVACY.md"><code>PRIVACY.md</code></a> in the repository, which is where a correction goes.</p>
+  <p class="small">This page is built from <a href="https://github.com/ProTechPh/Waylo/blob/main/PRIVACY.md"><code>PRIVACY.md</code></a> in the repository, which is where a correction goes.</p>
 </div>
 </main>
 
 <footer>
   <div class="col">
-    <p>Waylo Maps is free software under the <a href="https://github.com/PimpinPumpkin/Waylo/blob/main/LICENSE">GPLv3</a>. Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+    <p>Waylo Maps is free software under the <a href="https://github.com/ProTechPh/Waylo/blob/main/LICENSE">GPLv3</a>. Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
     <p>Waylo is not affiliated with or endorsed by Google. Google Maps is a trademark of Google LLC.</p>
     <p>This site sets no cookies and loads nothing from anyone else.</p>
   </div>

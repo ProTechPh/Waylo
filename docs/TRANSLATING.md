@@ -3,7 +3,7 @@
 Waylo's interface is offered in 19 languages. Translations are done by the community on
 Weblate:
 
-**<https://hosted.weblate.org/engage/vela-maps/>**
+**<https://hosted.weblate.org/engage/waylo/>**
 
 ## What works in each language
 
@@ -114,10 +114,10 @@ Add the new code to each and run `./gradlew :core:test`.
 
 ## The Weblate component (maintainers)
 
-The project is <https://hosted.weblate.org/projects/vela-maps/>, on hosted Weblate's free plan
+The project is <https://hosted.weblate.org/projects/waylo/>, on hosted Weblate's free plan
 for open source. One component, `app`:
 
-- Repo `https://github.com/PimpinPumpkin/Waylo`, branch `main`
+- Repo `https://github.com/ProTechPh/Waylo`, branch `main`
 - File mask `app/src/main/res/values-*/strings.xml`, base file `values/strings.xml`
 - Format: Android string resources. License GPL-3.0-or-later.
 - The repo uses Android's `values-iw` for Hebrew and `values-zh-rTW` for Traditional Chinese.

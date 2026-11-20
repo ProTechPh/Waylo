@@ -45,11 +45,12 @@ jobs:
 
       - name: Fetch obf routing runtime jars
         # :core compiles against them (see ci.yml); the probe itself never routes offline.
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p core/libs
-          for f in osmand-java.jar osmand-shared-jvm.jar gnu-trove-osmand.jar kxml2-vela.jar; do
-            curl -fSL -o "core/libs/$f" "https://github.com/${{ github.repository }}/releases/download/obf-runtime/$f"
-          done
+          gh release download obf-runtime --repo "${{ github.repository }}" \
+            --pattern '*.jar' --dir core/libs --clobber
 
       - name: Probe Google
         run: ./gradlew :core:testDebugUnitTest --tests '*GoogleHealthProbeTest' -DwayloLive=true --rerun-tasks --no-daemon

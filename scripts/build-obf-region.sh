@@ -17,7 +17,7 @@ set -euo pipefail
 ID="${1:?region id}"
 NAME="${2:?display name}"
 PBF_URL="${3:?pbf url}"
-REPO="${WAYLO_REPO:-PimpinPumpkin/Waylo}"
+REPO="${WAYLO_REPO:-ProTechPh/Waylo}"
 TAG="obf-regions"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT

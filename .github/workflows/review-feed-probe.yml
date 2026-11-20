@@ -35,11 +35,12 @@ jobs:
         uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
 
       - name: Fetch obf routing runtime jars
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p core/libs
-          for f in osmand-java.jar osmand-shared-jvm.jar gnu-trove-osmand.jar kxml2-vela.jar; do
-            curl -fSL -o "core/libs/$f" "https://github.com/${{ github.repository }}/releases/download/obf-runtime/$f"
-          done
+          gh release download obf-runtime --repo "${{ github.repository }}" \
+            --pattern '*.jar' --dir core/libs --clobber
 
       - name: Probe the review feed
         run: ./gradlew :core:testDebugUnitTest --tests '*ReviewFeedProbeTest' -DwayloFeedProbe=true --rerun-tasks --no-daemon
