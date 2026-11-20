@@ -51,3 +51,6 @@ __pycache__/
 
 # Rendered at deploy time from PRIVACY.md by scripts/build-site-privacy.py.
 site/privacy.html
+
+# Assembled from site/ at deploy time by the Pages workflow.
+site/waylo-press-kit.zip

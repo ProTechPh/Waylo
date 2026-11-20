@@ -88,5 +88,4 @@ https://github.com/ProTechPh/Waylo/security/advisories/new
 ## In this folder
 
 - `logo/` the logo as SVG and the app icon as PNG. Please do not recolor it.
-- `screenshots/` eleven full-size screenshots, dark and light. They show the project's test area.
-- `not-google-maps.png` the project's joke image.
+- `screenshots/` full-size screenshots, dark and light. They show the project's test area.
