@@ -21,6 +21,8 @@ binary on your phone. No Play Services, no sign-in, no API key.
 [![Privacy](https://img.shields.io/badge/PRIVACY-46545a?style=for-the-badge&logo=shield&logoColor=white)](PRIVACY.md)
 [![Website](https://img.shields.io/badge/WEBSITE-0d3d43?style=for-the-badge&logo=firefoxbrowser&logoColor=white)](https://protechph.github.io/Waylo/)
 
+<p><a href="#a-look-at-it">Screenshots</a> · <a href="#what-it-does">Features</a> · <a href="#what-google-receives">Privacy</a> · <a href="#getting-it">Install</a> · <a href="#channels">Channels</a> · <a href="#documentation">Docs</a> · <a href="#questions-people-ask">FAQ</a></p>
+
 </div>
 
 > [!WARNING]
@@ -30,6 +32,8 @@ binary on your phone. No Play Services, no sign-in, no API key.
 
 Think of NewPipe, but for maps. Waylo takes the map from open data and asks Google only for the
 things open data does not have.
+
+**No ads. No account. No analytics. Nothing from Play Services.**
 
 The tiles are OpenStreetMap. The shops, addresses and points of interest drawn on top are **Waylo
 data**, assembled from Overture Maps and AllThePlaces, positioned with OpenStreetMap, baked into
@@ -125,6 +129,17 @@ The value identifies the certificate rather than one APK, and it never changes.
 
 </details>
 
+## Channels
+
+| Channel | What it is | Where it comes from |
+| --- | --- | --- |
+| Stable | A nightly that spent a week in the wild. The same signed APK, no rebuild | Promoted weekly from the newest nightly |
+| Nightly | One build a day from `main`, when `main` has moved | Settings → About → Update channel |
+| Canary | Every push to the `canary` branch, replaced on each one | The same screen, or the `canary` release |
+
+All three carry the same signing key, so switching channels never needs a reinstall. The versions in
+the badges above are read from the releases themselves.
+
 ## Documentation
 
 | Start with | It contains |
@@ -138,6 +153,29 @@ The value identifies the certificate rather than one APK, and it never changes.
 | [`ROADMAP.md`](ROADMAP.md) | What is still open |
 | [`docs/BUILDING.md`](docs/BUILDING.md) | How to compile it yourself |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | The rules for a patch, and where to send it |
+
+## Questions people ask
+
+**Is it a wrapper around Google Maps?** No. It is a native app drawing open tiles; only the data for
+a place or a route comes from Google.
+
+**Does it need Play Services?** No. Position comes from Android's own location service, so it runs on
+GrapheneOS and on stock Android.
+
+**Does everything work offline?** With a downloaded region, the map, its places, addresses you type
+and the guidance all do.
+
+**Why is a shop missing?** Open data lags behind reality. The bake picks up changes from
+OpenStreetMap and Overture on a schedule, and a place you tap is checked against Google.
+
+More answers are in [the FAQ](docs/FAQ.md).
+
+## Feedback
+
+Bugs go to [the issue tracker](https://github.com/ProTechPh/Waylo/issues/new/choose); the template
+asks for the version and the steps. Questions and ideas belong in
+[Discussions](https://github.com/ProTechPh/Waylo/discussions). Security problems go through
+[SECURITY.md](SECURITY.md), never a public issue.
 
 ## Where it came from
 
