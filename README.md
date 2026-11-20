@@ -89,24 +89,12 @@ has the same table with the reasoning.
 
 ## Install
 
-<table>
-  <tr>
-    <td width="50%" valign="top">
-      <h3>Obtainium</h3>
-      <p>Follows the weekly stable and updates it for you.</p>
-      <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/ProTechPh/Waylo"><img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="46"></a>
-    </td>
-    <td width="50%" valign="top">
-      <h3>Plain APK</h3>
-      <p>Take the file from the releases page. The app updates itself after that.</p>
-      <a href="https://github.com/ProTechPh/Waylo/releases/latest"><b>Latest stable release</b></a>
-    </td>
-  </tr>
-</table>
+Take the APK from **[Releases](https://github.com/ProTechPh/Waylo/releases/latest)** and open it.
+The app updates itself after that.
 
 There is one APK per chip type since the nightly of October 22, 2026, and nearly every phone wants
-`waylo-maps-arm64.apk`. `waylo-maps-all.apk` runs on anything. Obtainium and the built-in updater
-pick the right file by themselves. Android 8 and up; the package is `app.waylo`.
+`waylo-maps-arm64.apk`. `waylo-maps-all.apk` runs on anything. The built-in updater picks the right
+file by itself. Android 8 and up; the package is `app.waylo`.
 
 <details>
 <summary><b>Check that you got the real thing</b></summary>
