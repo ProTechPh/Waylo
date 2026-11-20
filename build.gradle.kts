@@ -32,6 +32,13 @@ plugins {
 // tool classpath in every module (androidLintTool), and the baseline-profile generator's trace
 // reader brings wire-runtime into that test module. Neither is in the app.
 subprojects {
+    // The Hilt plugin itself (not just the processor) reaches Guava 33.6.0-jre through each
+    // module's buildscript classpath, which the root constraints above do not cover.
+    buildscript {
+        configurations.matching { it.name == "classpath" }.configureEach {
+            resolutionStrategy.force("com.google.guava:guava:33.7.2-jre")
+        }
+    }
     configurations.matching { it.name == "androidLintTool" }.configureEach {
         resolutionStrategy.force(
             "org.bouncycastle:bcprov-jdk18on:1.85",
