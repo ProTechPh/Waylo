@@ -15,8 +15,8 @@ import java.io.File
  * with the INSTALL SOURCE set to Play, and some head units accept it on that basis.
  *
  * That setting belongs to the install, not to the file, so the moment Waylo updates ITSELF the
- * source becomes Waylo and the car drops it until the whole dance is repeated. Obtainium and a
- * plain sideload do the same. So this is not something to fix silently - it is something to say
+ * source becomes Waylo and the car drops it until the whole dance is repeated. Any other
+ * plain sideload does the same. So this is not something to fix silently - it is something to say
  * before the update, and then to offer the APK as a file instead, because handing that file to
  * AAEnabler is the step that keeps the car working.
  */

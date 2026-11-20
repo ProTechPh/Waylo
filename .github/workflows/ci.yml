@@ -132,7 +132,7 @@ jobs:
 
       - name: Derive build version
         id: ver
-        # versionName is plain semver (0.5.<run>) so Obtainium can compare it. The minor is a name
+        # versionName is plain semver (0.5.<run>) so external updaters can compare it. The minor is a name
         # (0.4 until 2026-10-08): the run number is what orders releases, across minors too.
         # versionCode is (2000+run)*10 since 2026-09-23 (was 2000+run): the last digit is the chip
         # type in a per-chip build (app/build.gradle.kts `splits`, the ABI_SPLITS repo variable),
@@ -141,7 +141,7 @@ jobs:
         # NOTE: bumped from 0.1.<run> / 1000+run on 2026-06-18 — local dev builds
         # had been hand-set with -PappVersionCode in the 1000s (up to 1117) and got
         # installed on a test phone, leaving it *ahead* of the release line so
-        # Obtainium would reject the next release as a downgrade. 0.2 + 2000-base
+        # an updater would reject the next release as a downgrade. 0.2 + 2000-base
         # steps the release line decisively over that pollution. Keep local dev
         # builds BELOW 1000 (e.g. -PappVersionCode=1) so this can't recur.
         run: |
@@ -252,7 +252,7 @@ jobs:
 
       - name: Publish nightly (prerelease)
         # The nightly channel: ONE prerelease per day from the cron (or an on-demand
-        # dispatch for an urgent fix), never per push. Obtainium users who want nightlies
+        # dispatch for an urgent fix), never per push. Users who want nightlies
         # turn on "include prereleases"; everyone else keeps tracking the latest stable
         # release, which the weekly promote-stable workflow produces by flipping the
         # newest nightly to a full release (same APK, no rebuild; nothing checks its health).
@@ -280,7 +280,7 @@ jobs:
           mapfile -t APKS < <(bash scripts/stage-apks.sh waylo-maps "waylo-maps-v${VER}.apk")
           # Build the changelog from the commit subjects since the previous release. Our commit
           # subjects are written as plain-language changelog lines, so this reads as real release
-          # notes (what Obtainium shows people), not a raw hash dump.
+          # notes (what people see), not a raw hash dump.
           PREV="$LAST"
           if [ -n "$PREV" ]; then
             LOG="$(bash scripts/changelog.sh "${PREV}..HEAD")"

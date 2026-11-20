@@ -866,7 +866,7 @@
     <string name="offline_area_failed">Offline sťahovanie zlyhalo. Skúste to znova neskôr.</string>
     <string name="offline_area_too_large">Oblasť je príliš veľká. Priblížte mapu a uložte menšiu oblasť.</string>
     <string name="settings_update_auto">Kontrolovať aktualizácie pri spustení</string>
-    <string name="settings_update_auto_hint">Asi raz denne skontroluje GitHub a ponúkne novšie verzie. Ak aktualizujete cez Obtainium, vypnite to.</string>
+    <string name="settings_update_auto_hint">Asi raz denne skontroluje GitHub a ponúkne novšie verzie.</string>
     <string name="settings_update_check_now">Skontrolovať aktualizácie</string>
     <string name="settings_update_checking">Kontroluje sa…</string>
     <string name="settings_update_none">Máte najnovšiu verziu.</string>

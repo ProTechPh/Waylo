@@ -4,7 +4,7 @@ name: Promote weekly stable
 # workflow promotes the newest nightly to the stable channel by flipping its
 # prerelease flag and marking it Latest. Same tag, same signed APK, no rebuild:
 # the stable release is a bits-identical nightly that has been out in the wild.
-# Default Obtainium installs (and the in-app updater, which reads releases/latest)
+# Default installs (and the in-app updater, which reads releases/latest)
 # therefore move at a weekly cadence; nightly users opt in to prereleases.
 #
 # The promoted release's notes are regenerated to span everything since the

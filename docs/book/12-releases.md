@@ -11,8 +11,7 @@ Settings > About has a Check for updates on launch switch (on by default), the U
 choice (Stable, Nightly or Canary), a Check for updates button, a row that reopens What's new, a
 switch that turns that dialog off, and a line saying which app Android recorded as the installer.
 
-Obtainium delivers the same builds. Every channel and source
-carries APKs signed with the same key, so moving between them never needs a reinstall.
+Every channel and source carries APKs signed with the same key, so moving between them never needs a reinstall.
 
 ## Where the data comes from
 
@@ -92,7 +91,7 @@ either direction is an upgrade to the installer.
 
 - Releases are cut inside `ci.yml`. Another workflow's counter would start at 1 and send the code
   backward.
-- The versionName is plain semver so that Obtainium can compare it.
+- The versionName is plain semver so that other updaters can compare it.
 - Never name a release `v0.5.0`. The updater takes the run number from the tag, reads code 2000
   and never offers it.
 
@@ -119,7 +118,7 @@ one APK.
 ### Release notes
 
 Notes are the commit subjects since the previous release, one line each, from
-`scripts/changelog.sh`. They appear on the release page, in Obtainium, in the update card and in
+`scripts/changelog.sh`. They appear on the release page, in the update card and in
 the What's new dialog, so a subject is written as a plain sentence about what changed for the user.
 
 A nightly lists the commits since the previous `v0.*` tag, a stable those since the previous
@@ -204,15 +203,6 @@ other one-time prompt.
 Nothing is bundled in the APK, so the dialog shows what the release body says that day. A failed
 fetch leaves the version unseen, and the next launch tries again.
 
-### Obtainium
-
-Obtainium follows the GitHub releases: the latest full release by default, which is the weekly
-stable, and nightlies with "include prereleases" on. It reads the version from the tag, and the
-canary tag never changes, so canary users take the in-app updater or download the APK.
-
-Obtainium reads only the first hundred releases. The per-region data releases are therefore
-created where GitHub sorts them last ([SPEC section 7.6](../../SPEC.md)).
-
 ### The signing certificate
 
 APKs are signed with the release keystore, which is outside the repository and reaches CI as
@@ -264,6 +254,4 @@ under `WayloUpdate`.
 - The notes of skipped releases cover the newest 8 tags in the gap, counted before the other
   channel's releases are filtered out, so on stable the nightlies in between take most of them. A
   nightly user's list leaves out a release that has since been promoted.
-- What Obtainium does with five APKs on one release is untested. A user may need to set a filter
-  once the per-chip switch is on.
 - Installs via Pages-served files are counted nowhere: Pages serves the files with no counter.

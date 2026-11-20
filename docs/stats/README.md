@@ -19,8 +19,8 @@ counting from zero.
 ## Reading it
 
 GitHub's API has no unique-downloader figure. A release file has a counter and nothing else.
-The closest thing to active installs is the newest stable's counter: the in-app updater and
-Obtainium each pull the APK once per device per release, so a few days after a stable is cut
+The closest thing to active installs is the newest stable's counter: the in-app updater pulls the
+APK once per device per release, so a few days after a stable is cut
 its counter is roughly the number of updating devices. It counts devices, not people.
 
 `kind` in `data-releases.csv`:

@@ -33,9 +33,7 @@ body:
     attributes:
       label: How did you install Waylo?
       options:
-        - Obtainium
         - In-app updater (the update card inside Waylo)
-
         - Manual APK download
         - Other or not sure
     validations:

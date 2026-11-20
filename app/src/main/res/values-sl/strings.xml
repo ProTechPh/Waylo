@@ -1011,7 +1011,7 @@
     <string name="update_car_body">Waylo je bila nameščena na način, ki ga Android Auto sprejme. Namestitev te posodobitve znotraj aplikacije bo to spremenila in avto Vele ne bo več prikazoval, dokler datoteke ne namestite z istim orodjem kot prvič (AAEnabler, King Installer).\n\nShranite datoteko in jo namestite z istim orodjem, da bo delovanje v avtu ohranjeno.</string>
     <string name="download_notif_title">Prenašanje: %1$s</string>
     <string name="map_area_downloading">Shranjevanje tega območja za uporabo brez povezave · %1$d%%</string>
-    <string name="settings_update_auto_hint">Približno enkrat na dan preveri GitHub in ponudi novejše različice. Izklopite, če posodabljate prek aplikacije Obtainium.</string>
+    <string name="settings_update_auto_hint">Približno enkrat na dan preveri GitHub in ponudi novejše različice.</string>
     <string name="settings_update_none">Uporabljate najnovejšo različico.</string>
     <string name="place_transit_stop_id">Postajališče %1$s</string>
     <string name="place_transit_in_min">čez %1$d min</string>

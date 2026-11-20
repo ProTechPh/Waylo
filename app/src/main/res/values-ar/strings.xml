@@ -882,7 +882,7 @@
     <string name="offline_area_failed">فشل التنزيل دون اتصال. حاول مرة أخرى لاحقاً.</string>
     <string name="offline_area_too_large">المنطقة كبيرة جداً. قرّب الخريطة واحفظ منطقة أصغر.</string>
     <string name="settings_update_auto">التحقق من التحديثات عند التشغيل</string>
-    <string name="settings_update_auto_hint">يتحقق من GitHub نحو مرة يومياً ويعرض الإصدارات الأحدث. أوقفه إذا كنت تحدّث عبر Obtainium.</string>
+    <string name="settings_update_auto_hint">يتحقق من GitHub نحو مرة يومياً ويعرض الإصدارات الأحدث.</string>
     <string name="settings_update_check_now">التحقق من التحديثات</string>
     <string name="settings_update_checking">جارٍ التحقق…</string>
     <string name="settings_update_none">أنت على أحدث إصدار.</string>

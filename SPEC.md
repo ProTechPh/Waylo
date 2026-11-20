@@ -31,8 +31,7 @@ subsystem in prose; section 16 lists the other documents.
 
 Waylo Maps (`app.waylo`) is a maps and navigation app for Android phones without Google Play
 services: search, places, routing, traffic-aware ETAs and turn-by-turn navigation. It targets
-GrapheneOS and other ROMs with no GMS. License GPLv3. Distribution is GitHub releases and
-Obtainium.
+GrapheneOS and other ROMs with no GMS. License GPLv3. Distribution is GitHub releases.
 
 ### 1.2 Non-negotiables
 
@@ -5092,7 +5091,7 @@ which the obf and pack bakes also source.
 One release per region, tag `cells-<region>`, holds the zips and the fragment
 `cells-<region>.json`. It is created with `--target` the repository's root commit
 (`CELLS_RELEASE_TARGET` in `scripts/bake-lib.sh`). GitHub sorts releases by the target commit's
-date and Obtainium reads only the first 100, so hundreds of data releases created on HEAD
+date, and the API lists only the first 100, so hundreds of data releases created on HEAD
 would push the app's releases off that page. `ci.yml` and `promote-stable.yml` read the whole list through `scripts/app-releases.sh` (GraphQL, three fields a
 release; the REST listing carries every asset and a page of 100 takes 9 s). `cells-manifest.json` on the `grid-cells` release indexes every region:
 
@@ -6631,8 +6630,8 @@ carries `<prefix>-arm64.apk`, `-armv7.apk`, `-x86.apk`, `-x86_64.apk` and `<pref
   the all-in-one APK to a chip APK of the same build is an upgrade.
 - The all-in-one name sorts first: GitHub lists assets by name and updaters older than
   `update/ApkChoice` take the first `.apk`.
-- Obtainium picks the chip file itself from 1.6.16 (September 2026), which reads `arm64` and
-  `armv7` as the Android chip names; an older Obtainium shows every file, the all-in-one first.
+- GitHub-based installers pick the chip file themselves from 1.6.16 (September 2026),
+  reading `arm64` and `armv7` as the Android chip names; older ones show every file, the all-in-one first.
   Its x86 match also takes `x86_64` names, so a 32-bit x86 phone may be offered the x86_64 file.
 - The single APK leaves out Cronet's x86 libraries (108.4 MB). A per-chip build keeps them:
   arm64 74.3 MB, armv7 35.4, x86 41.2, x86_64 41.5, all-in-one 121.9.

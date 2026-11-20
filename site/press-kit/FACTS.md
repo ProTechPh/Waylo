@@ -28,7 +28,7 @@ by one developer.
 | Started | June 2026 |
 | Who makes it | One developer, who goes by ProTechPh. Outside contributors send fixes and volunteers translate it. |
 | Languages | 19 |
-| Where to get it | GitHub releases or Obtainium. Not on Google Play. |
+| Where to get it | GitHub releases. Not on Google Play. |
 | Source | https://github.com/ProTechPh/Waylo |
 | Website | https://protechph.github.io/Waylo/ |
 

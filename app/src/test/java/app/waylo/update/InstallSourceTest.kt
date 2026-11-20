@@ -15,7 +15,7 @@ class InstallSourceTest {
 
     @Test fun anOrdinaryInstallIsNot() {
         assertFalse(InstallSource.isCarSetup(null, null))
-        assertFalse(InstallSource.isCarSetup("dev.imranr.obtainium", "dev.imranr.obtainium"))
+        assertFalse(InstallSource.isCarSetup("org.fdroid.fdroid", "org.fdroid.fdroid"))
         assertFalse(InstallSource.isCarSetup("app.waylo", "app.waylo"))
     }
 }

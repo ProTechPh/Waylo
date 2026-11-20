@@ -433,7 +433,7 @@
     <string name="update_install">Mettre à jour</string>
     <string name="update_download_failed">Le téléchargement de la mise à jour a échoué. Réessaie plus tard.</string>
     <string name="settings_update_auto">Vérifier les mises à jour au lancement</string>
-    <string name="settings_update_auto_hint">Consulte GitHub environ une fois par jour et propose les nouvelles versions. Désactivez si vous mettez à jour via Obtainium.</string>
+    <string name="settings_update_auto_hint">Consulte GitHub environ une fois par jour et propose les nouvelles versions.</string>
     <string name="settings_update_check_now">Vérifier les mises à jour</string>
     <string name="settings_update_checking">Vérification…</string>
     <string name="settings_update_none">Tu as la version la plus récente.</string>

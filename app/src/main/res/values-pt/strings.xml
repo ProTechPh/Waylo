@@ -485,7 +485,7 @@
     <string name="update_car_save">Guardar o ficheiro</string>
     <string name="update_car_anyway">Atualizar mesmo assim</string>
     <string name="settings_update_auto">Procurar atualizações ao iniciar</string>
-    <string name="settings_update_auto_hint">Verifica o GitHub cerca de uma vez por dia e propõe versões mais recentes. Desliga se atualizas pelo Obtainium.</string>
+    <string name="settings_update_auto_hint">Verifica o GitHub cerca de uma vez por dia e propõe versões mais recentes.</string>
     <string name="settings_update_check_now">Procurar atualizações</string>
     <string name="settings_update_checking">Verificando…</string>
     <string name="settings_update_none">Você está na versão mais recente.</string>

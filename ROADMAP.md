@@ -649,7 +649,7 @@ off the list when it has been.
 - A recheck's heal no longer starts the reroute cooldown (it held a needed reroute 8 s): code
   only. Not driven.
 - One APK per chip type, on since 2026-10-22 (`ABI_SPLITS`, #680): not seen yet, a release
-  with the five files updated through Obtainium and the in-app updater.
+  with the five files updated through the in-app updater.
 - Saved drives on from the first screens, deleted after 30 days (`trip_auto_clear`): seen on a
   4a with a fresh dev copy, the card with both switches on and both set after Continue. Not seen:
   a drive actually deleted at 30 days (unit test of the rule only).
@@ -861,7 +861,7 @@ the geocoder, speed limits, the basemap, transit, road features and cameras. It 
 pages and traffic, and the listing describes that app.
 
 Enabling the Google half after review breaks Play policy, which is enforced on the developer
-account. So there are two distributions: the full app on GitHub and Obtainium, and
+account. So there are two distributions: the full app on GitHub, and
 the Play build with a link to the project site. An in-app APK downloader is not allowed.
 
 Work, roughly in order:
@@ -955,7 +955,7 @@ traffic and replaces it where coverage is good.
 ### If GitHub goes away
 
 GitHub is the right home today: free unlimited Actions for a public repository, releases that
-served 74 TB of region files at no cost, the Obtainium audience, and a record of
+served 74 TB of region files at no cost, and a record of
 keeping projects that toe a line. It is also one account that can be closed. What that would
 break, measured 2026-10-11, worst first.
 
@@ -969,8 +969,8 @@ break, measured 2026-10-11, worst first.
   six dollars a month at this size) does. Every manifest embeds absolute `github.com` asset
   URLs, so a move is a manifest rewrite or an app-side rebase onto the `releases` link. The
   93 GB basemap and 82 GB building bakes need big-disk runners to regenerate.
-- The channels that pin a URL: Obtainium points at the repository, and every user would add
-  the new address by hand.
+- The channels that pin a URL: installed apps point at the repository, and every user
+  would add the new address by hand.
 - CI: 29 workflows, hourly to weekly crons, at least 55 runner hours a month, ten secrets (all
   regenerable or kept locally), the `gh` CLI in 41 scripts and workflows, artifact, Pages,
   CodeQL and Scorecard actions. GitLab's free tier is 400 minutes a month. Forgejo Actions runs
