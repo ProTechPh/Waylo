@@ -9,6 +9,8 @@ on:
     paths:
       - 'site/**'
       - 'docs/**'
+      - 'calibration.json'
+      - 'calibration.json.sig'
       - 'scripts/build-docs-site.py'
       - 'README.md'
       - '.github/workflows/pages.yml'
@@ -37,11 +39,14 @@ jobs:
           python3 scripts/build-docs-site.py
       - name: Assemble the site
         # Everything in site/ is published except the build inputs, and the docs take /docs/.
+        # The settings file and its signature sit at the root too: that copy is the app's fallback
+        # when the raw file host does not answer.
         run: |
           mkdir -p build/pages
           cp -r site/. build/pages/
           rm -rf build/pages/mkdocs.yml build/pages/requirements-docs.txt build/pages/docs-theme
           cp -r build/docs-site build/pages/docs
+          cp calibration.json calibration.json.sig build/pages/
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: build/pages
