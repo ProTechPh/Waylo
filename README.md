@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 <img src="docs/logo.svg" width="92" alt="Waylo Maps">
 
@@ -59,7 +59,7 @@ such as GrapheneOS, and it installs on stock Android too.
 | | |
 | --- | --- |
 | **Google's routes, with Google's traffic** | A driving route is the one Google would return, aware of jams and closures. Each option is timed in green, amber or red and marked light, moderate or heavy. Guidance adds lane diagrams, exit shields, a speedometer with the posted limit, and a faster-route offer. OSRM and Valhalla supply the turn instructions |
-| **Open place data, Google for the details** | Everything drawn on the map is Waylo data. Browsing sends Google nothing. Opening a place asks Google for hours with holidays, searchable reviews, photos, busy times, phone and website. Settings â†’ Places switches the map between Waylo data, Both and Google |
+| **Open place data, Google for the details** | Everything drawn on the map is Waylo data. Browsing sends Google nothing. Opening a place asks Google for hours with holidays, searchable reviews, photos, busy times, phone and website. Settings → Places switches the map between Waylo data, Both and Google |
 | **No Google software on the phone** | No Play Services, no account, no app key, no ads. Map browsing and saved places stay off Google, and the GPS trail never leaves the device. Only specific requests carry a position: a route from here, a search ranked nearby first, and a drive's reroute and traffic checks |
 | **Surveillance cameras on the map** | Mapped plate readers from the community DeFlock project are drawn with no setup. "Avoid surveillance cameras" counts what faces along each route and prefers a cleaner one when the detour is short, with a card or a spoken warning as you approach one |
 | **A voice that stays on the phone** | Directions are spoken by a neural voice that runs locally, and the microphone transcribes search locally too. Nothing you say goes to a speech service |
@@ -84,7 +84,7 @@ such as GrapheneOS, and it installs on stock Android too.
 | Drive with guidance on | A traffic check from your position every couple of minutes, unless you turn it off |
 | Save a place or build a list | **Nothing, ever.** Everything saved stays on the phone |
 
-Offline, or with **Settings â†’ Privacy â†’ Use Waylo without Google** on, nothing reaches Google at
+Offline, or with **Settings → Privacy → Use Waylo without Google** on, nothing reaches Google at
 all. [PRIVACY.md](PRIVACY.md) lists every request, and the [landing page](https://protechph.github.io/Waylo/#google)
 has the same table with the reasoning.
 
@@ -166,13 +166,13 @@ It will never cost money.
 ## GrapheneOS notes
 
 Waylo reads position through Android's `LocationManager`, never Google's fused provider. Enabling
-PSDS (Settings â†’ Location) cuts the cold GPS fix from around 30 seconds to a few. Indoors, a fix may
-not come at all, so turn on Network location (Settings â†’ Location â†’ Location services). Waylo shows
+PSDS (Settings → Location) cuts the cold GPS fix from around 30 seconds to a few. Indoors, a fix may
+not come at all, so turn on Network location (Settings → Location → Location services). Waylo shows
 a tip when no position arrives after a few seconds.
 
 ## Data and license
 
-The map is [OpenStreetMap](https://www.openstreetmap.org/copyright) data, Â© OpenStreetMap
+The map is [OpenStreetMap](https://www.openstreetmap.org/copyright) data, © OpenStreetMap
 contributors, under the Open Database License, served as tiles by
 [OpenFreeMap](https://openfreemap.org). The places on the map are Overture Maps (CDLA-Permissive
 2.0) and AllThePlaces, positioned with OpenStreetMap. Transit boards come from Transitous and the
@@ -187,4 +187,4 @@ font under the [SIL Open Font License 1.1](app/src/main/assets/licenses/GoogleSa
 Google Sans Flex and Google Maps are trademarks of Google LLC; Waylo is not affiliated with or
 endorsed by Google.
 
-<p align="center"><sub>Built by <a href="https://github.com/ProTechPh">ProTechPh</a> Â· <a href="https://hosted.weblate.org/engage/waylo/">Translate</a> Â· <a href="https://buymeacoffee.com/ProTechPh">Support</a></sub></p>
+<p align="center"><sub>Built by <a href="https://github.com/ProTechPh">ProTechPh</a> · <a href="https://hosted.weblate.org/engage/waylo/">Translate</a> · <a href="https://buymeacoffee.com/ProTechPh">Support</a></sub></p>
