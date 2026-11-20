@@ -9,10 +9,12 @@
 Driving guidance with real traffic, place pages that know their opening hours, and not one Google
 binary on your phone. No Play Services, no sign-in, no API key.
 
+[![Stable release](https://img.shields.io/github/v/release/ProTechPh/Waylo?label=stable&color=149387&style=flat-square)](https://github.com/ProTechPh/Waylo/releases/latest)
+[![Nightly](https://img.shields.io/github/v/release/ProTechPh/Waylo?label=nightly&include_prereleases&filter=v0.*&style=flat-square)](https://github.com/ProTechPh/Waylo/releases)
+[![Canary](https://img.shields.io/github/v/release/ProTechPh/Waylo?label=canary&filter=*canary*&display_name=release&include_prereleases&style=flat-square)](https://github.com/ProTechPh/Waylo/releases/tag/canary)
+[![Build](https://img.shields.io/github/actions/workflow/status/ProTechPh/Waylo/ci.yml?branch=main&label=build&style=flat-square)](https://github.com/ProTechPh/Waylo/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/ProTechPh/Waylo?style=flat-square&color=149387)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/ProTechPh/Waylo?style=flat-square&color=ffd43b)](https://github.com/ProTechPh/Waylo/stargazers)
-[![Build](https://img.shields.io/github/actions/workflow/status/ProTechPh/Waylo/ci.yml?branch=main&label=build&style=flat-square)](https://github.com/ProTechPh/Waylo/actions/workflows/ci.yml)
-[![Stable release](https://img.shields.io/github/v/release/ProTechPh/Waylo?label=stable&color=149387&style=flat-square)](https://github.com/ProTechPh/Waylo/releases/latest)
 
 [![Download Waylo](https://img.shields.io/badge/DOWNLOAD-149387?style=for-the-badge&logo=android&logoColor=white)](https://github.com/ProTechPh/Waylo/releases/latest)
 [![Read the docs](https://img.shields.io/badge/DOCS-0d3d43?style=for-the-badge)](https://protechph.github.io/Waylo/docs/)
