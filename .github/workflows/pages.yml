@@ -42,6 +42,12 @@ jobs:
       - name: Build the privacy page
         # It is not in the repository: the page is rendered from PRIVACY.md at deploy time.
         run: python3 scripts/build-site-privacy.py site/privacy.html
+      - name: Build the press kit
+        # The press page links this zip; it is assembled from the same files it shows.
+        run: |
+          cd site
+          rm -f waylo-press-kit.zip
+          zip -qr waylo-press-kit.zip assets/logo.svg assets/*.webp press-kit/FACTS.md
       - name: Assemble the site
         # Everything in site/ is published except the build inputs, and the docs take /docs/.
         # The settings file and its signature sit at the root too: that copy is the app's fallback

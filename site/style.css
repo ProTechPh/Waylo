@@ -124,11 +124,6 @@ section + section { border-top: 1px solid var(--rule); }
 
 /* ---- the tub ---- */
 
-.tub { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; align-items: center; }
-@media (min-width: 46rem) { .tub { grid-template-columns: 20rem minmax(0, 1fr); gap: 2.5rem; } }
-.polaroid { background: #fff; padding: 1rem; margin: 0 auto; max-width: 20rem; border-radius: 1rem; border: 1px solid var(--rule); }
-.polaroid img { display: block; width: 100%; }
-.polaroid figcaption { font-family: var(--sans); font-size: 0.8rem; color: #6b6b6b; text-align: center; padding: 0.5rem 0 0.2rem; }
 
 /* ---- feature list ---- */
 
@@ -373,8 +368,3 @@ section.band {
 }
 .motion .reveal.in { opacity: 1; transform: none; }
 
-/* the tub lands with a small tilt, like it was set down */
-@media (prefers-reduced-motion: no-preference) {
-  .polaroid { transition: transform .4s var(--ease-spring), box-shadow .4s; }
-  .polaroid:hover { transform: rotate(-1deg) translateY(-2px); box-shadow: var(--shadow-1); }
-}
