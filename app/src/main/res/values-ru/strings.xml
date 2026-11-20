@@ -433,7 +433,7 @@
     <string name="update_install">Обновить</string>
     <string name="update_download_failed">Не удалось скачать обновление. Попробуйте позже.</string>
     <string name="settings_update_auto">Проверять обновления при запуске</string>
-    <string name="settings_update_auto_hint">Проверяет GitHub примерно раз в день и предлагает новые версии. Отключите, если обновляетесь через Obtainium.</string>
+    <string name="settings_update_auto_hint">Проверяет GitHub примерно раз в день и предлагает новые версии.</string>
     <string name="settings_update_check_now">Проверить обновления</string>
     <string name="settings_update_checking">Проверка…</string>
     <string name="settings_update_none">У вас самая новая версия.</string>

@@ -485,7 +485,7 @@
     <string name="update_car_save">Bestand opslaan</string>
     <string name="update_car_anyway">Toch bijwerken</string>
     <string name="settings_update_auto">Bij het starten op updates controleren</string>
-    <string name="settings_update_auto_hint">Controleert GitHub ongeveer eens per dag en biedt nieuwere versies aan. Zet uit als je via Obtainium bijwerkt.</string>
+    <string name="settings_update_auto_hint">Controleert GitHub ongeveer eens per dag en biedt nieuwere versies aan.</string>
     <string name="settings_update_check_now">Op updates controleren</string>
     <string name="settings_update_checking">Controleren…</string>
     <string name="settings_update_none">Je hebt de nieuwste versie.</string>

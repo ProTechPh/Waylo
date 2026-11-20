@@ -433,7 +433,7 @@
     <string name="update_install">Actualizar</string>
     <string name="update_download_failed">Falló la descarga de la actualización. Inténtalo más tarde.</string>
     <string name="settings_update_auto">Buscar actualizaciones al iniciar</string>
-    <string name="settings_update_auto_hint">Consulta GitHub una vez al día y ofrece versiones más nuevas. Desactívalo si actualizas con Obtainium.</string>
+    <string name="settings_update_auto_hint">Consulta GitHub una vez al día y ofrece versiones más nuevas.</string>
     <string name="settings_update_check_now">Buscar actualizaciones</string>
     <string name="settings_update_checking">Comprobando…</string>
     <string name="settings_update_none">Tienes la versión más reciente.</string>

@@ -120,10 +120,10 @@ app's is not built yet.
 
 ## Where do updates come from?
 
-GitHub releases, through Obtainium or a manual APK. There is a weekly
+GitHub releases, installed as a plain APK. There is a weekly
 stable channel, a nightly one, and a canary channel for testers in the in-app updater only.
 The in-app updater follows the one you pick under Settings > About > "Update channel". Every
 channel is signed with the same key, so switching never needs a reinstall.
 Since October 22, 2026 a release carries one APK per chip type beside an all-in-one one;
-almost every phone wants `waylo-maps-arm64.apk` (74 MB instead of 122). Obtainium and
-the in-app updater pick the right file themselves.
+almost every phone wants `waylo-maps-arm64.apk` (74 MB instead of 122). The in-app
+updater picks the right file itself.

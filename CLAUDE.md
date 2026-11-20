@@ -211,7 +211,7 @@ map fonts, road features, cameras, grid cells, UK fuel prices. Those files exist
   returns every asset of every release: a page of 100 is 25 MB and takes 9 s, and a promotion
   failed on HTTP 504.
 - A release that is one of many (the `cells-<region>` set) is created on the root commit.
-  GitHub sorts by the target commit's date and Obtainium reads the first hundred.
+  GitHub sorts by the target commit's date and the API lists the first hundred.
 - The Actions token has 1,000 API requests an hour for the whole repository. GitHub calls in
   a workflow go through `scripts/gh-retry.sh`, and a bake leaves 200 for everything else.
 - Bakes have no schedules of their own. `bake-conductor.yml` starts one at a time from

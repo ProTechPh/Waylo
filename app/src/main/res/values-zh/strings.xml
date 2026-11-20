@@ -491,7 +491,7 @@
     <string name="update_install">更新</string>
     <string name="update_download_failed">更新下载失败。请稍后重试。</string>
     <string name="settings_update_auto">启动时检查更新</string>
-    <string name="settings_update_auto_hint">大约每天检查一次 GitHub 并提示较新的版本。若您通过 Obtainium 更新，请关闭。</string>
+    <string name="settings_update_auto_hint">大约每天检查一次 GitHub 并提示较新的版本。</string>
     <string name="settings_update_check_now">检查更新</string>
     <string name="settings_update_checking">正在检查…</string>
     <string name="settings_update_none">已是最新版本。</string>

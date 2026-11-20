@@ -555,7 +555,7 @@
     <string name="offline_area_failed">Az offline letöltés sikertelen. Próbáld újra később.</string>
     <string name="offline_area_too_large">Túl nagy terület. Nagyíts rá, és ments egy kisebbet.</string>
     <string name="settings_update_auto">Frissítések keresése indításkor</string>
-    <string name="settings_update_auto_hint">Naponta kb. egyszer ellenőrzi a GitHubot, és felkínálja az újabb kiadásokat. Kapcsold ki, ha Obtainiumon keresztül frissítesz.</string>
+    <string name="settings_update_auto_hint">Naponta kb. egyszer ellenőrzi a GitHubot, és felkínálja az újabb kiadásokat.</string>
     <string name="settings_update_check_now">Frissítések keresése</string>
     <string name="settings_update_checking">Ellenőrzés…</string>
     <string name="settings_update_none">A legfrissebb verziót használod.</string>

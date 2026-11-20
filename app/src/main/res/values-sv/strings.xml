@@ -433,7 +433,7 @@
     <string name="update_install">Uppdatera</string>
     <string name="update_download_failed">Nedladdningen av uppdateringen misslyckades. Försök igen senare.</string>
     <string name="settings_update_auto">Sök efter uppdateringar vid start</string>
-    <string name="settings_update_auto_hint">Kollar GitHub ungefär en gång om dagen och erbjuder nyare versioner. Stäng av om du uppdaterar via Obtainium.</string>
+    <string name="settings_update_auto_hint">Kollar GitHub ungefär en gång om dagen och erbjuder nyare versioner.</string>
     <string name="settings_update_check_now">Sök efter uppdateringar</string>
     <string name="settings_update_checking">Kontrollerar…</string>
     <string name="settings_update_none">Du har den senaste versionen.</string>

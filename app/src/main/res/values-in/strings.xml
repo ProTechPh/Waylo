@@ -847,7 +847,7 @@
     <string name="offline_area_failed">Pengunduhan offline gagal. Coba lagi nanti.</string>
     <string name="offline_area_too_large">Area terlalu luas. Perbesar peta dan simpan area yang lebih kecil.</string>
     <string name="settings_update_auto">Periksa pembaruan saat aplikasi dibuka</string>
-    <string name="settings_update_auto_hint">Memeriksa GitHub sekitar sekali sehari dan menawarkan rilis yang lebih baru. Nonaktifkan jika Anda memperbarui melalui Obtainium.</string>
+    <string name="settings_update_auto_hint">Memeriksa GitHub sekitar sekali sehari dan menawarkan rilis yang lebih baru.</string>
     <string name="settings_update_check_now">Periksa pembaruan</string>
     <string name="settings_update_checking">Memeriksa…</string>
     <string name="settings_update_none">Anda menggunakan versi terbaru.</string>

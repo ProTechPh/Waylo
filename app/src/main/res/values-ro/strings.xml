@@ -849,7 +849,7 @@
     <string name="offline_area_failed">Descărcarea pentru off-line a eșuat. Încearcă din nou mai târziu.</string>
     <string name="offline_area_too_large">Zona este prea mare. Mărește imaginea și salvează o zonă mai mică.</string>
     <string name="settings_update_auto">Verifică dacă există actualizări la lansare</string>
-    <string name="settings_update_auto_hint">Verifică GitHub cam o dată pe zi și oferă versiuni mai noi. Dezactivează această opțiune dacă efectuezi actualizările prin Obtainium.</string>
+    <string name="settings_update_auto_hint">Verifică GitHub cam o dată pe zi și oferă versiuni mai noi.</string>
     <string name="settings_update_check_now">Caută actualizări</string>
     <string name="settings_update_checking">Se verifică…</string>
     <string name="settings_update_none">Folosești cea mai recentă versiune.</string>

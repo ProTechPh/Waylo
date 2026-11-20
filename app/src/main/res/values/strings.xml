@@ -895,7 +895,7 @@
     <string name="offline_area_failed">Offline download failed. Try again later.</string>
     <string name="offline_area_too_large">Area too large. Zoom in and save a smaller area.</string>
     <string name="settings_update_auto">Check for updates on launch</string>
-    <string name="settings_update_auto_hint">Checks GitHub about once a day and offers newer releases. Turn off if you update through Obtainium.</string>
+    <string name="settings_update_auto_hint">Checks GitHub about once a day and offers newer releases.</string>
     <string name="settings_update_check_now">Check for updates</string>
     <string name="settings_update_checking">Checking…</string>
     <string name="settings_update_none">You\'re on the latest version.</string>

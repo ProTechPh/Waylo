@@ -19,7 +19,7 @@ import javax.inject.Singleton
  * when it's newer than this build, download the APK and hand it to the SYSTEM installer.
  * The OS enforces the update contract from there (same package + same signing key, user
  * confirms the install dialog), so this never sideloads anything the platform wouldn't
- * accept as an update of the installed app. Obtainium users can keep using Obtainium; the
+ * accept as an update of the installed app. The
  * launch check is a Settings toggle.
  *
  * Version scheme (see CI): release tag `v0.<minor>.<run>`; the run number is global and

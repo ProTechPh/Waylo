@@ -7,7 +7,7 @@
 # and nothing else. What there IS, and what disappears for good if nobody writes it down:
 #
 #   * a release's download counter, which the nightly prune deletes along with the release. The
-#     in-app updater and Obtainium each pull an APK once per device per release, so the newest
+#     in-app updater pulls an APK once per device per release, so the newest
 #     stable's counter is the closest thing to a floor on active installs.
 #   * the traffic API, which is a ROLLING 14 DAYS. Miss a fortnight and that fortnight is gone.
 #   * which REGIONS people download, per asset, across the data catalogs. Aggregate, anonymous,

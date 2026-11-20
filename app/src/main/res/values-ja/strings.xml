@@ -491,7 +491,7 @@
     <string name="update_install">更新</string>
     <string name="update_download_failed">更新のダウンロードに失敗しました。後でもう一度お試しください。</string>
     <string name="settings_update_auto">起動時に更新を確認</string>
-    <string name="settings_update_auto_hint">1 日 1 回ほど GitHub を確認し、新しいリリースを案内します。Obtainium で更新している場合はオフにしてください。</string>
+    <string name="settings_update_auto_hint">1 日 1 回ほど GitHub を確認し、新しいリリースを案内します。</string>
     <string name="settings_update_check_now">更新を確認</string>
     <string name="settings_update_checking">確認しています…</string>
     <string name="settings_update_none">最新バージョンを使用しています。</string>

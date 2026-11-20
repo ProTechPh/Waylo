@@ -365,7 +365,7 @@ What Waylo Maps does today, one line per feature. How each one works is in [SPEC
 ## Updates and install
 
 - Waylo needs no Google Play services. Location comes from the phone's own GPS.
-- Install from Obtainium, or from the APK.
+- Install from the APK on the releases page.
 - The app checks for a release about once a day. "Check for updates on launch" turns that off.
 - "Update channel" is Stable (weekly), Nightly (daily) or Canary (development builds).
 - The update card lists each skipped release's changes. "Show what's new after updates" shows them
