@@ -51,10 +51,10 @@ object WayloLinks {
         API to "https://api.github.com/repos/ProTechPh/Waylo",
         RELEASES to "https://github.com/ProTechPh/Waylo/releases/download",
         RAW to "https://raw.githubusercontent.com/ProTechPh/Waylo/main",
-        SITE to "https://velamaps.org",
-        // The GitHub Pages address: the map fonts, the F-Droid repository and the docs. It is not
-        // the website and must not become a redirect to it; installed apps and F-Droid clients
-        // point here.
+        SITE to "https://protechph.github.io/Waylo",
+        // The GitHub Pages address: the website, the docs, the map fonts and the settings-file
+        // mirror. Installed apps and F-Droid clients point here, so it must keep serving them
+        // (never a redirect to somewhere else).
         PAGES to "https://protechph.github.io/Waylo",
         DONATE to "https://buymeacoffee.com/ProTechPh",
     )

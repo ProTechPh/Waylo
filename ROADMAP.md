@@ -326,7 +326,7 @@ off the list when it has been.
   exit too, the second in 1.0 s.
 
 - Data job fixes: the camera bake asks for CSV and tries again, the maxspeed bake skips a
-  region with no tagged roads, a failed velamaps.org deploy no longer stops GitHub Pages, and
+  region with no tagged roads, a failed protechph.github.io/Waylo deploy no longer stops GitHub Pages, and
   the baseline profile run warns instead of failing when it may not open a pull request. Each
   ran locally against the live servers and files. They are on main and none has run on GitHub
   yet.
@@ -981,21 +981,21 @@ break, measured 2026-10-11, worst first.
   CodeQL and Scorecard actions. GitLab's free tier is 400 minutes a month. Forgejo Actions runs
   the same YAML nearly unchanged on a self-hosted runner; GitLab means rewriting it.
 - Fonts on Pages fail softly: the app probes the host and falls back to OpenFreeMap's Noto
-  glyphs. The website is on velamaps.org already; the docs would redirect there.
+  glyphs. The website is on protechph.github.io/Waylo already; the docs would redirect there.
 - Issues, pull requests, discussions, every `#123` in commits and docs, the Weblate project,
   issue triage, download stats and the dashboard. Forgejo's importer keeps issue numbers.
 
-Not touched: the three signing keys (local only), velamaps.org, OpenFreeMap, the Piper voices
+Not touched: the three signing keys (local only), protechph.github.io/Waylo, OpenFreeMap, the Piper voices
 (another account's releases), the donation page.
 
 Insurance, cheapest first. The first is built (2026-10-12: the site workflow publishes
-`calibration.json` and its signature to velamaps.org, and `CalibrationStore` reads that copy
+`calibration.json` and its signature to protechph.github.io/Waylo, and `CalibrationStore` reads that copy
 after GitHub's); the rest are not:
 
-1. A second settings-file address off GitHub (velamaps.org), published by the same workflow
+1. A second settings-file address on GitHub Pages (protechph.github.io/Waylo), published by the same workflow
    as the site, so a closed account becomes one signed `links` push. Built. Not yet seen: an
    app reading the copy with GitHub blocked.
-2. The F-Droid repository mirrored on R2 behind a velamaps.org address, listed in the index as
+2. The F-Droid repository mirrored on R2 behind a protechph.github.io/Waylo address, listed in the index as
    a mirror so clients fail over by themselves, and in the README.
 3. Manifest asset URLs rebased app-side onto the `releases` link, so a storage move is a push,
    not a rebake.

@@ -26,7 +26,7 @@ Most of this is invisible. It shows in four places:
   them to any anonymous browser. The data is not open and has no license Waylo can point to.
 - `calibration.json` at the root of the Waylo repository, with its detached signature
   `calibration.json.sig`, fetched from GitHub's raw file host at launch, or from the copy on
-  velamaps.org when GitHub does not answer. It holds everything about these requests that
+  protechph.github.io/Waylo when the raw host does not answer. It holds everything about these requests that
   Google can break.
 - The community services (FOSSGIS OSRM and Valhalla, Nominatim, Photon, Overpass, Transitous)
   are covered in [chapter 5](05-routing.md), [chapter 6](06-search.md) and

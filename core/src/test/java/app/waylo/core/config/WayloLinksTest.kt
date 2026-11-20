@@ -16,9 +16,9 @@ class WayloLinksTest {
         assertEquals("https://github.com/ProTechPh/Waylo/releases/download/obf-regions/obf-manifest.json", WayloLinks.obfManifest())
         assertEquals("https://raw.githubusercontent.com/ProTechPh/Waylo/main/calibration.json", WayloLinks.calibration())
         assertEquals(WayloLinks.calibration() + ".sig", WayloLinks.calibrationSig())
-        assertEquals("https://velamaps.org/calibration.json", WayloLinks.calibrationMirror())
+        assertEquals("https://protechph.github.io/Waylo/calibration.json", WayloLinks.calibrationMirror())
         assertEquals("https://protechph.github.io/Waylo/fonts", WayloLinks.mapFonts())
-        assertEquals("https://velamaps.org", WayloLinks.site())
+        assertEquals("https://protechph.github.io/Waylo", WayloLinks.site())
         // The website and the Pages address are separate keys: moving the site leaves the fonts.
         WayloLinks.overrides = mapOf(WayloLinks.SITE to "https://waylo.example")
         assertEquals("https://protechph.github.io/Waylo/fonts", WayloLinks.mapFonts())

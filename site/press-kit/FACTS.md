@@ -30,7 +30,7 @@ by one developer.
 | Languages | 19 |
 | Where to get it | GitHub releases or Obtainium. Not on Google Play. |
 | Source | https://github.com/ProTechPh/Waylo |
-| Website | https://velamaps.org/ |
+| Website | https://protechph.github.io/Waylo/ |
 
 ## Accurate ways to describe it
 

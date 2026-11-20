@@ -6274,7 +6274,7 @@ At launch `CalibrationStore` loads its cached bundle, then fetches `calibration.
 detached `calibration.json.sig` from
 `https://raw.githubusercontent.com/ProTechPh/Waylo/main/`, and when that does not answer
 (no reply, a transport error, or a copy whose signature does not verify) from the copy on the
-website, `https://velamaps.org/calibration.json` (`WayloLinks`, 11.4). It adopts the remote
+website, `https://protechph.github.io/Waylo/calibration.json` (`WayloLinks`, 11.4). It adopts the remote
 bundle only if:
 
 1. the signature verifies (ECDSA P-256 with SHA-256 against `PINNED_PUBLIC_KEY`);
@@ -6330,7 +6330,7 @@ Locally: `./gradlew :core:testDebugUnitTest --tests '*GoogleHealthProbeTest' -Dw
 ### 11.4 The project's own links
 
 Every address the app has of its own project is in `core/config/WayloLinks`: the repository,
-its API, the download releases, the raw files on main, the website (`site`, velamaps.org), the
+its API, the download releases, the raw files on main, the website (`site`, protechph.github.io/Waylo), the
 GitHub Pages address (`pages`, where the map fonts and the docs live)
 and the donate page, and the files derived from them (the settings file, each data manifest,
 the world basemap, the map fonts, the speech models, the UK fuel file, the painted roads).
@@ -6345,7 +6345,7 @@ links under known names are accepted; anything else rejects the bundle. A build'
 
 The settings file is asked for where the last bundle said it lives, then where the build was
 compiled to look, then at the website's copy (`calibrationMirror`, pushed then compiled; the
-site workflow publishes `calibration.json` and its signature to velamaps.org on every change
+site workflow publishes `calibration.json` and its signature to protechph.github.io/Waylo on every change
 to them). Moving the project: push a bundle whose `links` name the new places while the old
 ones still answer; each app keeps that bundle and applies it at the next launch, so it asks
 the new places from then on, the settings file included; then change the defaults in
