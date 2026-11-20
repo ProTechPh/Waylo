@@ -276,3 +276,105 @@ a.doc p { margin: 0; color: var(--ink-2); font-size: 0.98rem; line-height: 1.5; 
 .footgrid div > a:not(.brand) { display: block; text-decoration: none; padding: 0.15rem 0; }
 .footgrid div > a:not(.brand):hover { text-decoration: underline; }
 .legal { border-top: 1px solid var(--rule); padding-top: 1.1rem; }
+
+/* ---- motion and polish ----
+   Everything here is progressive enhancement: without JavaScript the reveal classes are never
+   added, and with reduced motion enabled the whole block is skipped. */
+
+:root {
+  --ease-out: cubic-bezier(.22, .61, .36, 1);
+  --ease-spring: cubic-bezier(.34, 1.4, .64, 1);
+  --shadow-1: 0 2px 6px -2px rgba(10, 30, 33, .08), 0 12px 30px -20px rgba(10, 30, 33, .28);
+  --shadow-2: 0 18px 44px -26px rgba(10, 30, 33, .45);
+}
+
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes glow { 0%, 100% { transform: translate3d(-2%, 0, 0) scale(1); } 50% { transform: translate3d(2%, -2%, 0) scale(1.07); } }
+@keyframes sheen { from { transform: translateX(-130%); } to { transform: translateX(130%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 3px; }
+
+/* top bar: a shadow once the page moves, and a bar that slides under the links */
+body > .top { transition: background .3s var(--ease-out), box-shadow .3s var(--ease-out); }
+body > .top.scrolled { box-shadow: 0 1px 0 var(--rule), 0 14px 30px -28px rgba(0, 0, 0, .55); }
+.top nav a { position: relative; }
+.top nav a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -0.3rem; height: 2px;
+  background: currentColor; border-radius: 2px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .28s var(--ease-out);
+}
+.top nav a:hover, .top nav a[aria-current] { text-decoration: none; }
+.top nav a:hover::after, .top nav a[aria-current]::after { transform: scaleX(1); }
+
+/* buttons: a lift, a press, and one pass of light on hover */
+.btn {
+  position: relative; overflow: hidden;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--teal-deep) 82%, #fff), var(--teal-deep));
+  box-shadow: 0 10px 22px -18px var(--teal-deep);
+  transition: transform .2s var(--ease-out), box-shadow .25s var(--ease-out), background .25s;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 16px 30px -18px var(--teal-deep); }
+.btn:active { transform: translateY(0) scale(.99); }
+.btn::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(100deg, transparent 25%, rgba(255, 255, 255, .3) 50%, transparent 75%);
+  transform: translateX(-130%);
+}
+.btn:hover::after { animation: sheen .75s var(--ease-out); }
+.btn.plain { background: transparent; box-shadow: none; }
+.btn.plain::after { display: none; }
+
+/* the hero arrives in order, the phone drifts, the wash behind it breathes */
+@media (prefers-reduced-motion: no-preference) {
+  .hero .kicker, .hero h1, .hero .lede, .hero .get, .hero > div > .small {
+    animation: rise .8s var(--ease-out) both;
+  }
+  .hero h1 { animation-delay: .07s; }
+  .hero .lede { animation-delay: .14s; }
+  .hero .get { animation-delay: .21s; }
+  .hero > div > .small { animation-delay: .28s; }
+  .herophone { animation: rise 1s var(--ease-out) .3s both; }
+  .herophone img { animation: float 8s ease-in-out 1.4s infinite; }
+  .herophone::before { animation: glow 14s ease-in-out infinite; }
+}
+
+/* screenshots and cards respond to the pointer */
+.shots .phone img { transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-out); }
+.shots .phone:hover img { transform: translateY(-5px) scale(1.012); box-shadow: 0 30px 60px -32px rgba(0, 0, 0, .6); }
+
+.way, a.doc, .say > div, .things > div, .facts dd { transition: transform .25s var(--ease-out), box-shadow .25s var(--ease-out), border-color .25s; }
+.way:hover, a.doc:hover, .say > div:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); }
+.things > div:hover { transform: translateY(-2px); }
+a.doc:hover { border-color: var(--teal); }
+
+section.band {
+  background:
+    radial-gradient(120% 90% at 15% -10%, color-mix(in srgb, var(--teal) 32%, transparent), transparent 60%),
+    linear-gradient(160deg, var(--teal-deep), #0a2c31 55%, #07242a);
+}
+.band .way:hover { border-color: rgba(255, 255, 255, .3); box-shadow: 0 20px 40px -28px rgba(0, 0, 0, .8); }
+
+/* scroll reveal, only once the script has said it can */
+.motion .reveal {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .7s var(--ease-out), transform .7s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 55ms);
+}
+.motion .reveal.in { opacity: 1; transform: none; }
+
+/* the tub lands with a small tilt, like it was set down */
+@media (prefers-reduced-motion: no-preference) {
+  .polaroid { transition: transform .4s var(--ease-spring), box-shadow .4s; }
+  .polaroid:hover { transform: rotate(-1deg) translateY(-2px); box-shadow: var(--shadow-1); }
+}

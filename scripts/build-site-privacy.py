@@ -28,6 +28,7 @@ HEAD = """<!doctype html>
   <link rel="canonical" href="https://protechph.github.io/Waylo/privacy">
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
+  <script src="motion.js" defer></script>
 </head>
 <body>
 
