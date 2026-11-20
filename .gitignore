@@ -48,3 +48,6 @@ core/libs/*.jar
 # Python bytecode
 __pycache__/
 *.pyc
+
+# Rendered at deploy time from PRIVACY.md by scripts/build-site-privacy.py.
+site/privacy.html

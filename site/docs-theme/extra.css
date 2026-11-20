@@ -31,3 +31,47 @@
 .waylo-cards a:hover { border-color: var(--md-accent-fg-color); transform: translateY(-1px); }
 .waylo-cards strong { display: block; color: var(--md-accent-fg-color); margin-bottom: .2rem; font-size: .85rem; }
 .waylo-cards span { font-size: .72rem; opacity: .8; line-height: 1.45; display: block; }
+
+/* ---- motion ----
+   Material's instant loading swaps the content on every navigation, so the page-enter animation
+   replays without any extra script. Everything below is skipped under reduced motion. */
+
+@keyframes waylo-page-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes waylo-sheen { from { transform: translateX(-130%); } to { transform: translateX(130%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .md-content__inner { animation: waylo-page-in .45s cubic-bezier(.22, .61, .36, 1) both; }
+}
+
+.md-typeset h2, .md-typeset h3 { scroll-margin-top: 5rem; }
+
+.md-typeset a { text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); text-underline-offset: .18em; transition: color .2s, text-decoration-color .2s; }
+.md-typeset a:hover { text-decoration-color: currentColor; }
+
+.md-nav__link { border-radius: 6px; transition: color .15s, background-color .2s; }
+.md-nav__link:hover { background-color: color-mix(in srgb, var(--md-accent-fg-color) 9%, transparent); }
+.md-nav__link--active { font-weight: 600; }
+
+.md-header--shadow { box-shadow: 0 10px 30px -22px rgba(0, 0, 0, .6) !important; }
+
+.md-typeset .admonition, .md-typeset details { transition: box-shadow .25s, transform .25s; }
+.md-typeset .admonition:hover, .md-typeset details:hover { box-shadow: 0 14px 34px -26px rgba(0, 0, 0, .5); }
+
+.md-typeset table:not([class]) tbody tr { transition: background-color .15s; }
+.md-typeset table:not([class]) tbody tr:hover { background-color: color-mix(in srgb, var(--md-accent-fg-color) 6%, transparent); }
+
+.md-typeset pre > code { transition: box-shadow .25s; }
+.md-typeset pre:hover > code { box-shadow: 0 12px 28px -24px rgba(0, 0, 0, .6); }
+
+.waylo-cards a { position: relative; overflow: hidden; }
+.waylo-cards a:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -28px rgba(0, 0, 0, .5); }
+.waylo-cards a::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--md-accent-fg-color) 18%, transparent) 50%, transparent 70%);
+  transform: translateX(-130%);
+}
+.waylo-cards a:hover::after { animation: waylo-sheen .8s cubic-bezier(.22, .61, .36, 1); }
