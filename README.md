@@ -13,7 +13,6 @@ Google account, no Play Services and no Google code running on the phone.
 [![Build](https://img.shields.io/github/actions/workflow/status/ProTechPh/Waylo/ci.yml?branch=main&label=build)](https://github.com/ProTechPh/Waylo/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/ProTechPh/Waylo?color=149387)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/ProTechPh/Waylo?style=flat&color=ffd43b)](https://github.com/ProTechPh/Waylo/stargazers)
-[![Translate](https://hosted.weblate.org/widget/waylo/app/svg-badge.svg)](https://hosted.weblate.org/engage/waylo/)
 
 [![Download Waylo](https://img.shields.io/badge/DOWNLOAD-149387?style=for-the-badge&logo=android&logoColor=white)](https://github.com/ProTechPh/Waylo/releases/latest)
 [![Read the docs](https://img.shields.io/badge/DOCS-0d3d43?style=for-the-badge)](https://protechph.github.io/Waylo/docs/)
@@ -187,4 +186,4 @@ font under the [SIL Open Font License 1.1](app/src/main/assets/licenses/GoogleSa
 Google Sans Flex and Google Maps are trademarks of Google LLC; Waylo is not affiliated with or
 endorsed by Google.
 
-<p align="center"><sub>Built by <a href="https://github.com/ProTechPh">ProTechPh</a> · <a href="https://hosted.weblate.org/engage/waylo/">Translate</a> · <a href="https://buymeacoffee.com/ProTechPh">Support</a></sub></p>
+<p align="center"><sub>Built by <a href="https://github.com/ProTechPh">ProTechPh</a> · <a href="https://buymeacoffee.com/ProTechPh">Support</a></sub></p>
