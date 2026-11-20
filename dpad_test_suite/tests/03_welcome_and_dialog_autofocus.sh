@@ -2,7 +2,7 @@
 # First-run flow, D-pad-first:
 #   (a) the Welcome screen opens focused on Get-started, and OK advances to the Google choice
 #       page, which opens focused on Continue;
-#   (b) each onboarding dialog (VelaDialog) opens focused on its safe "Not now" button.
+#   (b) each onboarding dialog (WayloDialog) opens focused on its safe "Not now" button.
 # Clears app data to force the first run, then re-grants location so no system permission dialog
 # interrupts (that dialog is AOSP, out of scope). docs/dpad.md.
 set -uo pipefail

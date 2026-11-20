@@ -4,7 +4,7 @@
 
 Ratings, opening hours, photos, reviews, popular times, traffic on a route, transit directions,
 Street View and search suggestions come from Google. None of it needs a Google account, Google
-Play services or an API key, and no Vela server sits in between. The phone asks google.com what
+Play services or an API key, and no Waylo server sits in between. The phone asks google.com what
 the Maps website asks from a logged-out desktop browser and reads the answers itself, the way
 NewPipe reads YouTube.
 
@@ -16,22 +16,22 @@ Most of this is invisible. It shows in four places:
   for a second. A new session's first answers carry no review counts, and the app asks again.
 - A dim line on a place sheet: "Google is showing a limited view right now, so popular times
   and more reviews may be missing here."
-- Settings > Privacy: "Use Vela without Google", how long a Google session lives, "Block
+- Settings > Privacy: "Use Waylo without Google", how long a Google session lives, "Block
   Google's page telemetry", and "Requests to Google", a count of what this phone has sent.
 
 ## Where the data comes from
 
 - Google's public web endpoints, the ones `www.google.com/maps` calls itself: map search,
   autocomplete, directions, the photo gallery, Street View and the place pages. Google serves
-  them to any anonymous browser. The data is not open and has no license Vela can point to.
-- `calibration.json` at the root of the Vela repository, with its detached signature
+  them to any anonymous browser. The data is not open and has no license Waylo can point to.
+- `calibration.json` at the root of the Waylo repository, with its detached signature
   `calibration.json.sig`, fetched from GitHub's raw file host at launch, or from the copy on
   velamaps.org when GitHub does not answer. It holds everything about these requests that
   Google can break.
 - The community services (FOSSGIS OSRM and Valhalla, Nominatim, Photon, Overpass, Transitous)
   are covered in [chapter 5](05-routing.md), [chapter 6](06-search.md) and
-  [chapter 9](09-transit.md). They and the calibration fetch are sent `VelaConfig.VELA_UA`
-  (`VelaMaps/0.4 (+https://github.com/PimpinPumpkin/Vela)`), never the browser identity,
+  [chapter 9](09-transit.md). They and the calibration fetch are sent `WayloConfig.WAYLO_UA`
+  (`WayloMaps/0.4 (+https://github.com/PimpinPumpkin/Waylo)`), never the browser identity,
   because their usage policies ask for a client they can contact.
 
 Request shapes, response paths, headers and constants are in
@@ -96,7 +96,7 @@ The per-place requests retry, as described under
 
 Requests to Google claim to be current desktop Chrome on Windows. The user agent and its
 `Sec-CH-UA` brand list are calibration fields (`userAgent`, `secChUa`).
-`VelaConfig.USER_AGENT` and `SEC_CH_UA` are only the compiled fallback. Code reads the pair
+`WayloConfig.USER_AGENT` and `SEC_CH_UA` are only the compiled fallback. Code reads the pair
 from `CalibrationStore.current()`, never from the constants.
 
 Chrome computes its `Sec-CH-UA` value from its major version, including a made-up "GREASE"
@@ -111,7 +111,7 @@ network estimate. The session warm-up is sent as a document navigation, data req
 same-origin fetches, place photos and Street View tiles as cross-site image loads. The header
 table is in [SPEC 3.6](../../SPEC.md#36-browser-identity).
 
-A value that every install sent identically would pick out Vela's traffic. `BrowserViewport`
+A value that every install sent identically would pick out Waylo's traffic. `BrowserViewport`
 gives each install one common desktop window size, picked once, for its search, directions,
 autocomplete and photo requests. `RequestShape` fills in the request counters, map spans and
 the directions viewport per session. `Jitter` spreads every fixed wait before a Google request,
@@ -171,7 +171,7 @@ signs and verifies its own output) and commit both files to main. A new field ne
 
 `tuning` is a flat name-to-number map read through `Calibration.tune(key, default)`. A missing
 key means the compiled default, so adding a dial needs no schema change. `ui/AppTune` reads
-`adb shell setprop debug.vela.tune.<key> <n>` first, then the bundle, then the default, so a
+`adb shell setprop debug.waylo.tune.<key> <n>` first, then the bundle, then the default, so a
 dial can be tried on one phone without a push. Dials that open the app up for inspection read
 the adb property alone, so a bundle cannot turn them on.
 
@@ -243,8 +243,8 @@ desktop user agent still sends `"Android WebView"`, `?1` and `"Android"` hints.
 
 A script reports back through a JavaScript interface, which sits on the page's `window` where
 the page's own scripts can list it. `web/JsNames` draws the interface names at random once per
-process, and `JsNames.of` swaps them into a script in place of the readable `VelaBridge` and
-`VelaPanel`.
+process, and `JsNames.of` swaps them into a script in place of the readable `WayloBridge` and
+`WayloPanel`.
 
 ### The WebView proxy
 
@@ -264,12 +264,12 @@ the app over Cronet, with the WebView's own cookies so the page keeps its sessio
 - A failed proxy request returns null and the WebView loads it itself.
 
 Google's pages also report on themselves: `play.google.com/log`, `gen_204` pings and the
-account bar's `ogads-pa` calls. Nothing Vela reads depends on them. Settings > Privacy > "Block
+account bar's `ogads-pa` calls. Nothing Waylo reads depends on them. Settings > Privacy > "Block
 Google's page telemetry" (off by default) answers them on the phone with an empty 200, with
 the proxy on or off. They are sent by default because a session whose pages never send them
 looks less like a browser's.
 
-Logcat `VelaWebProxy` prints each path once as `carries:`, `answers locally:` or
+Logcat `WayloWebProxy` prints each path once as `carries:`, `answers locally:` or
 `passes through:` (sent by the WebView itself, with the header).
 
 ### Google sessions and the limited view
@@ -292,7 +292,7 @@ can be linked together. So the saved session is thrown away on a schedule
 | --- | --- | --- |
 | Every week (default) | when the last one is 7 days old | up to a week of linkable history |
 | Every day | when the last one is 24 hours old | up to a day |
-| Every time Vela opens | at every process start | the limited view is the normal state, and Android restarting the app in the background can mean several new sessions a day |
+| Every time Waylo opens | at every process start | the limited view is the normal state, and Android restarting the app in the background can mean several new sessions a day |
 
 The check runs once per process start, before the Cronet engine opens. A rotation clears the
 WebView's cookies and site storage, Cronet's disk cache, and the WebView's HTTP cache when the
@@ -352,7 +352,7 @@ The switches that put a piece back on its page:
 Settings > Places has the switches that send less: "Load reviews only when I tap", "Load photos
 only when I tap", "Show reviews" and "Load photos", and "Wait for popular times", which when
 off gives every piece a single try. The method table is in
-[SPEC 3.7](../../SPEC.md#37-hidden-webview-scrapes). `VelaPlaceLoad` logcat lines say which
+[SPEC 3.7](../../SPEC.md#37-hidden-webview-scrapes). `WayloPlaceLoad` logcat lines say which
 path each piece took.
 
 ### The request counter
@@ -367,7 +367,7 @@ diagnostics export carries the counts without URLs, and 14 days are kept (`KEEP_
 A request to Google sent through any other client would be missing from the count and would
 not carry the browser identity.
 
-### "Use Vela without Google"
+### "Use Waylo without Google"
 
 One switch in Settings > Privacy (`ui/GoogleFree`, pref `google_free`, off by default),
 mirrored into the core module's `NoGoogle` flag and checked wherever a Google request would
@@ -383,7 +383,7 @@ so the first run stays one page shorter. With it on:
 - Search answers from Photon and the downloaded place packs: names and addresses, and
   categories only where a region is downloaded. Google's autocomplete returns nothing, so the
   Photon and on-phone path runs.
-- Places on the map come from Vela's own data. The Google fan-out, "More results" and the tap
+- Places on the map come from Waylo's own data. The Google fan-out, "More results" and the tap
   lookup that matches a pin to its Google listing are off.
 - Directions come from the open routers alone, with no traffic and no live arrival time.
 - No hidden page loads: no photos, reviews, popular times, Google transit directions or
@@ -404,7 +404,7 @@ Google page. With it off, a short link is refused with a toast. A full `google.c
 never needs the request.
 
 The cost of the switch in user terms is in
-[the FAQ](../FAQ.md#can-i-use-vela-without-google-at-all). What works with no network at all is
+[the FAQ](../FAQ.md#can-i-use-waylo-without-google-at-all). What works with no network at all is
 [chapter 8](08-offline.md).
 
 ### The daily health check
@@ -419,9 +419,9 @@ prove `rpcContext` still works). A reply the parsers cannot read fails the run a
 maintainer. Google refusing a datacenter IP outright is only a warning, because it says nothing
 about the calibration.
 
-`scripts/check-chrome-ua.py` compares the Chrome major Vela claims with Chrome's Windows stable.
+`scripts/check-chrome-ua.py` compares the Chrome major Waylo claims with Chrome's Windows stable.
 It fails when stable has been a major ahead for 7 days (`GRACE_DAYS`, since a new major reaches
-people in stages), when Vela claims a Chrome that has not shipped, or when the pushed `secChUa`
+people in stages), when Waylo claims a Chrome that has not shipped, or when the pushed `secChUa`
 is not what Chrome of that major sends. Builds that predate the derived hint send the pushed
 `secChUa` as it is, so the bundle has to carry the right string.
 
@@ -430,10 +430,10 @@ is not what Chrome of that major sends. Builds that predate the derived hint sen
 - The handshake is Chrome's only while Cronet carries the request. The all-in-one APK ships
   Cronet for ARM only, so on an x86 emulator or Chromebook, and after any Cronet failure,
   Google requests go over OkHttp with OkHttp's handshake.
-- Chrome sends an `X-Client-Data` header to Google and Vela does not.
+- Chrome sends an `X-Client-Data` header to Google and Waylo does not.
 - One phone is two sessions from one IP address: search, autocomplete and directions on the
   app's session, the per-place requests on the WebView's.
-- `X-Requested-With: app.vela` still goes out on whatever a WebView sends itself: a POST the
+- `X-Requested-With: app.waylo` still goes out on whatever a WebView sends itself: a POST the
   shim does not carry (a FormData body, or a host outside google.com), everything when Cronet
   is unavailable, and any request whose proxy attempt failed.
 - The limited view follows the session, and a new session starts limited, so starting a new

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Builds the English dictionary Vela's Piper voices read with: eSpeak NG's own word list plus the
+# Builds the English dictionary Waylo's Piper voices read with: eSpeak NG's own word list plus the
 # place names in tools/pronunciation/places.tsv (local pronunciations collected from English
 # Wikipedia for the Alyo reader app; CC BY-SA 4.0, credited in Settings > About).
 # The app puts the result in place of the dictionary inside each English Piper voice

@@ -39,11 +39,11 @@ On every push to `main` and `canary`, on every pull request, and weekly
   raises an alert when one of them has a published vulnerability, and a pull request that adds
   a library with a known high-severity one fails its check.
 - The OpenSSF Scorecard (`scorecard.yml`) scores how the repository is run. The result is
-  public at https://scorecard.dev/viewer/?uri=github.com/PimpinPumpkin/Vela
+  public at https://scorecard.dev/viewer/?uri=github.com/PimpinPumpkin/Waylo
 
 Every GitHub Action the workflows use is pinned to an exact commit, and workflows get only
 the token permissions they need. Secret scanning with push protection is on. The job that
-signs the F-Droid index installs its tools at fixed versions, and the build checks that the
+build installs its tools at fixed versions, and the build checks that the
 Gradle wrapper in the repository is Gradle's own file.
 
 The switches that open the app up for inspection (the WebView inspector, the network log,
@@ -58,7 +58,7 @@ that report is worth more than any scanner.
 
 The dependency graph is exportable as an SPDX file from Insights, Dependency graph, "Export
 SBOM", and each run of the security workflow on `main` attaches the same file as the
-`vela-sbom` artifact. Four prebuilt libraries are not Maven artifacts and are fetched from
+`waylo-sbom` artifact. Four prebuilt libraries are not Maven artifacts and are fetched from
 this repository's own releases at build time: the sherpa-onnx speech runtime, Chromium's
 Cronet (packed from Chromium's public build by `scripts/build-cronet-aar.sh`), and OsmAnd's
 routing jars. `docs/BUILDING.md` says where each comes from.

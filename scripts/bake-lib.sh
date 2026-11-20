@@ -26,20 +26,20 @@ bake_header_bbox() {
 }
 
 # The pinned OsmAndMapCreator from the obf-tools release (forks fall back upstream) unpacked into
-# <dir>/mapcreator, and VelaObfShim compiled into <dir>. MAPCREATOR_ZIP points at a local copy.
+# <dir>/mapcreator, and WayloObfShim compiled into <dir>. MAPCREATOR_ZIP points at a local copy.
 bake_mapcreator() {
-  local dir="$1" repo="${VELA_REPO:-PimpinPumpkin/Vela}" root
+  local dir="$1" repo="${WAYLO_REPO:-PimpinPumpkin/Waylo}" root
   root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
   if [ ! -f "$dir/mapcreator/OsmAndMapCreator.jar" ]; then
     if [ -n "${MAPCREATOR_ZIP:-}" ]; then
       cp "$MAPCREATOR_ZIP" "$dir/mapcreator.zip"
     else
       curl -fSL -o "$dir/mapcreator.zip" "https://github.com/$repo/releases/download/obf-tools/mapcreator.zip" \
-        || curl -fSL -o "$dir/mapcreator.zip" "https://github.com/PimpinPumpkin/Vela/releases/download/obf-tools/mapcreator.zip"
+        || curl -fSL -o "$dir/mapcreator.zip" "https://github.com/PimpinPumpkin/Waylo/releases/download/obf-tools/mapcreator.zip"
     fi
     unzip -q "$dir/mapcreator.zip" -d "$dir/mapcreator"
   fi
-  javac -cp "$dir/mapcreator/OsmAndMapCreator.jar:$dir/mapcreator/lib/*" -d "$dir" "$root/scripts/VelaObfShim.java"
+  javac -cp "$dir/mapcreator/OsmAndMapCreator.jar:$dir/mapcreator/lib/*" -d "$dir" "$root/scripts/WayloObfShim.java"
 }
 
 # ROUTING-ONLY bakes index a PRE-FILTERED extract: MapCreator's memory ceiling is its first
@@ -56,13 +56,13 @@ bake_obf_filter() {
   osmium tags-filter "$1" "${BAKE_OBF_EXPR[@]}" -o "$2" --overwrite
 }
 
-# Index <dir>/<pbf-name> with VelaObfShim (bake_mapcreator must have run into <tools>). MapCreator
+# Index <dir>/<pbf-name> with WayloObfShim (bake_mapcreator must have run into <tools>). MapCreator
 # names the .obf after the input and writes it into <dir>. Returns java's exit code.
 #   bake_obf_index <dir> <pbf-name> <heap> <tools-dir>
 bake_obf_index() {
   local dir="$1" pbf="$2" heap="$3" tools="$4"
   ( cd "$dir" && java -Xmx"$heap" -XX:+UseParallelGC \
-      -cp "$tools/mapcreator/OsmAndMapCreator.jar:$tools/mapcreator/lib/*:$tools" VelaObfShim "$pbf" )
+      -cp "$tools/mapcreator/OsmAndMapCreator.jar:$tools/mapcreator/lib/*:$tools" WayloObfShim "$pbf" )
 }
 
 # OsmAnd's HIGHWAY HIERARCHY (HH) for the car profile, written into the region's own obf. Without
@@ -73,7 +73,7 @@ bake_obf_index() {
 # network (hh-routing-prepare), precompute the shortcuts (hh-routing-shortcuts, which also writes
 # them as a small standalone obf named after the folder), then combine that section into the
 # region file (BinaryInspector -c). A bicycle set too (about 10% of the file, best effort: a
-# region it fails on keeps the car sets; VELA_OBF_HH_BIKE=0 skips it). Two car sets: the default car and car with avoid_motorway
+# region it fails on keeps the car sets; WAYLO_OBF_HH_BIKE=0 skips it). Two car sets: the default car and car with avoid_motorway
 # (the "Avoid highways" switch; without its own set the router falls back to the plain search and a
 # long trip runs out of memory again). Avoid tolls and ferries need no set: the router filters the
 # default one (Cologne to Munster avoiding tolls: 0.4 s). The second set adds about 2% to the file.
@@ -93,7 +93,7 @@ bake_obf_hh() {
     && [ -s hh_car.obf ] ) \
     || { rm -rf "$hh"; return 1; }
   # The bicycle set is best effort: a region it fails on keeps its car shortcuts.
-  if [ "${VELA_OBF_HH_BIKE:-1}" = "1" ] && ( cd "$hh" \
+  if [ "${WAYLO_OBF_HH_BIKE:-1}" = "1" ] && ( cd "$hh" \
     && java -Xmx"$heap" -XX:+UseParallelGC -cp "$cp" net.osmand.MainUtilities hh-routing-prepare region.obf --routing_profile=bicycle \
     && java -Xmx"$heap" -XX:+UseParallelGC -cp "$cp" net.osmand.MainUtilities hh-routing-shortcuts region.obf --routing_profile=bicycle --threads="$threads" \
     && [ -s hh_bicycle.obf ] ); then

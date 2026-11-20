@@ -1,6 +1,6 @@
 # D-pad test suite
 
-Reproducible, on-device checks that Vela stays fully operable with a **5-key D-pad** (↑ ↓ ← → +
+Reproducible, on-device checks that Waylo stays fully operable with a **5-key D-pad** (↑ ↓ ← → +
 OK, plus BACK) and **no touchscreen** - the scripted version of the manual `adb` checks used while
 building the D-pad support. See [`../docs/dpad.md`](../docs/dpad.md) for the design.
 
@@ -11,7 +11,7 @@ element** (read from `uiautomator dump`), so it catches the two things that matt
 ## Requirements
 
 - A connected device or emulator (`adb`), and `python3` on the host.
-- The Vela app installed (build a release APK and `adb install -r` it).
+- The Waylo app installed (build a release APK and `adb install -r` it).
 - The device is best driven with a real or virtual **D-pad**; the tests only send D-pad keys.
 
 ## Run
@@ -24,7 +24,7 @@ ADB="adb -s emulator-5554" ./run_all.sh   # pick a device
 ```
 
 `run_all.sh` first calls `setup.sh` (grants location + installs a mock GPS provider at Davis, California so
-search/routing have a fix - override with `VELA_LAT`/`VELA_LNG`). Then it runs `tests/*.sh` in
+search/routing have a fix - override with `WAYLO_LAT`/`WAYLO_LNG`). Then it runs `tests/*.sh` in
 order; each prints `PASS:`/`FAIL:` lines and a per-suite verdict. Exit code is non-zero if any
 suite failed (usable in CI once a device is attached).
 
@@ -34,8 +34,8 @@ suite failed (usable in CI once a device is attached).
 |---|---|
 | `01_map_opens_on_search` | the bare map opens with the map target unfocused, and the search bar is focused after one ↓ at most |
 | `02_settings_autofocus` | Settings opens already focused on the back button (the original "opened un-focused" bug) |
-| `03_welcome_and_dialog_autofocus` | first-run Welcome opens focused on Get-started; each onboarding `VelaDialog` opens focused on "Not now" |
-| `04_place_sheet_and_menu_autofocus` | the place sheet opens focused on its handle; the ⋮ overflow (`VelaMenu`) opens focused on its first item; ↓ walks it; BACK closes the menu not the sheet |
+| `03_welcome_and_dialog_autofocus` | first-run Welcome opens focused on Get-started; each onboarding `WayloDialog` opens focused on "Not now" |
+| `04_place_sheet_and_menu_autofocus` | the place sheet opens focused on its handle; the ⋮ overflow (`WayloMenu`) opens focused on its first item; ↓ walks it; BACK closes the menu not the sheet |
 | `05_choose_on_map_engages` | Choose on map opens with the map target focused and engaged, so arrows move the pin at once |
 | `06_place_actions_reachable` | the place sheet's Directions pill is reachable and OK on it opens directions |
 
@@ -59,7 +59,7 @@ report                                    # prints the tally; exit status = all-
 Key helpers (in `lib.sh`): `focused` / `focused_text` / `focused_desc` / `focus_ytop`,
 `find_text` / `on_screen`, `assert_focus_text` / `assert_focus_desc` / `assert_focus_ytop_between`
 / `assert_nothing_focused` / `assert_something_focused` / `assert_on_screen` / `assert_not_on_screen`
-/ `assert_ime_hidden`, and `key` / `keys` / `launch_fresh` / `shot`. Vela-specific navigation
+/ `assert_ime_hidden`, and `key` / `keys` / `launch_fresh` / `shot`. Waylo-specific navigation
 (`goto_map`, `run_coffee`, `open_first_place`, `dismiss_onboarding`) is in `nav.sh`.
 
 ## Notes / limits
@@ -70,5 +70,5 @@ Key helpers (in `lib.sh`): `focused` / `focused_text` / `focused_desc` / `focus_
   generous settles; bump the `key`/`launch_fresh` sleeps on a slow device.
 - These assert **focus & navigation**, not pixels. For a visual check, `shot out.png` grabs a
   screenshot at any point.
-- Menus/dialogs are `VelaMenu`/`VelaDialog` (raw-Dialog based) specifically so they *can* be
+- Menus/dialogs are `WayloMenu`/`WayloDialog` (raw-Dialog based) specifically so they *can* be
   auto-focused - a stock Compose `DropdownMenu`/`AlertDialog` cannot (see docs/dpad.md).

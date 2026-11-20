@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a Vela offline POI pack (SQLite) from an osmium geojsonseq export.
+"""Build a Waylo offline POI pack (SQLite) from an osmium geojsonseq export.
 
 Usage: poipack_build.py <features.geojsonl | -> <out.db>   ("-" reads the export from stdin)
 

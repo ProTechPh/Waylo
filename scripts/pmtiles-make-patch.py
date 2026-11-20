@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a Vela delta patch between two bakes of the same region.
+"""Build a Waylo delta patch between two bakes of the same region.
 
     scripts/pmtiles-make-patch.py old.pmtiles new.pmtiles out.vpatch [--rev-from N --rev-to N]
 
@@ -10,7 +10,7 @@ tiles are not where this bake's copy of the old file had them.
 
 Format, all little endian:
 
-    "VELAPTCH" u8 version
+    "WAYLOPTCH" u8 version
     u32 header_len, header (utf-8 json)
     u32 plan_len,   the new directory minus its offsets, gzipped varint columns
     tile blobs, concatenated, in the order of header["tiles"]
@@ -33,7 +33,7 @@ import struct
 import sys
 from pathlib import Path
 
-from velapmtiles import (  # the one reader, so producer and applier cannot drift
+from waylopmtiles import (  # the one reader, so producer and applier cannot drift
     MAGIC, VERSION, blob, entries_of, fingerprint, write_plan,
 )
 

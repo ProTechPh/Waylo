@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Is the Chrome version Vela claims to Google still the current stable?
+"""Is the Chrome version Waylo claims to Google still the current stable?
 
-The user agent and Sec-CH-UA hints Vela sends to Google claim one Chrome major version. Chrome ships
+The user agent and Sec-CH-UA hints Waylo sends to Google claim one Chrome major version. Chrome ships
 stable about every four weeks, so a compiled constant goes stale by construction, and a stale version
 can pin the scrape to an older response shape. This compares the version in effect (calibration.json's
-`userAgent` when it sets one, else VelaConfig.USER_AGENT) with Chrome stable for Windows (the platform
+`userAgent` when it sets one, else WayloConfig.USER_AGENT) with Chrome stable for Windows (the platform
 the UA claims), from chromiumdash.
 
 Exit 1 when the claimed major is behind a stable major that has been out for GRACE_DAYS (Chrome rolls
@@ -41,10 +41,10 @@ def claimed():
     ua = cal.get("userAgent")
     src = "calibration.json userAgent"
     if not ua:
-        kt = (ROOT / "core/src/main/java/app/vela/core/VelaConfig.kt").read_text()
+        kt = (ROOT / "core/src/main/java/app/waylo/core/WayloConfig.kt").read_text()
         m = re.search(r'const val USER_AGENT\s*=\s*((?:\s*"[^"]*"\s*\+?)+)', kt)
         ua = "".join(re.findall(r'"([^"]*)"', m.group(1))) if m else ""
-        src = "VelaConfig.USER_AGENT (calibration.json sets none)"
+        src = "WayloConfig.USER_AGENT (calibration.json sets none)"
     m = re.search(r"Chrome/(\d+)", ua)
     if not m:
         sys.exit(f"could not read a Chrome version from {src}: {ua!r}")
@@ -84,8 +84,8 @@ def main():
         rc = 1
     age = (time.time() - since) / 86400
     day = time.strftime("%Y-%m-%d", time.gmtime(since))
-    print("## Chrome version Vela claims\n")
-    print(f"- Vela claims Chrome **{have}** ({src})")
+    print("## Chrome version Waylo claims\n")
+    print(f"- Waylo claims Chrome **{have}** ({src})")
     print(f"- Chrome stable for Windows is **{latest}**, first stable build {day} ({age:.0f} days ago)\n")
     if have > latest:
         print(f"**Ahead of stable**: Chrome {have} does not exist yet. Lower `userAgent` and `secChUa` to {latest}.")
@@ -95,7 +95,7 @@ def main():
         print(f"- `userAgent`: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{latest}.0.0.0 Safari/537.36`")
         print(f"- `secChUa`: `{sec_ch_ua(latest)}`")
         print(f"- `chromeFullVersion`: `{newest_build(rows, latest)}`\n")
-        print("and move VelaConfig's compiled pair at the next release.")
+        print("and move WayloConfig's compiled pair at the next release.")
         return 1
     if have < latest:
         print(f"Chrome {latest} is still rolling out ({age:.0f} of {GRACE_DAYS} days); no action yet.")

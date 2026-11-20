@@ -12,13 +12,13 @@ echo "API $API, installing $apk"
 adb install -r "$apk" || { echo "install failed"; exit 1; }
 # Location granted up front (an emulator; nothing real): Android 8.0's emulator System UI crashes
 # when the permission dialog covers the keyguard (NavigationBarFragment NPE), which stalls onboarding.
-adb shell pm grant app.vela android.permission.ACCESS_FINE_LOCATION 2>/dev/null
-adb shell pm grant app.vela android.permission.ACCESS_COARSE_LOCATION 2>/dev/null
+adb shell pm grant app.waylo android.permission.ACCESS_FINE_LOCATION 2>/dev/null
+adb shell pm grant app.waylo android.permission.ACCESS_COARSE_LOCATION 2>/dev/null
 adb logcat -c
 
 # A fresh install opens on onboarding: walk it (Get started, decline the permission prompts, skip
 # the voice offer) until the map's own Settings button is on screen.
-adb shell am start -n app.vela/.MainActivity
+adb shell am start -n app.waylo/.MainActivity
 sleep 15
 for i in $(seq 1 10); do
   adb shell uiautomator dump /sdcard/u.xml >/dev/null 2>&1
@@ -36,7 +36,7 @@ for i in $(seq 1 10); do
   sleep 4
 done
 
-adb shell am start -a android.intent.action.VIEW -d "'geo:0,0?q=Davis Food Co-op 620 G St Davis CA'" app.vela
+adb shell am start -a android.intent.action.VIEW -d "'geo:0,0?q=Davis Food Co-op 620 G St Davis CA'" app.waylo
 row=""
 for i in $(seq 1 12); do
   sleep 5
@@ -56,15 +56,15 @@ adb exec-out screencap -p > "$OUT/screen.png"
 adb logcat -d > "$OUT/logcat.txt"
 
 fail=0
-pid=$(adb shell pidof app.vela | tr -d '\r')
-[ -n "$pid" ] || { echo "FAIL: app.vela is not running"; fail=1; }
+pid=$(adb shell pidof app.waylo | tr -d '\r')
+[ -n "$pid" ] || { echo "FAIL: app.waylo is not running"; fail=1; }
 # Only our crash counts: the Android 8.0 emulator's System UI crashes on its own (see above).
-if grep -q "Process: app.vela" "$OUT/logcat.txt"; then
-  echo "FAIL: app.vela crashed"; grep -B2 -A20 "Process: app.vela" "$OUT/logcat.txt" | head -40; fail=1
+if grep -q "Process: app.waylo" "$OUT/logcat.txt"; then
+  echo "FAIL: app.waylo crashed"; grep -B2 -A20 "Process: app.waylo" "$OUT/logcat.txt" | head -40; fail=1
 fi
-grep -q "Process: com.android.systemui" "$OUT/logcat.txt" && echo "note: the emulator's System UI crashed (not Vela)"
-grep -E "VelaCronet: engine|VelaCronet: google over|engine unavailable" "$OUT/logcat.txt" | head -5
-grep -q "VelaCronet: engine Cronet/" "$OUT/logcat.txt" || echo "WARN: Cronet engine line not seen"
+grep -q "Process: com.android.systemui" "$OUT/logcat.txt" && echo "note: the emulator's System UI crashed (not Waylo)"
+grep -E "WayloCronet: engine|WayloCronet: google over|engine unavailable" "$OUT/logcat.txt" | head -5
+grep -q "WayloCronet: engine Cronet/" "$OUT/logcat.txt" || echo "WARN: Cronet engine line not seen"
 grep -q "UnsatisfiedLinkError" "$OUT/logcat.txt" && { echo "FAIL: native library did not load"; fail=1; }
 [ -n "$row" ] && echo "search row found at $row" || echo "WARN: no search result row (network or UI)"
 grep -q 'text="Directions"' "$OUT/sheet.xml" && echo "place sheet open" || echo "WARN: place sheet not seen"

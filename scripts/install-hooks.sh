@@ -15,7 +15,7 @@ HOOKS="$(git rev-parse --git-common-dir)/hooks"
 mkdir -p "$HOOKS"
 cat > "$HOOKS/pre-push" <<'HOOK'
 #!/usr/bin/env bash
-# Vela: no AI attribution, US English, no em dashes. Installed by scripts/install-hooks.sh.
+# Waylo: no AI attribution, US English, no em dashes. Installed by scripts/install-hooks.sh.
 set -euo pipefail
 ROOT="$(git rev-parse --show-toplevel)"
 [ -x "$ROOT/scripts/check-writing.sh" ] || exit 0

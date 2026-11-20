@@ -68,7 +68,7 @@ jobs:
           gh release view building-overlays --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
             gh release create building-overlays --repo "$GITHUB_REPOSITORY" --prerelease \
               --title "Open building overlays" \
-              --notes "Microsoft Building Footprints (US + Global ML, ODbL) as PMTiles for Vela's gap-fill building overlay. Data assets, not a code release. Buildings © Microsoft, licensed ODbL."
+              --notes "Microsoft Building Footprints (US + Global ML, ODbL) as PMTiles for Waylo's gap-fill building overlay. Data assets, not a code release. Buildings © Microsoft, licensed ODbL."
 
   build:
     needs: prep
@@ -89,7 +89,7 @@ jobs:
       - name: Build ${{ matrix.id }} PMTiles + upload + emit entry
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VELA_REPO: ${{ github.repository }}
+          WAYLO_REPO: ${{ github.repository }}
           MANIFEST_MODE: emit
           ENTRY_OUT: ${{ matrix.id }}.json
           SOURCE: ${{ matrix.source }}
@@ -123,7 +123,7 @@ jobs:
       - name: Merge entries into building-overlay-manifest.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VELA_REPO: ${{ github.repository }}
+          WAYLO_REPO: ${{ github.repository }}
         run: |
           shopt -s nullglob
           files=(entries/*.json)

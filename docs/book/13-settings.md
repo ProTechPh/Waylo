@@ -4,7 +4,7 @@
 
 Settings opens over the map as a list of twelve pages with a search field above it.
 
-- Appearance: theme, font, interface size, map look (the Vela look on Liberty, or OpenFreeMap's
+- Appearance: theme, font, interface size, map look (the Waylo look on Liberty, or OpenFreeMap's
   Bright, Positron, Fiord or Black as served), map colors, map buttons (round or square), units,
   clock, language, directions language, Page transitions.
 - Map: traffic, transit lines, terrain, tilt, "Keep north up", 3D buildings, map buttons, house
@@ -19,7 +19,7 @@ Settings opens over the map as a list of twelve pages with a search field above 
 - Saved places: export and import of places and lists, saved routes, parking history.
 - Offline maps: area and region downloads, automatic updates, storage
   ([chapter 8](08-offline.md)).
-- Privacy: "Use Vela without Google", every switch for what Google is used for in one list, the
+- Privacy: "Use Waylo without Google", every switch for what Google is used for in one list, the
   Google session, the request counter, Clear history
   ([chapter 7](07-talking-to-google.md)).
 - Performance: what loads ahead of time, how the map is drawn.
@@ -39,7 +39,7 @@ focuses the row you came from.
 
 ## Where the data comes from
 
-Nothing here uses the network. Most settings are stored in the `vela_settings` preference file,
+Nothing here uses the network. Most settings are stored in the `waylo_settings` preference file,
 which Android backup includes. The motion switch is `PageTransitions`, key `page_transitions`,
 on by default. The search index is compiled into the app and matches labels in the app's
 language.
@@ -82,8 +82,8 @@ layout with no route ([chapter 11](11-drive-chrome.md#driving-mode)), for a moun
 tablet. A link from another app, a shared place and a pinned trip open on their own place
 whatever the choice.
 
-The view the map was left on is saved when Vela leaves the screen. It is kept with the last
-known position, outside Android backup. The choice and the picked view are in `vela_settings`.
+The view the map was left on is saved when Waylo leaves the screen. It is kept with the last
+known position, outside Android backup. The choice and the picked view are in `waylo_settings`.
 [SPEC 4.7](../../SPEC.md) has the rules.
 
 ### Motion

@@ -19,7 +19,6 @@ on:
       - 'docs/**'
       - 'LICENSE'
       - '.gitignore'
-      - 'fdroid/metadata/**'
       - '.github/ISSUE_TEMPLATE/**'
       - 'site/**'
   pull_request:
@@ -69,17 +68,17 @@ jobs:
         # Three tries, then a warning: a missing export is not a failed security check.
         run: |
           for try in 1 2 3; do
-            if gh api "repos/${{ github.repository }}/dependency-graph/sbom" --jq .sbom > vela-sbom.spdx.json; then
+            if gh api "repos/${{ github.repository }}/dependency-graph/sbom" --jq .sbom > waylo-sbom.spdx.json; then
               exit 0
             fi
-            rm -f vela-sbom.spdx.json
+            rm -f waylo-sbom.spdx.json
             sleep $((try * 60))
           done
           echo "::warning::GitHub did not produce the bill of materials this run."
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: vela-sbom
-          path: vela-sbom.spdx.json
+          name: waylo-sbom
+          path: waylo-sbom.spdx.json
           retention-days: 90
           if-no-files-found: ignore
 

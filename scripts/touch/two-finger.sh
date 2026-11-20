@@ -6,7 +6,7 @@
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 sdk="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
-out="${TMPDIR:-/tmp}/vela-two-finger"
+out="${TMPDIR:-/tmp}/waylo-two-finger"
 if [ ! -f "$out/classes.dex" ] || [ "$here/TwoFinger.java" -nt "$out/classes.dex" ]; then
   mkdir -p "$out"
   jar="$(ls -d "$sdk"/platforms/android-* | sort -V | tail -n 1)/android.jar"
@@ -15,5 +15,5 @@ if [ ! -f "$out/classes.dex" ] || [ "$here/TwoFinger.java" -nt "$out/classes.dex
     { echo "two-finger: TwoFinger.java did not compile" >&2; exit 1; }
   "$d8" --output "$out" "$out/TwoFinger.class"
 fi
-adb push "$out/classes.dex" /data/local/tmp/vela-two-finger.dex >/dev/null 2>&1
-adb shell "CLASSPATH=/data/local/tmp/vela-two-finger.dex app_process / TwoFinger $*"
+adb push "$out/classes.dex" /data/local/tmp/waylo-two-finger.dex >/dev/null 2>&1
+adb shell "CLASSPATH=/data/local/tmp/waylo-two-finger.dex app_process / TwoFinger $*"

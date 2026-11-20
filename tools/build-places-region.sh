@@ -12,7 +12,7 @@
 # (`crank`) by that prominence, and a tippecanoe minzoom from the ranks: the best place in each
 # 1.6 km cell is in the z13/z14 tiles, the top three per 400 m cell reach z15, the top twelve z16,
 # everything z17. The app then decides per zoom which of the features in a tile get an icon, a
-# label, or just a dot (VelaMapView), so a downtown thins to its landmarks the way Google's does
+# label, or just a dot (WayloMapView), so a downtown thins to its landmarks the way Google's does
 # and a village keeps its one cafe at z15.
 #
 # ALLTHEPLACES (2026-09-15): Overture's places come mostly from Meta and Bing, so a chain store
@@ -215,7 +215,7 @@ if [ "${WD_CLOSED:-on}" != "off" ] && { [ -n "$OSM_NDJSON" ] || [ -n "$MARKS_NDJ
     split -l 300 "$WORK/qids.txt" "$WORK/qidpart."
     for part in "$WORK"/qidpart.*; do
       vals=$(sed 's/^/wd:/' "$part" | tr '\n' ' ')
-      curl -s -m 60 -A "VelaMaps-bake (https://github.com/PimpinPumpkin/Vela)" -H 'Accept: text/csv' \
+      curl -s -m 60 -A "WayloMaps-bake (https://github.com/PimpinPumpkin/Waylo)" -H 'Accept: text/csv' \
         --data-urlencode "query=SELECT DISTINCT ?q WHERE { VALUES ?q { $vals } ?q wdt:P576 ?d . FILTER(?d <= NOW()) }" \
         https://query.wikidata.org/sparql 2>/dev/null | { grep -oE 'Q[0-9]+' || true; } >> "$WORK/wdgone.txt"
       sleep 1
@@ -1210,7 +1210,7 @@ COPY (
     'properties', json_object(
       'id', id, 'name', name, 'name_en', name_en,
       'class', COALESCE(upper(substr(replace(category, '_', ' '), 1, 1)) || substr(replace(category, '_', ' '), 2), 'Place'),
-      'group', grp, 'icon', 'vela-poi-' || grp, 'prominence', round(prominence, 2), 'confidence', round(COALESCE(confidence, 0.5), 2),
+      'group', grp, 'icon', 'waylo-poi-' || grp, 'prominence', round(prominence, 2), 'confidence', round(COALESCE(confidence, 0.5), 2),
       'rank', rank, 'crank', crank, 'xrank', xrank, 'frank', frank, 'landmark', landmark, 'tenant', tenant,
       -- 1 = this row is an OSM landmark or building, or the existing row standing for one. Always
       -- written, so the app can tell an archive that knows from one baked before the property.

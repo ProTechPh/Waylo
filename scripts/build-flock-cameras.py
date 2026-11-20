@@ -62,7 +62,7 @@ def fetch() -> str:
         for ep in ENDPOINTS:
             try:
                 print(f"fetching from {ep} ...", file=sys.stderr)
-                req = urllib.request.Request(ep, data=data, headers={"User-Agent": "VelaMaps/0.1 (build-flock-cameras)"})
+                req = urllib.request.Request(ep, data=data, headers={"User-Agent": "WayloMaps/0.1 (build-flock-cameras)"})
                 with urllib.request.urlopen(req, timeout=600) as r:
                     return r.read().decode("utf-8")
             except Exception as e:  # noqa: BLE001

@@ -13,7 +13,7 @@
 }
 
 # Travel/maneuver enums are persisted in nav state + prefs by name.
--keepnames enum app.vela.core.model.** { *; }
+-keepnames enum app.waylo.core.model.** { *; }
 
 # Rhino (runs the remote transforms.js): keep the whole engine — it resolves a lot
 # of its own classes reflectively, so R8 stripping/renaming breaks it at runtime.

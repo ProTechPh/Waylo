@@ -8,14 +8,14 @@
 # can still be amended away.
 #
 # THE TERM LIST IS NEVER IN THIS REPO. Writing "never commit <town>" into a tracked file commits
-# <town>. It lives at $VELA_LOCATION_TERMS, default ~/.vela-location-terms, one term per line,
+# <town>. It lives at $WAYLO_LOCATION_TERMS, default ~/.waylo-location-terms, one term per line,
 # case-insensitive, blank lines and #-comments ignored. Create it by hand; it is the one file here
 # that must never be added, pasted into an issue, or read back into a commit message.
 #
 # It reports FILE AND LINE ONLY, never the matched text, for the same reason the CI guard does.
 set -euo pipefail
 RANGE="${1:-origin/main..HEAD}"
-TERMS_FILE="${VELA_LOCATION_TERMS:-$HOME/.vela-location-terms}"
+TERMS_FILE="${WAYLO_LOCATION_TERMS:-$HOME/.waylo-location-terms}"
 [ -f "$TERMS_FILE" ] || { echo "no local location-term list at $TERMS_FILE; skipping"; exit 0; }
 FAIL=0
 # The region catalogs list every state and country by design, so a term that is a region name

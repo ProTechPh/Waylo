@@ -55,7 +55,7 @@ jobs:
           gh release view address-overlays --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
             gh release create address-overlays --repo "$GITHUB_REPOSITORY" --prerelease \
               --title "Open address (house-number) overlays" \
-              --notes "OpenAddresses address points as PMTiles for Vela's house-number labels. Data assets, not a code release. Addresses © OpenAddresses contributors, per-source open licenses."
+              --notes "OpenAddresses address points as PMTiles for Waylo's house-number labels. Data assets, not a code release. Addresses © OpenAddresses contributors, per-source open licenses."
 
   build:
     needs: prep
@@ -76,7 +76,7 @@ jobs:
       - name: Build ${{ matrix.id }} PMTiles + upload + emit entry
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VELA_REPO: ${{ github.repository }}
+          WAYLO_REPO: ${{ github.repository }}
           MANIFEST_MODE: emit
           ENTRY_OUT: ${{ matrix.id }}.json
         run: bash scripts/build-address-region.sh "${{ matrix.id }}" "${{ matrix.name }}" "${{ matrix.source }}" "${{ matrix.bbox }}"
@@ -105,7 +105,7 @@ jobs:
       - name: Merge entries into address-overlay-manifest.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VELA_REPO: ${{ github.repository }}
+          WAYLO_REPO: ${{ github.repository }}
         run: |
           shopt -s nullglob
           files=(entries/*.json)

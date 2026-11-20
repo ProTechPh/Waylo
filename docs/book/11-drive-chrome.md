@@ -113,7 +113,7 @@ The pass runs once per 400 m of progress, or when the next two turns change. Eac
 loaded road name onto the main thread, so it never runs on a short timer. A pass that places
 nothing retries every 2 seconds, four more times, for tiles that land late.
 
-Each callout is a point Vela places (`crossLabelPoint`), because the basemap's own label sits
+Each callout is a point Waylo places (`crossLabelPoint`), because the basemap's own label sits
 mid-tile, often a block from the route. It goes `NAV_XLABEL_OFFSET_M = 35` m up the street from
 the crossing, or further out, up to 105 m, until its anchor is `NAV_XLABEL_CLEAR_M = 44` m clear
 of the route. A spot within 30 m of a drawn light, stop sign or camera is skipped. With less
@@ -348,7 +348,7 @@ A tap only offers the place, as a card above the bar and a red "+" pin on the ma
 
 The drive's layout with no route, for a phone on a mount, a tablet or a head unit that has no
 Android Auto. The layers panel ends with a "Driving mode" row, and Settings > Map > "Where the map
-opens" > "Driving mode" starts Vela in it ([chapter 13](13-settings.md)).
+opens" > "Driving mode" starts Waylo in it ([chapter 13](13-settings.md)).
 
 - The map is the browse map's own follow, which turns heading-up and tilts once you move
   ([SPEC 4.7, Free-drive follow](../../SPEC.md)). The location dot stays the dot: the arrow is

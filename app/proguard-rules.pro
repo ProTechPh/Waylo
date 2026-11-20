@@ -1,10 +1,10 @@
-# R8/ProGuard rules for the Vela app.
+# R8/ProGuard rules for the Waylo app.
 #
 # MapLibre, Compose, Hilt and Coil all ship their own consumer rules. :core
 # contributes the kotlinx.serialization keeps. The only thing we add here is a
 # belt-and-suspenders keep on our model package, whose enum names show up in
 # persisted nav state.
--keepnames class app.vela.core.model.** { *; }
+-keepnames class app.waylo.core.model.** { *; }
 
 # sherpa-onnx neural-TTS runtime (vendored AAR). Its JNI resolves the Kotlin config classes AND
 # their fields by their ORIGINAL fully-qualified names (FindClass / GetFieldID) at OfflineTts init.

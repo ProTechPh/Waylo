@@ -15,7 +15,7 @@
 set -euo pipefail
 
 ID="${1:?region id}"; NAME="${2:?display name}"; URL="${3:?geofabrik pbf url}"
-REPO="${VELA_REPO:-PimpinPumpkin/Vela}"
+REPO="${WAYLO_REPO:-PimpinPumpkin/Waylo}"
 TAG="maxspeed-overlays"
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
 
@@ -48,7 +48,7 @@ BBOX=$(python3 "$(dirname "$0")/clamp-bbox.py" "$ID" <<<"$BBOX") # Alaska's anti
 # Tile z11→z16: roads must be present + queryable at nav/free-drive zoom (~14-17), and z11 keeps the file
 # small while covering a snap. Keep ONLY the maxspeed attributes (-y) so the tiles carry no other tags.
 echo "→ tiling with tippecanoe"
-tippecanoe -o "$WORK/$ID.pmtiles" -l maxspeed -n "Vela speed-limit overlay: $NAME" \
+tippecanoe -o "$WORK/$ID.pmtiles" -l maxspeed -n "Waylo speed-limit overlay: $NAME" \
   -Z11 -z16 --drop-densest-as-needed --extend-zooms-if-still-dropping -P \
   -y maxspeed -y maxspeed:forward -y maxspeed:backward -y maxspeed:conditional \
   --attribution "Speed limits © OpenStreetMap contributors (ODbL)" --force "$WORK/ms.geojsonseq"
@@ -60,7 +60,7 @@ echo "→ $ID: ${SIZE} MB, bbox $BBOX"
 # The overlay catalog release - prerelease so it never becomes the "Latest" the APK auto-tracks.
 gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1 || \
   gh release create "$TAG" --repo "$REPO" --prerelease --title "Posted speed-limit overlays" \
-    --notes "OSM \`maxspeed\` road ways as PMTiles, so Vela can show posted speed limits without the offline routing graph. Data assets, not a code release. Speed limits © OpenStreetMap contributors, ODbL."
+    --notes "OSM \`maxspeed\` road ways as PMTiles, so Waylo can show posted speed limits without the offline routing graph. Data assets, not a code release. Speed limits © OpenStreetMap contributors, ODbL."
 
 gh release upload "$TAG" "$WORK/$ID.pmtiles" --clobber --repo "$REPO"
 

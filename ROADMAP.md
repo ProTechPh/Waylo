@@ -1,4 +1,4 @@
-# Vela Maps roadmap
+# Waylo Maps roadmap
 
 What is still open. [`FEATURES.md`](FEATURES.md) lists what the app does and
 [`SPEC.md`](SPEC.md) how it is built. What shipped, and what was tried and does not work, is in
@@ -10,7 +10,7 @@ file in the same commit.
 ## North star
 
 A Google Maps replacement that needs no Google account, key or Play services, matches Google
-Maps feature for feature, and over time depends less on Google by growing Vela's own data.
+Maps feature for feature, and over time depends less on Google by growing Waylo's own data.
 GPLv3. Every new data flow is opt-in and documented in [`PRIVACY.md`](PRIVACY.md).
 
 ## The order from here
@@ -25,7 +25,7 @@ Set 2026-10-07.
    1.4 and the newer material3 pull Compose from 1.7 to 1.10 or 1.11 across the whole app. It
    waits until it can be its own job: a full pass over the sheets, the gestures and D-pad
    operation, on both test phones.
-4. Read places from Vela Almanac, a separate open dataset of US places with dated evidence of
+4. Read places from Waylo Almanac, a separate open dataset of US places with dated evidence of
    what is still open. It replaces the three closure steps in the places bake and later the
    merge itself. Blocked on its first published files. The bake then reads one file per
    state.
@@ -35,7 +35,7 @@ Set 2026-10-07.
 
 Traffic incidents from official feeds (issue #688; Germany's Autobahn API, Mobilithek and the
 Hamburg traffic feed in issue #833) are out of this list. They belong in a sister project beside
-Vela Almanac, which Vela would read as data.
+Waylo Almanac, which Waylo would read as data.
 
 ## Less to Google
 
@@ -80,7 +80,7 @@ What is known:
   package and the initiating package stays the shell.
 - It works with a root installer that runs the install as Play, and on stock Android with an
   installer that goes through Google's package installer, which GrapheneOS does not ship.
-  Aftermarket head units with their own receiver list Vela after King Installer plus an ADB
+  Aftermarket head units with their own receiver list Waylo after King Installer plus an ADB
   install.
 - An in-app update replaces the install record, so on a phone set up for the car the updater
   offers the APK as a file (`InstallSource.setForCar`).
@@ -88,7 +88,7 @@ What is known:
 
 To do, in order:
 
-1. The ownership experiment. `-PappId=<id>` builds Vela under the id of an app the phone's
+1. The ownership experiment. `-PappId=<id>` builds Waylo under the id of an app the phone's
    Play account once installed. If the car lists that sideload, the check is Play's library
    record alone. If not, the signing certificate counts too. Needs a real car and a stock
    phone signed in to Play.
@@ -109,40 +109,40 @@ The sender is Gearslip (Seb3thehacker), a separate project. It can be distribute
 the head unit accepts a certificate we can generate. Key material taken from Google's app or
 from head unit firmware cannot be shipped.
 
-Vela's side of that is a small bound service that hands a projection client frames at a size
+Waylo's side of that is a small bound service that hands a projection client frames at a size
 it names, takes input back, and publishes the nav state. `CarMapRenderer` already renders to
 a bitmap and `NavSession` publishes what `ManeuverMapper` reads. Whether to hand out frames
 or a URL for a WebView is open. Nav state and input are the same for both.
 
 ## What reviews and forums keep raising
 
-The same points come back in every review and thread about Vela, in several languages. They are
+The same points come back in every review and thread about Waylo, in several languages. They are
 kept here so a decision about wording, defaults or a feature can be checked against them. Where
 one has turned into work, the item is named.
 
-- **It is a copy, not an alternative.** Vela keeps the Google Maps habit (the star rating picks
+- **It is a copy, not an alternative.** Waylo keeps the Google Maps habit (the star rating picks
   the restaurant, Google's traffic picks the road) and removes only the account. The dependence
-  is made comfortable, not cut. Position: this is what Vela is for. It is a way off the Google
+  is made comfortable, not cut. Position: this is what Waylo is for. It is a way off the Google
   Maps app for someone who would otherwise keep it, and the north star is to need Google less
   over time, not to pretend it is not there. Apps built on open data alone take the other road,
   and for anyone they already serve they are the better choice.
 - **Asking Google should be a visible choice.** Reviewers who accept the trade still object that
-  it happens on a tap, without the user deciding. Before Vela they opened Google Maps in a
+  it happens on a tap, without the user deciding. Before Waylo they opened Google Maps in a
   browser, on purpose, and knew they had. Open item: "Google by choice on the place sheet" under
   Less to Google.
 - **It takes from Google's users and gives nothing back.** Google's traffic exists because its
-  users report their position; Vela reads the result and contributes none. True, and it cannot
-  be fixed toward Google without an account. What Vela can give back goes to the open side:
+  users report their position; Waylo reads the result and contributes none. True, and it cannot
+  be fixed toward Google without an account. What Waylo can give back goes to the open side:
   "Contributing back to OpenStreetMap" under Big bets. One user has already added their local
-  transit agencies to Transitous because Vela showed the gap.
+  transit agencies to Transitous because Waylo showed the gap.
 - **Google can turn it off.** By changing its pages, by serving anonymous sessions less, or
-  through its lawyers, given how closely Vela follows the look. The first is handled by the
+  through its lawyers, given how closely Waylo follows the look. The first is handled by the
   signed calibration file and the second is shown in the app when it happens. The answer to all
-  three is the same: with Google off Vela is still a working maps app, and every item under
-  "Less to Google" and "Vela's own record of what is still open" makes that version better.
+  three is the same: with Google off Waylo is still a working maps app, and every item under
+  "Less to Google" and "Waylo's own record of what is still open" makes that version better.
 - **"Degoogled" promises more than the app does.** A packet capture shows Google hosts, so the
   word gets called false. The README and site now say what is not on the phone (Google code, an
-  account, a key) and call Vela a hybrid of open maps and Google. Still to change: the welcome
+  account, a key) and call Waylo a hybrid of open maps and Google. Still to change: the welcome
   tagline and the About hint in the app, and the F-Droid repository description. `PRIVACY.md`
   should also list every host a capture will show, including the ones Google's own pages load in
   the hidden WebViews.
@@ -184,7 +184,7 @@ Small items, one pull request each.
   footprints (`downloadOverlayForArea`) and a whole-region download does not, so a downloaded
   state has no houses where OSM is thin. No bake change.
 - More places sources for the open bake: chamber-of-commerce member lists and municipal
-  business-license registers, one scraper per source. The survey under "Vela's own record of
+  business-license registers, one scraper per source. The survey under "Waylo's own record of
   what is still open" says how thin those registers are.
 - A Takeout CSV import runs as a plain coroutine: no Cancel, no foreground service, and the
   list is written only at the end, so a 2,000-row file is a quarter hour the process must
@@ -200,12 +200,12 @@ Small items, one pull request each.
   line is read as short and keeps its sign tail.
 - Duplicate names in the open places bake (#742). Overture carries one unbranded name at
   several points with the same confidence, so a pin lands on the wrong one. Two fixes at the
-  bake: one row per unbranded name in a region, and a corrections list Vela maintains.
+  bake: one row per unbranded name in a region, and a corrections list Waylo maintains.
 - The neural voice's phonemizer. espeak, in front of the Piper model, misreads text that is
   not prose: "5:49 PM" came out as "five foot nine". `SpeechText` works around it case by
   case. The fix is a model that normalizes its own input and is fast enough on a Pixel 4a.
 - Why one basemap layer stalls a dense city. With Liberty's `poi_r20` layer drawn, New York at
-  100 ft runs at 0 to 25 fps on a Pixel 4a, and at 59 with it hidden. Vela hides it over
+  100 ft runs at 0 to 25 fps on a Pixel 4a, and at 59 with it hidden. Waylo hides it over
   region archives of rev 20260923 or later (`placesOneSetRev`). Elsewhere the stall remains.
   The cause is unknown.
 - Offline timetables per region, an open question. Cached boards cover only stops opened
@@ -269,7 +269,7 @@ off the list when it has been.
   reply has not been looked at for the same step fields (only the Mac's).
 
 - Unnamed car parks show their P under the open places layer and Google's dots (issue #935,
-  `vela-osm-parking`): seen on the 4a at the reporter's lot; frame rate measured in Shinjuku.
+  `waylo-osm-parking`): seen on the 4a at the reporter's lot; frame rate measured in Shinjuku.
   Not looked at in a city with many unnamed lots at z15 to z16, where clutter would show.
 - Temporarily closed places (issue #930): the "Reopen this place" entry in a place's edit menu
   marks the closure when Google sends no status text. Checked on the 4a against open San
@@ -332,11 +332,11 @@ off the list when it has been.
   yet.
 - The car's time left is colored by traffic (#928): seen on a real Android Auto connection on a
   debug build. Not seen on a release build, on the desktop head unit or in heavy traffic.
-- Android Automotive 10 and 11 keep Vela in the home screen's map pane (#879): on the
+- Android Automotive 10 and 11 keep Waylo in the home screen's map pane (#879): on the
   Automotive 14 emulator the pane, the app list and Home behave as before, with one task, and on
   a 4a links and shares reach the running map and the "maps app" entry follows the "Maps" name.
   Not seen on an Automotive 10 or 11 car, which is what it is for. A share from inside another
-  app now lands in Vela's own task; that was not tried by hand.
+  app now lands in Waylo's own task; that was not tried by hand.
 - A ferry leg on a walk or a ride says "Take the ferry" (#824): seen in the step list on a 4a,
   walk and bike. Not heard on a real crossing. The phrase in the 17 other languages has not been
   read by a native speaker, and the on-device router's ferry legs are not phrased this way.
@@ -388,7 +388,7 @@ off the list when it has been.
   `bare=1`, then `recheck upgraded route for names`.
 - A route built past the naming deadline (`StretchNamer.inHand`): tile names where the match was
   late, and a finished match kept. Seen on a phone only with the matcher switched off
-  (`debug.vela.tune.noMatch`), never with a late one.
+  (`debug.waylo.tune.noMatch`), never with a late one.
 - The nudged route line on a street. It was seen on a phone over a parking-lot stretch, where
   Google's line was already near the middle. The totals line says `nudged=<meters>`.
 - Two turns said on one line. Not heard on a phone. Dutch, Swedish and Japanese have no joining
@@ -410,7 +410,7 @@ off the list when it has been.
   two; the raster is not what slows the car map. Not seen: a real car or head unit, and the
   rebuild of the car style when the patched file appears after a plain load, which needs a
   first launch with the car already connected.
-- The project's links from one place (`VelaLinks`) with a signed `links` push to move them
+- The project's links from one place (`WayloLinks`) with a signed `links` push to move them
   (SPEC 11.4). Unit-tested; no bundle with `links` has been pushed yet, so a move has not been
   rehearsed.
 - Driving mode on the phone (#727): the drive's bar with an X, the locate and voice buttons, the
@@ -483,10 +483,10 @@ off the list when it has been.
   and the segment nearest the fix only off the route; seen on the desktop head unit in a demo
   drive through town, the arrow along the route up to the turn. Not yet seen: a real stop at a
   light with a poor fix, on the phone or the head unit; a demo drive cannot make a wide fix.
-- Streamed overlays read by Vela instead of MapLibre (#827): the address, building and places
+- Streamed overlays read by Waylo instead of MapLibre (#827): the address, building and places
   overlays of a region that is not downloaded come through `StreamedPmtiles`. Seen on a 4a
   (2026-10-18): a Davis block at z18.6 drawing the overlay's house numbers, with its tiles asked
-  of `pmtiles.vela.invalid`. Not seen: footprints in a suburb OSM has not drawn, the open places
+  of `pmtiles.waylo.invalid`. Not seen: footprints in a suburb OSM has not drawn, the open places
   layer with no region downloaded.
 - Compass words after a route number cut to their letter on screen (#837 follow-up): "toward
   US 169 North" on the card and the car's step reads "toward US 169 N" (`RoadNameShort
@@ -494,7 +494,7 @@ off the list when it has been.
   the right toward I 80 W". Not seen on the car.
 - The debug export's `input` line (#744): not seen; written for the head unit's report.
 - One list exported on its own (#822): a share button in the list editor's title row, seen on
-  a 4a: it opens the share sheet with `vela-list-<name>.json`, and Delete, Cancel and Save keep
+  a 4a: it opens the share sheet with `waylo-list-<name>.json`, and Delete, Cancel and Save keep
   their row. A file of that shape picked under Saved places > Your lists > Import came back as
   the list with its two places and its pins on the map. Not seen: the exported file itself
   going round, since the share sheet on the rig has no file target.
@@ -523,7 +523,7 @@ off the list when it has been.
   mic opened on it. Unit-tested: the first download offered is tiny for English and base
   for any other app language. Not seen: a spoken search through base or small, how German
   comes out, or the offer itself on a phone in another language.
-- The lead-in before spoken lines (#802): 300 ms of silence at the start of every line, on Vela
+- The lead-in before spoken lines (#802): 300 ms of silence at the start of every line, on Waylo
   Voice (`PiperSynth.LEAD_IN_MS`) and on the phone's engine (`playSilentUtterance`, whose
   utterance the focus listener skips). Seen on a 4a: a simulated drive's prompts through the speaker, whole, four lines in a row with their timings in the log.
   Not seen: a Bluetooth head unit, where the clipping was reported, or the phone's own engine.
@@ -541,7 +541,7 @@ off the list when it has been.
 - One Share on the route picker (#814): seen on a 4a, Start and Add stops below, Route options, Share and Close in the header.
 - Saved routes named from a named start (#815): seen on a 4a, a trip from a named start saved under both names by default, and the list row with the start and the end under it; a route from the phone's own position still reads Route to the end.
 - Drawings and custom maps above the satellite imagery (#816): seen on a 4a, a three-point line
-  and its area drawn over the photo, and with the Vela look as before. Not seen: the satellite
+  and its area drawn over the photo, and with the Waylo look as before. Not seen: the satellite
   turned on with a saved custom map already showing, which goes through the same re-seat.
 - Turn arrows on the route (#804): seen on a 4a in a simulated drive, a white arrow in a dark
   casing through the right turn onto a cross street and the turns after it, the passed one gone
@@ -607,14 +607,14 @@ off the list when it has been.
   4a with "Load reviews only when I tap" on, one tap opening the Reviews tab with the reviews
   loading. Not seen: a place whose Reviews tab is already open when the card is tapped.
 - Street View links opening the viewer (#847): `MapLinkParserTest` for the three link shapes;
-  seen on a 4a, a web map Street View link handed to Vela opening the viewer on that block. Not
+  seen on a 4a, a web map Street View link handed to Waylo opening the viewer on that block. Not
   seen: the `map_action=pano` and `layer=c` links on a phone, a link with a pano id, or the
   kav app itself.
 - A pair of close turns said in a line that ends before the second turn's own (user,
   2026-10-17): `NavEngineChainTest`. Not seen or heard: a real drive, or a trip export of the
   reported one, so whether the cut was this or the second turn's queued approach line is open.
 - Offline address search (user, 2026-10-17): the pack's street ids read as 64-bit, and the
-  word lists (`OfflineStreetWordsTest`). Seen on a 4a with `debug.vela.tune.offline 1` against
+  word lists (`OfflineStreetWordsTest`). Seen on a 4a with `debug.waylo.tune.offline 1` against
   the Northern California pack: a Davis address typed plain, with its town after a comma, with
   town and ZIP and no comma, and half typed ("Covell Bl") all led with the address and the
   store on it; before the id fix all four found no address. Not seen: a phone with its network
@@ -673,7 +673,7 @@ off the list when it has been.
   Google's clock and traffic (the ETA read 9 minutes until a heal 35 s later made it 12): code
   only, through the helper trips with stops use. Not driven.
 - Place names More and Most (#852, `MapPoiPrefs.namesSooner`): not seen on a phone. Check names
-  arriving a zoom or two sooner on Vela data, Google and Both, and frame rate with Most in a
+  arriving a zoom or two sooner on Waylo data, Google and Both, and frame rate with Most in a
   dense city on a release build (`scripts/map-fps.sh`).
 
 ### Open from the October 2026 audit
@@ -758,7 +758,7 @@ Found reading everything since 0.4.1912 and not fixed yet.
   Transitous has no feed there either, so a planner over the relations in the downloaded
   region would answer where neither does, without times. Its own engine; not started.
 - Snapping the dot to the road with no route (#803): the browse and driving-mode dot is the raw
-  fix, and a weak head unit GPS puts it a lane or a row of houses off. Vela already finds the
+  fix, and a weak head unit GPS puts it a lane or a row of houses off. Waylo already finds the
   road under the car for the speed limit; a snap onto it while moving, released at junctions
   and when the fix leaves the road, is the shape. Waiting on the reporter's recording and his
   unit's accuracy figure. Not started.
@@ -781,10 +781,10 @@ Found reading everything since 0.4.1912 and not fixed yet.
 
 ### Serving our own map tiles
 
-Vela already bakes the whole world's basemap: 448 PMTiles archives, about 93 GB, counted on
+Waylo already bakes the whole world's basemap: 448 PMTiles archives, about 93 GB, counted on
 the `basemap-tiles` release on 2026-09-25. The app draws from them wherever a downloaded
 region covers the view. With nothing downloaded, the online basemap is OpenFreeMap's. Two
-things stop Vela streaming its own:
+things stop Waylo streaming its own:
 
 - Seams. Our archives are per region and OpenFreeMap is one planet, so a pan across a
   boundary would swap sources mid-gesture. The fix is one planet-sized archive. A GitHub
@@ -794,7 +794,7 @@ things stop Vela streaming its own:
 The missing piece is hosting: PMTiles on object storage behind a CDN, with a bill and
 somebody carrying it. Do this when the project is ready to run infrastructure. With it, the
 Microsoft building merge reaches streaming users and the render-time coverage gate
-(`runOvlGate`) can be deleted, downloaded and streamed maps share one schema, and Vela stops
+(`runOvlGate`) can be deleted, downloaded and streamed maps share one schema, and Waylo stops
 depending on OpenFreeMap's donated bandwidth.
 
 ### A faster shortest-path search, kept as research
@@ -826,11 +826,11 @@ block shipped. What is left:
 
 ### Contributing back to OpenStreetMap
 
-Vela takes its basemap, routing data, addresses, road features and half its places from OSM
+Waylo takes its basemap, routing data, addresses, road features and half its places from OSM
 and gives nothing back. The API is the easy part: notes are a plain POST with no account, and
 editing is OAuth 2.0 with PKCE against the 0.6 API.
 
-The firewall comes first. OSM forbids data derived from Google, and Vela shows Google's
+The firewall comes first. OSM forbids data derived from Google, and Waylo shows Google's
 places beside OSM's. No OSM edit may be pre-filled, suggested or autocompleted from anything
 that came from Google, and the code has to enforce it:
 
@@ -846,10 +846,10 @@ The shape follows StreetComplete: bounded questions about something the user is 
 front of, never a free-form tag editor. In order of safety: a note anywhere; "is this still
 here" on a place from the bake; hours, phone and website on a place with no Google listing
 open; a missing house number. Nothing that moves geometry. A later shape is a one-tap fix
-("this place is gone") that a Vela-side service verifies against the business's own website
+("this place is gone") that a Waylo-side service verifies against the business's own website
 and files under OSM's automated-edit guidelines.
 
-Every changeset carries `created_by=Vela <version>` and an editable comment, uses the app's
+Every changeset carries `created_by=Waylo <version>` and an editable comment, uses the app's
 own OAuth client, and can be undone. Testing runs against `master.apis.dev.openstreetmap.org`.
 Notes alone could ship first.
 
@@ -880,17 +880,17 @@ Work, roughly in order:
 
 ### Opt-in telemetry
 
-Diagnostics and trip recording are local, opt-in and have no upload. What is left is Vela's
+Diagnostics and trip recording are local, opt-in and have no upload. What is left is Waylo's
 own traffic data: speed and route traces from opted-in users. This departs from "no
 telemetry, no backend", so:
 
 - Opt-in only, with a clear consent screen, an easy off and "delete my data".
 - No account. A pseudonymous device token at most. Trim the first and last 100 m or so of
   each trace and send speed and heading along road segments.
-- It needs the first Vela backend or a privacy-preserving collector, self-hostable.
+- It needs the first Waylo backend or a privacy-preserving collector, self-hostable.
 - [`PRIVACY.md`](PRIVACY.md) changes in the same commit.
 
-### Vela's own record of what is still open
+### Waylo's own record of what is still open
 
 The long game for place data, starting in the USA. Overture adds places and almost never
 removes one. The bake removes what Foursquare, OpenStreetMap and Wikidata mark closed (SPEC
@@ -932,7 +932,7 @@ First step: FDIC and SNAP as two adapters in the places bake, confirm and close 
 measured on the District of Columbia and Sacramento. National registers outside the USA
 (France's Sirene, the UK Food Standards Agency's list) come after the US shape is proven.
 
-### Vela traffic layer
+### Waylo traffic layer
 
 Depends on the telemetry above. Opted-in traces become per-segment speed against free flow,
 then a traffic overlay and ETAs that need no Google. It starts as a supplement to Google's
@@ -940,7 +940,7 @@ traffic and replaces it where coverage is good.
 
 ## Architecture work
 
-- Finish carving the large files. `NavCamera` out of `VelaMapView`: the follow ticker, the
+- Finish carving the large files. `NavCamera` out of `WayloMapView`: the follow ticker, the
   puck overlay and the padding and zoom eases as one class with one `frame()` entry point.
   `SearchController`: query, suggestions, results, the three pickers and their gates as one
   tested state machine. The camera piece has to be judged on a drive.
@@ -952,7 +952,7 @@ traffic and replaces it where coverage is good.
   Valhalla (decided 2026-10-03): it serves car, bike and foot, the map matching the drive
   route uses, and the avoid options FOSSGIS OSRM refuses. Its tiles are memory-mapped, so a
   free ARM box (4 cores, 24 GB, 200 GB disk) fits North America plus Europe. It would be the
-  first server Vela runs, so `PRIVACY.md` changes the day it ships and request logging stays
+  first server Waylo runs, so `PRIVACY.md` changes the day it ships and request logging stays
   off. A free tier can be reclaimed, and someone has to update the tiles.
 
 ### If GitHub goes away
@@ -962,7 +962,7 @@ served 74 TB of region files at no cost, the Obtainium and F-Droid audience, and
 keeping projects that toe a line. It is also one account that can be closed. What that would
 break, measured 2026-10-11, worst first.
 
-- Installed apps. Builds before `VelaLinks` carry `api.github.com` and
+- Installed apps. Builds before `WayloLinks` carry `api.github.com` and
   `raw.githubusercontent.com` as literals, and no push can reach them. Builds from 2026-10-12
   on read the settings file from the website's copy when GitHub does not answer, so a signed
   `links` push there moves them. The updater reads GitHub's release JSON; Forgejo's has the
@@ -1006,11 +1006,11 @@ after GitHub's); the rest are not:
 
 Asked for, possible, and not being built. Each says what it would take.
 
-- An arrival time fitted to the driver's own pace (under the limit, or 5 or 10 over). Vela's
+- An arrival time fitted to the driver's own pace (under the limit, or 5 or 10 over). Waylo's
   times are Google's: one figure for the route and colored congestion stretches, with no speed
-  per road, and Vela knows the limit only of the road the car is on. A driver's pace matters
+  per road, and Waylo knows the limit only of the road the car is on. A driver's pace matters
   only where traffic is free, so a flat percentage is wrong in traffic, and the two-minute
-  re-check pulls the time back to Google's. It becomes possible when Vela computes its own
+  re-check pulls the time back to Google's. It becomes possible when Waylo computes its own
   route times (Less to Google, routes computed on the phone).
 - Android 7. The minimum is Android 8.0 (`minSdk` 26). No library is in the way: of the 85 in
   the build the highest minimum is Android 7.0 (`androidx.webkit`), Cronet needs 6.0 and
@@ -1023,7 +1023,7 @@ Asked for, possible, and not being built. Each says what it would take.
 
 ## Not going to happen
 
-These need a Google login or a Vela server, and the project's promise is that neither exists.
+These need a Google login or a Waylo server, and the project's promise is that neither exists.
 
 - Contributing reviews, photos or map edits to Google. Needs a Google account.
 - Live location sharing and shared ETAs. Needs a rendezvous server.

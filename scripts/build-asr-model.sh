@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Repackage a sherpa-onnx prebuilt ASR model into Vela's `asr-models` release convention and upload it.
+# Repackage a sherpa-onnx prebuilt ASR model into Waylo's `asr-models` release convention and upload it.
 #
 #   scripts/build-asr-model.sh <engine-id>        # engine-id ∈ {sensevoice, moonshine}
 #
-# Vela's on-device dictation ([AsrEngine]/[AsrRecognizer]) downloads a `vela-asr-<id>.tar.gz` whose
+# Waylo's on-device dictation ([AsrEngine]/[AsrRecognizer]) downloads a `vela-asr-<id>.tar.gz` whose
 # SINGLE top-level folder `<id>/` holds the model files this app expects PLUS `silero_vad.onnx` (every
 # engine archive is self-contained so the VAD travels with it). We build that from the upstream
 # k2-fsa/sherpa-onnx prebuilt (int8) and publish it beside the Whisper archive.
@@ -12,7 +12,7 @@
 set -euo pipefail
 
 ID="${1:?engine id (sensevoice|moonshine)}"
-REPO="${VELA_REPO:-PimpinPumpkin/Vela}"
+REPO="${WAYLO_REPO:-PimpinPumpkin/Waylo}"
 TAG="asr-models"
 K2="https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models"
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
@@ -59,6 +59,6 @@ echo "→ built $ASSET (${SIZE} MB): $(tar tzf "$WORK/$ASSET" | tr '\n' ' ')"
 
 gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1 || \
   gh release create "$TAG" --repo "$REPO" --prerelease --title "Offline voice-search models" \
-    --notes "Prebuilt sherpa-onnx ASR models for Vela on-device dictation. Data assets, not a code release."
+    --notes "Prebuilt sherpa-onnx ASR models for Waylo on-device dictation. Data assets, not a code release."
 gh release upload "$TAG" "$WORK/$ASSET" --clobber --repo "$REPO"
 echo "✓ published $ASSET to the $TAG release (${SIZE} MB)"

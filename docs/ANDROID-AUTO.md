@@ -1,6 +1,6 @@
 # Android Auto
 
-Vela ships a full navigation experience for Android Auto (phone projecting to a
+Waylo ships a full navigation experience for Android Auto (phone projecting to a
 car head unit): car-side search, route preview with live-traffic alternates, and
 active turn-by-turn with the map drawn onto the car surface. This page covers how
 to get it to show up, because sideloaded navigation apps are fussier than most
@@ -8,7 +8,7 @@ people expect.
 
 ## The short version
 
-Vela is a **navigation template app**. Android Auto hides sideloaded navigation
+Waylo is a **navigation template app**. Android Auto hides sideloaded navigation
 and point-of-interest apps by default, so you have to turn on the developer
 toggle:
 
@@ -18,7 +18,7 @@ toggle:
    settings**.
 3. Open the three-dot menu, **Developer settings**, and enable **Unknown
    sources**.
-4. Reconnect to the car (or open the head-unit simulator). Vela should now appear
+4. Reconnect to the car (or open the head-unit simulator). Waylo should now appear
    under **Customize vehicle launcher**.
 
 That is the same step OsmAnd, Organic Maps, and every other sideloaded nav app
@@ -34,21 +34,21 @@ They ride two completely different integrations:
   `MediaBrowserService`. That path is old, and it has always accepted any
   installed app with no allowlist and no developer toggle. So a sideloaded music
   player appears on Android Auto the moment it is installed.
-- **Navigation apps** like Vela talk to Android Auto through a `CarAppService`
+- **Navigation apps** like Waylo talk to Android Auto through a `CarAppService`
   using the `androidx.car.app` templates. That path is newer and gated: outside
   of an app installed from Google Play, it only surfaces when **Unknown sources**
   is enabled in Android Auto's developer settings.
 
-So "another sideloaded app shows up, why not Vela" is usually comparing a media
-app against a nav app. It is not that Vela is misconfigured; it is that the nav
+So "another sideloaded app shows up, why not Waylo" is usually comparing a media
+app against a nav app. It is not that Waylo is misconfigured; it is that the nav
 path has an extra gate the media path never had.
 
-## What Vela declares (so you can rule out a config gap)
+## What Waylo declares (so you can rule out a config gap)
 
-Vela's manifest carries everything Android Auto requires for a navigation
+Waylo's manifest carries everything Android Auto requires for a navigation
 template app:
 
-- a `CarAppService` (`app/car/VelaCarAppService.kt`), exported, with the
+- a `CarAppService` (`app/car/WayloCarAppService.kt`), exported, with the
   `androidx.car.app.CarAppService` action and the
   `androidx.car.app.category.NAVIGATION` category
 - `res/xml/automotive_app_desc.xml` with `<uses name="template" />`, referenced
@@ -58,7 +58,7 @@ template app:
   permissions
 - the `androidx.car.app` + `androidx.car.app:app-projected` libraries
 
-If Android Auto still does not list Vela after enabling Unknown sources, it is not
+If Android Auto still does not list Waylo after enabling Unknown sources, it is not
 because one of these is missing.
 
 
@@ -67,14 +67,14 @@ because one of these is missing.
 On a real car the Unknown sources toggle is not the whole story. A car log captured in
 September 2026 (a Pixel 9 on GrapheneOS with sandboxed Play, Android Auto 17.4, Unknown sources
 on) shows what Android Auto does when the phone connects: it asks the Play Store who owns each
-template app, gets `PlayGearheadService app.vela, app owners empty`, and then logs
-`CAR.VALIDATOR: Package DENIED; failed all other checks [app.vela]`. CoMaps and Organic Maps
+template app, gets `PlayGearheadService app.waylo, app owners empty`, and then logs
+`CAR.VALIDATOR: Package DENIED; failed all other checks [app.waylo]`. CoMaps and Organic Maps
 were denied the same way. The check reads Play's own install record, so setting the installer
 fields on the phone does not pass it, and Unknown sources did not cover it on that phone.
 
 What has been seen to work, from reports on issue #179 (October 2026):
 
-| Car | Phone | How Vela was installed |
+| Car | Phone | How Waylo was installed |
 |---|---|---|
 | Kia Carnival, newest model | Sony Xperia 1 VII | King Installer, Unknown sources on |
 | Toyota Yaris hatchback 2020, by cable | Sony Xperia 1 VII | the same |
@@ -85,20 +85,20 @@ What has been seen to work, from reports on issue #179 (October 2026):
 | A motorcycle aftermarket unit | Sony Xperia 1 VII, Android 16 | King Installer, ADB method, Unknown sources on |
 
 None of these phones runs GrapheneOS. A Mitsubishi Mirage 2023 did not connect to Android Auto
-at all, with any app; that is the car, not Vela. Some head units take Android Auto over a cable
+at all, with any app; that is the car, not Waylo. Some head units take Android Auto over a cable
 only.
 
 The Desktop Head Unit (Google's car simulator) does not run the ownership check at all: on a
-stock phone with no Google account, a plain sideloaded Vela was listed and ran, and the log
+stock phone with no Google account, a plain sideloaded Waylo was listed and ran, and the log
 shows no ownership lookup. It is useful for trying the car screens, and proves nothing about
-whether a car will list Vela.
+whether a car will list Waylo.
 
 ## If it still does not appear
 
-1. **Check how Vela was installed.** Settings > About shows "Installed by" and the package
-   that installed Vela. An installer that records the Play Store is what the workarounds above
+1. **Check how Waylo was installed.** Settings > About shows "Installed by" and the package
+   that installed Waylo. An installer that records the Play Store is what the workarounds above
    rely on, and an in-app update reinstalls through the system installer and undoes it. When
-   the install source is the Play Store, Vela holds the update back and offers the APK as a file
+   the install source is the Play Store, Waylo holds the update back and offers the APK as a file
    so you can reinstall it the same way.
 2. **Confirm the toggle stuck.** Some phones have more than one Android Auto surface (the
    built-in one under Connected devices and a standalone app). Make sure Unknown sources is on
@@ -121,23 +121,23 @@ whether a car will list Vela.
    Search it for `CAR.VALIDATOR` and `PlayGearheadService`. A reboot stops the capture. Scrub
    any coordinates before attaching it to an issue.
 
-## Why Vela will not bundle the old Android Auto SDK
+## Why Waylo will not bundle the old Android Auto SDK
 
 Some sideloaded car apps (Fermata, and projects built on it) appear on Android
 Auto without any of the above, because they bundle `aauto.aar`, Google's
 pre-template Android Auto SDK from the projection era. It is worth saying plainly
-why Vela does not and will not go that route.
+why Waylo does not and will not go that route.
 
 **It is proprietary Google code.** The AAR carries
 `com.google.android.apps.auto.sdk` and `com.google.android.gms.car`, partly
 obfuscated. It went to early-access partners, was never published and never
-open-sourced. Shipping it inside Vela would breach Vela's own GPLv3, not just
+open-sourced. Shipping it inside Waylo would breach Waylo's own GPLv3, not just
 Google's terms, and that is not a call one contributor can make for everyone
 else.
 
 **There is no newer version to find.** Every circulating copy is stamped January
 2019. Google did not supersede that SDK; it removed the entire "draw your own
-surface" API and replaced it with the open `androidx.car.app` templates Vela
+surface" API and replaced it with the open `androidx.car.app` templates Waylo
 already uses. The 2019 build is the last one that exists, which is why every
 project doing this ships the identical file.
 
@@ -156,6 +156,6 @@ lenient aftermarket unit, or a Play listing all need no proprietary code at all.
 
 Android Auto is part of Google Play services, so it works on a de-Googled ROM only where
 sandboxed Google Play is set up and Android Auto is talking to it. The ownership check above is
-what stops sideloaded navigation apps there, Vela included, and nothing inside the app can
+what stops sideloaded navigation apps there, Waylo included, and nothing inside the app can
 answer it. A listing on Google Play, a head unit running full Android, or a car running Android
 natively are the ways around it.

@@ -6,10 +6,10 @@
 #   ./scripts/sign-calibration.sh
 #
 # The private key lives outside the repo (never commit it). Override its path with
-# VELA_CALIBRATION_KEY if needed.
+# WAYLO_CALIBRATION_KEY if needed.
 set -euo pipefail
 
-KEY="${VELA_CALIBRATION_KEY:-$HOME/.vela-signing/vela-calibration.key}"
+KEY="${WAYLO_CALIBRATION_KEY:-$HOME/.waylo-signing/waylo-calibration.key}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 JSON="$ROOT/calibration.json"
 SIG="$ROOT/calibration.json.sig"

@@ -24,7 +24,7 @@
     <string name="settings_follow_system">Kerfisbundið</string>
     <string name="settings_theme_light">Ljóst</string>
     <string name="settings_theme_dark">Dökkt</string>
-    <string name="settings_appearance_hint">Á aðeins við um Vela.</string>
+    <string name="settings_appearance_hint">Á aðeins við um Waylo.</string>
     <string name="settings_app_name_title">Heiti apps</string>
     <string name="settings_app_name_generic">Láta það heita bara „Maps“</string>
     <string name="settings_units">Einingar</string>

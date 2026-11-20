@@ -12,7 +12,7 @@
 set -euo pipefail
 
 ID="${1:?region id}"; NAME="${2:?display name}"; URL="${3:?geofabrik pbf url}"
-REPO="${VELA_REPO:-PimpinPumpkin/Vela}"
+REPO="${WAYLO_REPO:-PimpinPumpkin/Waylo}"
 TAG="poi-packs"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
@@ -48,7 +48,7 @@ source "$(dirname "$0")/gh-retry.sh"
 ensure_release() {
   gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1 || \
     gh release create "$TAG" --repo "$REPO" --prerelease --title "Offline place packs" \
-      --notes "Prebuilt SQLite place/address packs (OpenStreetMap, ODbL) for Vela offline search. Data assets, not a code release."
+      --notes "Prebuilt SQLite place/address packs (OpenStreetMap, ODbL) for Waylo offline search. Data assets, not a code release."
 }
 gh_retry ensure_release
 

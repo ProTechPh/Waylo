@@ -66,7 +66,7 @@ jobs:
           # App releases ONLY: the repo also hosts infra file releases (obf-runtime, tts-runtime,
           # routing-graphs, ...) whose tags are not versions. An unbounded "newest prerelease"
           # picked obf-tools the week it was created and promoted IT to stable, which knocked the
-          # real stable off releases/latest and starved the updater and the F-Droid build of an
+          # real stable off releases/latest and starved the updater of an
           # APK. Every release query here must bound to the v0.* tag scheme.
           # One light listing of the app's releases, newest first (scripts/app-releases.sh): the
           # REST listing carries every asset of every release and times out.
@@ -106,7 +106,7 @@ jobs:
           fi
           # Drop the "nightly" from the title: the same release is the stable now.
           gh_retry gh release edit "$NIGHTLY" \
-            --title "Vela $VER" \
+            --title "Waylo $VER" \
             --prerelease=false \
             --latest \
             --notes "$NOTES"

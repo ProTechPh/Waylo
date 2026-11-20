@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Build + publish ONE region's OPEN HOUSE-NUMBER overlay as a PMTiles archive to the `address-overlays`
-# GitHub release, merged into address-overlay-manifest.json. The app (VelaMapView) STREAMS it and renders
+# GitHub release, merged into address-overlay-manifest.json. The app (WayloMapView) STREAMS it and renders
 # the `number` field as a SymbolLayer of house numbers where OSM lacks `addr:housenumber` (new suburbs).
 # Sibling of build-overlay-region.sh (which does building FOOTPRINTS); this does ADDRESS POINTS.
 #
@@ -14,7 +14,7 @@
 set -euo pipefail
 
 ID="${1:?region id}"; NAME="${2:?display name}"; SRC="${3:?openaddresses source e.g. us/de/statewide}"; BBOX_CSV="${4:?bbox S,W,N,E}"
-REPO="${VELA_REPO:-PimpinPumpkin/Vela}"
+REPO="${WAYLO_REPO:-PimpinPumpkin/Waylo}"
 TAG="address-overlays"
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
 
@@ -69,7 +69,7 @@ if [ ! -s "$GEOJSON" ]; then
   exit 0
 fi
 
-# House numbers render only at z>=17.5 (VelaMapView minZoom — Google street-level parity), so bake
+# House numbers render only at z>=17.5 (WayloMapView minZoom — Google street-level parity), so bake
 # -Z16 -z17: the app never requests tiles below 16 (dead pyramid weight), and maxzoom 17 quarters the
 # per-tile point count vs the old -z16 — at maxzoom tippecanoe keeps EVERY point, and overzooming a
 # dense urban z16 tile at a z17.5+ view handed MapLibre thousands of symbols to collide per frame
@@ -77,7 +77,7 @@ fi
 # Keep ONLY the `number` attribute (`-y number`) so the tiles stay small; --drop-densest-as-needed
 # bounds a packed tile below maxzoom.
 echo "→ tiling with tippecanoe"
-tippecanoe -o "$WORK/$ID.pmtiles" -l address -n "Vela address overlay: $NAME" \
+tippecanoe -o "$WORK/$ID.pmtiles" -l address -n "Waylo address overlay: $NAME" \
   -Z16 -z17 -y number --drop-densest-as-needed --extend-zooms-if-still-dropping -P \
   --attribution "Addresses © OpenAddresses contributors" --force "$WORK/$ID.geojsonl"
 
@@ -88,7 +88,7 @@ echo "→ $ID: ${SIZE} MB, bbox $BBOX"
 
 gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1 || \
   gh release create "$TAG" --repo "$REPO" --prerelease --title "Open address (house-number) overlays" \
-    --notes "OpenAddresses (openaddresses.io) address points as PMTiles for Vela's house-number labels, rendered where OSM lacks addr:housenumber. Data assets, not a code release. Addresses © OpenAddresses contributors, per-source open licenses."
+    --notes "OpenAddresses (openaddresses.io) address points as PMTiles for Waylo's house-number labels, rendered where OSM lacks addr:housenumber. Data assets, not a code release. Addresses © OpenAddresses contributors, per-source open licenses."
 
 gh release upload "$TAG" "$WORK/$ID.pmtiles" --clobber --repo "$REPO"
 

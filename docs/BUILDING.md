@@ -1,7 +1,7 @@
-# Building and running Vela
+# Building and running Waylo
 
 To install the app, use the Obtainium or F-Droid badge on the [README](../README.md) or an
-APK from [Releases](https://github.com/PimpinPumpkin/Vela/releases). This page is for building
+APK from [Releases](https://github.com/PimpinPumpkin/Waylo/releases). This page is for building
 from source.
 
 ## Build and run
@@ -16,19 +16,19 @@ infrastructure releases:
 # the neural voice runtime (sherpa-onnx), about 57 MB
 mkdir -p app/libs
 curl -fSL -o app/libs/sherpa-onnx-1.13.3.aar \
-  https://github.com/PimpinPumpkin/Vela/releases/download/tts-runtime/sherpa-onnx-1.13.3.aar
+  https://github.com/PimpinPumpkin/Waylo/releases/download/tts-runtime/sherpa-onnx-1.13.3.aar
 
 # Cronet, Chromium's network stack, for the version gradle.properties pins (about 15 MB); or run
 # scripts/build-cronet-aar.sh, which packs the same AAR from Chromium's own published build
-v=$(sed -n 's/^vela.cronetVersion=//p' gradle.properties)
+v=$(sed -n 's/^waylo.cronetVersion=//p' gradle.properties)
 curl -fSL -o "app/libs/cronet-$v.aar" \
-  "https://github.com/PimpinPumpkin/Vela/releases/download/cronet-runtime/cronet-$v.aar"
+  "https://github.com/PimpinPumpkin/Waylo/releases/download/cronet-runtime/cronet-$v.aar"
 
 # OsmAnd's router and obf reader, for offline routing
 mkdir -p core/libs
 for f in osmand-java.jar osmand-shared-jvm.jar gnu-trove-osmand.jar kxml2-vela.jar; do
   curl -fSL -o "core/libs/$f" \
-    "https://github.com/PimpinPumpkin/Vela/releases/download/obf-runtime/$f"
+    "https://github.com/PimpinPumpkin/Waylo/releases/download/obf-runtime/$f"
 done
 ```
 
@@ -46,18 +46,18 @@ If `.github/workflows/ci.yml` names a newer file than this page does, trust the 
 ./gradlew :core:test
 ```
 
-Release signing comes from environment variables (`VELA_KEYSTORE_PATH`,
-`VELA_KEYSTORE_PASSWORD`, `VELA_KEY_ALIAS`). Without them a local build is signed with the
+Release signing comes from environment variables (`WAYLO_KEYSTORE_PATH`,
+`WAYLO_KEYSTORE_PASSWORD`, `WAYLO_KEY_ALIAS`). Without them a local build is signed with the
 debug keystore, so `adb install` still works. Do not hand out a local build with a
 `-PappVersionCode` above the release line: the next real release then looks like a downgrade.
-`-PappId=app.vela.dev` builds a copy that installs beside the real app.
+`-PappId=app.waylo.dev` builds a copy that installs beside the real app.
 
 ## What CI does
 
 Every push to `main` or `canary` builds and tests. A push to `canary` replaces the rolling
 canary build. A daily job publishes a signed nightly prerelease (`v0.5.<run>`) when `main` has
-moved, and a weekly job (Mondays) promotes the newest nightly to stable. The F-Droid repository
-index is rebuilt after both. Docs-only pushes skip CI. [Chapter 12 of the book](book/12-releases.md)
+moved, and a weekly job (Mondays) promotes the newest nightly to stable. Docs-only pushes skip CI.
+[Chapter 12 of the book](book/12-releases.md)
 has the details.
 
 ## Architecture

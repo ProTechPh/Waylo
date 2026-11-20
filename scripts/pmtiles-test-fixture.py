@@ -15,12 +15,12 @@ import subprocess
 import sys
 from pathlib import Path
 
-from velapmtiles import HEADER_LEN, entries_of, fingerprint, write_dir
+from waylopmtiles import HEADER_LEN, entries_of, fingerprint, write_dir
 
 HERE = Path(__file__).resolve().parent
 
 
-def build(path: Path, tiles: dict[int, bytes], meta: bytes = b'{"vela":"fixture"}') -> None:
+def build(path: Path, tiles: dict[int, bytes], meta: bytes = b'{"waylo":"fixture"}') -> None:
     """A clustered archive of [tiles], laid out the way a bake publishes one."""
     entries, payload = [], bytearray()
     for tid in sorted(tiles):

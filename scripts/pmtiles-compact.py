@@ -18,7 +18,7 @@ import struct
 import sys
 from pathlib import Path
 
-from velapmtiles import HEADER_LEN, entries_of, fingerprint, header_of, write_dir
+from waylopmtiles import HEADER_LEN, entries_of, fingerprint, header_of, write_dir
 
 
 def compact(path: Path) -> tuple[int, int]:

@@ -142,7 +142,7 @@ text.
 
 Prompts duck other audio (`VoiceGuide`). Focus is held for `FOCUS_HOLD_MS = 1500` after a line
 so music does not come back up between two prompts, and a phone call that takes focus silences
-guidance. Vela's own voice synthesizes the next lines ahead of time (`NavEngine.upcomingPrompts`).
+guidance. Waylo's own voice synthesizes the next lines ahead of time (`NavEngine.upcomingPrompts`).
 
 Two turns within 130 m of each other are said on one line: "Turn right onto Elm Street, then
 turn left onto Oak Avenue", when the first is announced and again at the first turn. The second
@@ -398,7 +398,7 @@ LOT_DEST_BACK_M = 400   // the turn into a parking lot is looked for this far be
   pin within 8 m of the line, or a line that bends more than 45 degrees there (a corner), gives
   "will be ahead" instead of a side that could be wrong.
 - A way into a lot ends with the turn off the street and often a turn or two between the
-  aisles, all with no name. Vela looks at up to three such turns in the last 400 m before the
+  aisles, all with no name. Waylo looks at up to three such turns in the last 400 m before the
   stop and reads the map's own tiles along the first 60 m past each (`ParkingLotTurn`). The
   first whose tiles show a parking aisle, reached by service roads and no street or alley, is
   the turn into the lot: it says "Turn left into the parking lot", and when it is also the last
@@ -599,16 +599,16 @@ A recorded trip keeps what the nav engine was handed on every fix, and every rou
 answered during the drive. Its replay feeds the engine those same inputs, so it goes off route
 and speaks where the drive did, in the drive's units, and swaps routes where the drive did. To
 try a change to rerouting on a recorded wrong turn, replay the trip with
-`adb shell setprop debug.vela.tune.replayLive 1`: it runs at the drive's pace and reroutes live
+`adb shell setprop debug.waylo.tune.replayLive 1`: it runs at the drive's pace and reroutes live
 with today's code instead of playing the recorded swaps.
 
 ## Limits
 
-- Paused, the distance left stays the route's remaining distance, because Vela cannot know how
+- Paused, the distance left stays the route's remaining distance, because Waylo cannot know how
   far you will wander. The arrival time does move.
 - A long pause does not re-plan. Resume gives the same route, rerouted from where you are if you
   moved. Traffic that changed while you sat is noticed by the next scheduled recheck.
-- The Android Auto feed (`VelaCarSession`) passes a fix's position and speed only. With no
+- The Android Auto feed (`WayloCarSession`) passes a fix's position and speed only. With no
   accuracy its fixes use the default 42 m corridor. With no heading they never count the heading
   rule, they reroute with no heading, and inside the corridor they reset the off-route count,
   which slows detection of a wrong turn onto a parallel road. A fix with no speed arms the

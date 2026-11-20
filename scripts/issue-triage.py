@@ -5,7 +5,7 @@ Two checks, both plain text matching (no model, no outside service, nothing but 
 
   related   Compares the new issue with every earlier issue, open and closed, by the words they
             share, and comments with the closest few. Rare words count for more than common ones.
-  version   On a bug report, reads the "Vela version" field. A build older than the current
+  version   On a bug report, reads the "Waylo version" field. A build older than the current
             stable gets the `incomplete` label and a comment asking for an update first.
 
 It never closes anything: both are notes for the reporter and the maintainer.
@@ -21,7 +21,7 @@ import sys
 import urllib.request
 from datetime import datetime, timedelta
 
-REPO = os.environ.get("GITHUB_REPOSITORY", "PimpinPumpkin/Vela")
+REPO = os.environ.get("GITHUB_REPOSITORY", "PimpinPumpkin/Waylo")
 TOKEN = os.environ.get("GH_TOKEN", "")
 MAX_RELATED = 3
 # Below this similarity a match is more likely a coincidence of common words than the same topic.
@@ -33,7 +33,7 @@ STOP = set("""
 a an and are as at be been but by can cannot could did do does doesn dont for from get gets had
 has have how i if in into is isn it its just like make me my need needs no not of on one only or
 our out please should show shows so some than that the their them then there these they this to
-too up use used using vela want was we were what when where which while will with without work
+too up use used using waylo want was we were what when where which while will with without work
 working works would you your app add added adding support option feature request bug issue
 """.split())
 
@@ -47,7 +47,7 @@ def api(path, method="GET", body=None):
             "Authorization": f"Bearer {TOKEN}",
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "vela-issue-triage",
+            "User-Agent": "waylo-issue-triage",
         },
     )
     with urllib.request.urlopen(req, timeout=30) as r:
@@ -122,7 +122,7 @@ def outdated(new):
     """The stable tag the reporter should be on, when the build they named is older than it."""
     if not any(l["name"] == "bug" for l in new.get("labels", [])):
         return None
-    mine = build(section(new.get("body"), "Vela version"))
+    mine = build(section(new.get("body"), "Waylo version"))
     if not mine:
         return None
     # releases/latest is the newest release that is not a prerelease, which is the stable.

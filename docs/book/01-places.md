@@ -9,7 +9,7 @@ reviews, photos and phone.
 The pins are open data baked in this repository. The sheet is Google, asked when you tap.
 Settings > Places > "Place icons on the map" picks what draws the pins:
 
-- Vela data (the default): the baked places archive. Browsing does not reach Google where an
+- Waylo data (the default): the baked places archive. Browsing does not reach Google where an
   archive covers the view, and a downloaded region works offline.
 - Both: the archive, plus one Google fan-out per settled view.
 - Google: Google's answer for the view, refetched on every pan. Nothing draws offline.
@@ -219,7 +219,7 @@ after z15 (`LATE|...`). The workflow copies both to the run summary.
 
 ### Which of the places in a tile get an icon, a label, or a dot
 
-`VelaMapView` decides per zoom by rank, before collision. The named dials are `AppTune` keys
+`WayloMapView` decides per zoom by rank, before collision. The named dials are `AppTune` keys
 and can be tuned remotely.
 
 Below z13 everything in the tile gets an icon; those tiles hold only landmarks. After that a
@@ -255,14 +255,14 @@ Shinjuku pans from 20 to 45 fps to 35 to 58. An older archive has no landmarks, 
 those layers keep drawing, less the points the archive already shows by name. The dial must
 never go below the oldest archive that carries landmarks.
 
-Vela's zoom number reads about one lower than Google's for the same area, because of 512 px
+Waylo's zoom number reads about one lower than Google's for the same area, because of 512 px
 tiles.
 
 ### Google's own ranking, when Google is drawing
 
 In Google or Both mode, and wherever no archive covers the view, the pins come from a fan-out
 of 15 category searches (8 on a low-RAM or low-data device). Each is ordered by its own
-relevance, so Vela computes one ranking:
+relevance, so Waylo computes one ranking:
 
 ```
 prominence = ln(reviewCount + 1) * (0.6 + rating / 10)
@@ -278,7 +278,7 @@ lower.
 
 Labels are tiered. Below z15.5 only prominence 6.0 or more is named, from z15.5 it takes 5.0,
 from z16.5 it takes 3.0, and from z17.5 everything is named. "Place names" moves these steps
-out by one or two zooms, as on the Vela data layer. An unnamed symbol skips label
+out by one or two zooms, as on the Waylo data layer. An unnamed symbol skips label
 placement, which is most of the layer's cost. The layer keeps the top of the ranking, up to
 `ambientCapMin` (45) places at z14 and `ambientCapMax` (140) at z17.5.
 
@@ -419,10 +419,10 @@ rule does not outlive its fix.
 A closed pick hides the pin only when no live listing of that name is within 150 m. The hidden
 ids persist in `open_place_closed.json`, capped at `CLOSED_OPEN_PLACES_CAP` (2,000).
 
-Each tap that searched logs one `VelaTap` line with no coordinates: the pool sizes, the three
+Each tap that searched logs one `WayloTap` line with no coordinates: the pool sizes, the three
 nearest answers, the pick and the timings.
 
-Offline, or with "Use Vela without Google" on, an archive pin shows its tile data plus the pack
+Offline, or with "Use Waylo without Google" on, an archive pin shows its tile data plus the pack
 row, or the remembered listing. With only "Look up tapped places on Google" off, an archive pin
 stays on its tile data, but a basemap tap has nothing else to show and still resolves.
 

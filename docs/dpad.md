@@ -1,6 +1,6 @@
 # D-pad-only operation (no touchscreen required)
 
-Vela works with five keys (up, down, left, right, OK) plus Back, and no touchscreen. That covers
+Waylo works with five keys (up, down, left, right, OK) plus Back, and no touchscreen. That covers
 keypad phones, Android TV boxes, and any phone with a remote, a game controller or a keyboard
 attached. Touch behavior is unchanged by any of it.
 
@@ -21,7 +21,7 @@ SPEC 10.3 has the short version of this page.
    handlers use (`handleTap`, `gestureMove`, `navUserZoom`), so a fix to touch applies to keys.
 5. D-pad affordances are gated on `rememberDpadMode()` or `rememberDpadFirstDevice()`, so a
    touch phone with no key input looks and behaves as before.
-6. Menus and dialogs are `VelaMenu` and `VelaDialog`. A Compose `DropdownMenu` or `AlertDialog`
+6. Menus and dialogs are `WayloMenu` and `WayloDialog`. A Compose `DropdownMenu` or `AlertDialog`
    cannot be focused before the first key press. Any other window is a raw `Dialog` that focuses
    an explicit `.focusable()` element.
 
@@ -41,11 +41,11 @@ turns on at the first key press and off at the next tap.
 Some keypad phones report a touchscreen and expose their D-pad only through the framework's
 virtual device, so nothing at startup separates them from an ordinary phone. They get rings, the
 map target and the key paths on the first key press, but no pre-placed focus and the stock
-`DropdownMenu`: the auto-focus helpers and the `VelaMenu` chooser act on D-pad-first devices only.
+`DropdownMenu`: the auto-focus helpers and the `WayloMenu` chooser act on D-pad-first devices only.
 
 ### Helpers
 
-All in `app/src/main/java/app/vela/ui/DpadFocus.kt`.
+All in `app/src/main/java/app/waylo/ui/DpadFocus.kt`.
 
 | Helper | Use |
 | --- | --- |
@@ -54,7 +54,7 @@ All in `app/src/main/java/app/vela/ui/DpadFocus.kt`.
 | `Modifier.dpadHighlight(shape, ringColor)` | A 3 dp orange ring (`0xFFFF6D00`) while the element or a descendant has focus and input is key-driven. Orange because a teal ring vanished on a switch that is on. `ringColor` is for a control whose own fill would hide the orange |
 | `Modifier.dpadClickable` | `clickable` without Material's gray focus fill while input is key-driven. A plain `clickable` shows the fill and the ring together. Pair it with `dpadHighlight` |
 | `DpadRingBox(shape)` | Rings a Material button or chip at its visible height. `dpadHighlight` on the control itself rings its padded 48 dp box |
-| `VelaSwitch` | A `Switch` whose ring hugs the track |
+| `WayloSwitch` | A `Switch` whose ring hugs the track |
 | `Modifier.dpadFieldEscape()` | Up and down leave a text field for the control above or below |
 | `Modifier.dpadSwallowHorizontal()`, `Modifier.dpadContainVertical()` | Consume a left or right press that no child handled, and stop up and down from leaving a scroll container |
 | `Modifier.dpadRowSibling(requesters, index)` | Left and right across a row of siblings by `requestFocus` |
@@ -62,8 +62,8 @@ All in `app/src/main/java/app/vela/ui/DpadFocus.kt`.
 
 ### The map
 
-`app/src/main/java/app/vela/ui/map/MapDpadController.kt` is the key-to-camera seam: `panBy`,
-`zoomBy`, `selectAtCenter` and `longPressAtCenter`. `VelaMapView` wires its callbacks to the tap
+`app/src/main/java/app/waylo/ui/map/MapDpadController.kt` is the key-to-camera seam: `panBy`,
+`zoomBy`, `selectAtCenter` and `longPressAtCenter`. `WayloMapView` wires its callbacks to the tap
 lambda, the long-press path, the `gestureMove` flag and the navigation zoom override, so a key
 pan detaches the follow camera and arms "Search this area" as a finger pan does.
 
@@ -136,7 +136,7 @@ stop. SPEC 10.4 covers the hub, the routes and the search.
 
 ### Small screens
 
-`AdaptiveDensity.wrap` runs first in both `attachBaseContext` calls (`MainActivity`, `VelaApp`).
+`AdaptiveDensity.wrap` runs first in both `attachBaseContext` calls (`MainActivity`, `WayloApp`).
 On a screen narrower than `MIN_WIDTH_DP` (360 dp) it lowers the density until the screen reports
 360 dp of width, so standard Material layouts fit a 240 px keypad phone. At 360 dp and above it
 returns the context untouched.
@@ -167,14 +167,14 @@ Focus:
   `requestFocus` does not.
 - A clickable row with a focusable `RadioButton` or `Switch` inside is two focus stops, and a
   sideways move into the inner one clears focus. Make the inner control display-only
-  (`onClick = null`, as in `SelectableRow`) or make it the only stop (`ToggleRow`, `VelaSwitch`).
+  (`onClick = null`, as in `SelectableRow`) or make it the only stop (`ToggleRow`, `WayloSwitch`).
 - A text field consumes up and down as cursor moves, so nothing below it is reachable. Add
   `dpadFieldEscape()`. The search bar handles down inline, beside its Back handling.
 - A focusable that consumes arrows must be a mode entered with OK and left with Back. The first
   map target panned whenever it held focus, and nothing else on the screen could be reached.
 - On a small screen a fixed layout pushes the primary button off the bottom. Welcome scrolls,
   and on a D-pad-first device opens scrolled to the bottom so Get started can take focus.
-  `VelaDialog` (90% of screen height), `VelaMenu` (85% as a chooser, 70% as a touch menu) and the classic directions panel's body
+  `WayloDialog` (90% of screen height), `WayloMenu` (85% as a chooser, 70% as a touch menu) and the classic directions panel's body
   (58%) cap their height and scroll.
 
 Search bar (`SearchBar.kt`, `MapScreen`):
@@ -200,7 +200,7 @@ Search bar (`SearchBar.kt`, `MapScreen`):
 Map:
 
 - MapLibre's `MapView` takes focus and handles the arrow and center keys itself, so no key
-  reaches Compose. `VelaMapView` sets it and its descendants non-focusable on every update,
+  reaches Compose. `WayloMapView` sets it and its descendants non-focusable on every update,
   because MapLibre turns focus back on when the surface is recreated.
 - The map target and the zoom buttons must not sit over a panel. As focus stops over the results
   list they took the down press from the header, and the first result was unreachable.
@@ -213,7 +213,7 @@ Menus, dialogs and web pages:
   the first key event. `requestFocus` on an item, `moveFocus` and synthetic key events all fail.
   Only a raw `Dialog` holding an explicit `.focusable()` element takes focus on open.
 - Inside a dialog window `requestFocus` does not land on a Material button or on the focus node
-  nested in `.clickable`. `VelaDialog` buttons and `VelaMenu` items are `.focusable()` with OK in
+  nested in `.clickable`. `WayloDialog` buttons and `WayloMenu` items are `.focusable()` with OK in
   `.onKeyEvent` and touch in `pointerInput`. Adding `.clickable` would add a second focus stop.
   The Welcome button is built the same way.
 - A WebView's own key handling hops between links. The full-screen reviews page maps up and down
@@ -249,8 +249,8 @@ adb:
 | Settings page | The Back button | Back, to the hub |
 | Welcome, then the Google choice page | Get started, then Continue | OK. Back on the choice page returns to Welcome |
 | The first run's "What Google is used for" list | The Back button, as on a Settings page | Back, to the choice page |
-| `VelaDialog` | The dismiss button. Arrows reach confirm | Back |
-| `VelaMenu` | The first item | Back |
+| `WayloDialog` | The dismiss button. Arrows reach confirm | Back |
+| `WayloMenu` | The first item | Back |
 | Layers panel (`LayersPanel`) | The first map type tile. Arrows move across the tile rows and down to the switch row, OK picks or toggles and keeps the panel open; OK on the Driving mode row closes it | Back |
 | Time and date picker (`PickerDialog`), Your lists (`ListsSheet`), voice capture (`VoiceCaptureDialog`) | Their OK, New list and Done buttons | Back |
 | List editor (`ListEditorDialog`) | The name field. Down reaches the icons, the colors and the buttons | Back |
@@ -281,15 +281,15 @@ the first item (04); Choose on map opens engaged (05); the Directions pill and t
 reachable (06).
 
 - The device must be D-pad-first. On a touch phone run
-  `adb shell settings put global vela_force_dpad 1` before launch, and put it back to 0 afterward.
+  `adb shell settings put global waylo_force_dpad 1` before launch, and put it back to 0 afterward.
 - Tests 04 to 06 and most of the dynamic audit need live search results and skip without them.
 - Tests 01 and 02 measure positions as a share of the screen and find the Settings button by
   its description, so they pass on any screen. Tests 04 to 06 and the dynamic audit still count
   key presses for a small keypad screen. On a tall phone, where the results sheet has more
   filter chips, they land on the wrong control and fail.
 - Test 03 runs `pm clear` on the package. On a phone whose data matters, install a side-by-side
-  build and set `VELA_PKG=app.vela.dev`.
-- `setup.sh` grants location and adds a `gps` test provider (`VELA_LAT` and `VELA_LNG` set the
+  build and set `WAYLO_PKG=app.waylo.dev`.
+- `setup.sh` grants location and adds a `gps` test provider (`WAYLO_LAT` and `WAYLO_LNG` set the
   fix). Remove the provider when done.
 - `ADB="adb -s <serial>"` picks a device.
 

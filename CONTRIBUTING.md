@@ -1,4 +1,4 @@
-# Contributing to Vela
+# Contributing to Waylo
 
 This page says what a good contribution looks like, so a pull request lands on the first try.
 How the app is built is in [SPEC.md](SPEC.md) and [the book](docs/book/README.md). The rules
@@ -7,7 +7,7 @@ and traps for changing the code are in [CLAUDE.md](CLAUDE.md), which is written 
 ## Ground rules
 
 1. **No backend, no shared keys.** Every install talks to Google like one logged-out browser,
-   from the user's own connection. Never embed a Google API key and never add a Vela server.
+   from the user's own connection. Never embed a Google API key and never add a Waylo server.
    This is the project's legal footing.
 2. **Do not let your own location in by accident.** Working on a maps app, your test
    coordinates, screenshots, sample addresses and commit messages all come from where you are,
@@ -64,7 +64,7 @@ can be acted on.
   make the problem happen again, then tap "Export debug session". The log exists only while
   that switch is on, so switch it on first. Turn on "Redact places in exports" if the file
   must be safe to post.
-- **Heat, battery and lag reports need a number:** the battery share Vela used over a stated
+- **Heat, battery and lag reports need a number:** the battery share Waylo used over a stated
   time, how long the drive ran, the phone's temperature, or a screen recording of the lag.
   Add the diagnostics export and the version. A report on a build older than the current
   stable is closed, so update first.
@@ -72,7 +72,7 @@ can be acted on.
   with a pointer to the issue form.
 - **Feature requests are read, not voted on.** The maintainer decides. A request that does not
   fit is closed as not planned and stays closed.
-- **A feature request says where the data would come from.** Vela has no server and no API
+- **A feature request says where the data would come from.** Waylo has no server and no API
   keys and never signs in to Google. Each phone asks Google for what a logged-out browser
   would see, and everything else comes from open data. Things that need a Google account (your
   saved lists, Timeline, live busyness), a paid API, or a server of our own cannot be built.
@@ -94,7 +94,7 @@ AI help is welcome, for code and for reports, as long as a person stands behind 
   [docs/ROADMAP-HISTORY.md](docs/ROADMAP-HISTORY.md) for what was already tried and dropped.
   An assistant that has not read them will describe a different app with confidence.
 - **You answer for every claim.** If the text says the code does something, check the code. If
-  it cites a source, open the source. Invented citations and claims about features Vela does
+  it cites a source, open the source. Invented citations and claims about features Waylo does
   not have get the issue closed.
 - **Do not paste AI output as a reply or an argument.** If you disagree with a decision, say
   why in your own words, briefly, or open a pull request that builds it.

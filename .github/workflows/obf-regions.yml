@@ -1,4 +1,4 @@
-# Bake Vela obf regions (routing section only by default, indexed lean; no rendering) in parallel and publish
+# Bake Waylo obf regions (routing section only by default, indexed lean; no rendering) in parallel and publish
 # them to the `obf-regions` release - the successor catalog to the GraphHopper routing graphs
 # (issue #214: a country's obf is roughly a quarter of the graph+pack it replaces). The app serves
 # this catalog automatically once obf-manifest.json has entries; while it is empty the legacy
@@ -84,7 +84,7 @@ jobs:
           gh release view obf-regions --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
             gh release create obf-regions --repo "$GITHUB_REPOSITORY" --prerelease \
               --title "Offline obf regions" \
-              --notes "Vela-baked obf files (routing section only by default, no rendering section) for offline routing. Data assets, not a code release."
+              --notes "Waylo-baked obf files (routing section only by default, no rendering section) for offline routing. Data assets, not a code release."
 
   build:
     needs: prep
@@ -104,7 +104,7 @@ jobs:
       - name: Bake ${{ matrix.id }} + upload obf + emit entry
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VELA_REPO: ${{ github.repository }}
+          WAYLO_REPO: ${{ github.repository }}
           MANIFEST_MODE: emit
           ENTRY_OUT: ${{ matrix.id }}.json
         run: bash scripts/build-obf-region.sh "${{ matrix.id }}" "${{ matrix.name }}" "${{ matrix.pbf_url }}"
@@ -130,7 +130,7 @@ jobs:
       - name: Merge entries into obf-manifest.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VELA_REPO: ${{ github.repository }}
+          WAYLO_REPO: ${{ github.repository }}
           OBF_MANIFEST_NAME: ${{ inputs.staging && 'obf-manifest-staging.json' || 'obf-manifest.json' }}
         run: |
           shopt -s nullglob
