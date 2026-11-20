@@ -16,7 +16,7 @@ carries APKs signed with the same key, so moving between them never needs a rein
 
 ## Where the data comes from
 
-Every build is a GitHub release on `PimpinPumpkin/Waylo`, built by GitHub Actions from this
+Every build is a GitHub release on `ProTechPh/Waylo`, built by GitHub Actions from this
 repository. There is no update server.
 
 | Channel | Release | Tag | Cut by |

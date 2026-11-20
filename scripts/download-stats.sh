@@ -26,7 +26,7 @@
 #     installs are invisible here and always will be.
 set -euo pipefail
 
-REPO="${REPO:-PimpinPumpkin/Waylo}"
+REPO="${REPO:-ProTechPh/Waylo}"
 OUT="${1:-docs/stats}"
 DAY="$(date -u +%Y-%m-%d)"
 mkdir -p "$OUT"

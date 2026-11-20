@@ -1,3 +1,3 @@
 # velamaps.org is the website only.
-/docs    https://pimpinpumpkin.github.io/Waylo/docs/    302
-/docs/*  https://pimpinpumpkin.github.io/Waylo/docs/:splat  302
+/docs    https://protechph.github.io/Waylo/docs/    302
+/docs/*  https://protechph.github.io/Waylo/docs/:splat  302

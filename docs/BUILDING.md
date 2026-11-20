@@ -1,7 +1,7 @@
 # Building and running Waylo
 
 To install the app, use the Obtainium or F-Droid badge on the [README](../README.md) or an
-APK from [Releases](https://github.com/PimpinPumpkin/Waylo/releases). This page is for building
+APK from [Releases](https://github.com/ProTechPh/Waylo/releases). This page is for building
 from source.
 
 ## Build and run
@@ -16,19 +16,19 @@ infrastructure releases:
 # the neural voice runtime (sherpa-onnx), about 57 MB
 mkdir -p app/libs
 curl -fSL -o app/libs/sherpa-onnx-1.13.3.aar \
-  https://github.com/PimpinPumpkin/Waylo/releases/download/tts-runtime/sherpa-onnx-1.13.3.aar
+  https://github.com/ProTechPh/Waylo/releases/download/tts-runtime/sherpa-onnx-1.13.3.aar
 
 # Cronet, Chromium's network stack, for the version gradle.properties pins (about 15 MB); or run
 # scripts/build-cronet-aar.sh, which packs the same AAR from Chromium's own published build
 v=$(sed -n 's/^waylo.cronetVersion=//p' gradle.properties)
 curl -fSL -o "app/libs/cronet-$v.aar" \
-  "https://github.com/PimpinPumpkin/Waylo/releases/download/cronet-runtime/cronet-$v.aar"
+  "https://github.com/ProTechPh/Waylo/releases/download/cronet-runtime/cronet-$v.aar"
 
 # OsmAnd's router and obf reader, for offline routing
 mkdir -p core/libs
 for f in osmand-java.jar osmand-shared-jvm.jar gnu-trove-osmand.jar kxml2-vela.jar; do
   curl -fSL -o "core/libs/$f" \
-    "https://github.com/PimpinPumpkin/Waylo/releases/download/obf-runtime/$f"
+    "https://github.com/ProTechPh/Waylo/releases/download/obf-runtime/$f"
 done
 ```
 

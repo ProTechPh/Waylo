@@ -2,7 +2,7 @@
 # same Pages deploy as the landing page. The pages are the
 # repository's own Markdown; the script stages them into build/docs-src first.
 site_name: Waylo docs
-site_url: https://pimpinpumpkin.github.io/Waylo/docs/
+site_url: https://protechph.github.io/Waylo/docs/
 site_description: How Waylo Maps works, from the FAQ to the full technical specification.
 docs_dir: ../build/docs-src
 site_dir: ../build/docs-site
@@ -51,13 +51,13 @@ extra_css:
 
 extra:
   generator: false
-  homepage: https://pimpinpumpkin.github.io/Waylo/
+  homepage: https://protechph.github.io/Waylo/
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/PimpinPumpkin/Waylo
+      link: https://github.com/ProTechPh/Waylo
       name: Source on GitHub
     - icon: material/download
-      link: https://pimpinpumpkin.github.io/Waylo/#download
+      link: https://protechph.github.io/Waylo/#download
       name: Download Waylo
 
 plugins:

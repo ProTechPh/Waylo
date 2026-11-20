@@ -39,7 +39,7 @@ On every push to `main` and `canary`, on every pull request, and weekly
   raises an alert when one of them has a published vulnerability, and a pull request that adds
   a library with a known high-severity one fails its check.
 - The OpenSSF Scorecard (`scorecard.yml`) scores how the repository is run. The result is
-  public at https://scorecard.dev/viewer/?uri=github.com/PimpinPumpkin/Waylo
+  public at https://scorecard.dev/viewer/?uri=github.com/ProTechPh/Waylo
 
 Every GitHub Action the workflows use is pinned to an exact commit, and workflows get only
 the token permissions they need. Secret scanning with push protection is on. The job that

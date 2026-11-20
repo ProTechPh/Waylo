@@ -26,7 +26,7 @@ import subprocess
 import sys
 import time
 
-REPO = os.environ.get("GITHUB_REPOSITORY", "PimpinPumpkin/Waylo")
+REPO = os.environ.get("GITHUB_REPOSITORY", "ProTechPh/Waylo")
 TAG = "bake-conductor"
 DRY = os.environ.get("DRY_RUN") == "1"  # print what would happen, change nothing
 MATRIX_JOB = re.compile(r"^[\w-]+ \(([a-z0-9][a-z0-9-]*)[,)]")

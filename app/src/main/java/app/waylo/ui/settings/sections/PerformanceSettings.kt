@@ -48,7 +48,7 @@ internal fun PerformanceSettingsScreen(onBack: () -> Unit) {
         )
         GroupDivider()
         // Compatibility (TextureView) rendering - a hardware escape hatch (port of upstream
-        // PimpinPumpkin/Waylo 261156e2 + df2b8570). Writes the "texture_render" pref that
+        // ProTechPh/Waylo 261156e2 + df2b8570). Writes the "texture_render" pref that
         // WayloMapView reads when it creates the map; needs an app restart to apply. Also flips
         // itself on via the two-crash sentinel when a GPU driver kills the map at init.
         var textureRender by remember { mutableStateOf(prefs.getBoolean("texture_render", app.waylo.ui.map.fragileGpuDefault())) }

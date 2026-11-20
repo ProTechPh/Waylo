@@ -4,14 +4,14 @@ How to use Waylo Maps, what it sends where, and how each part works. The search 
 anything, from "offline routing" to a class name like `NavSession`.
 
 This folder is the source of the documentation website at
-<https://pimpinpumpkin.github.io/Waylo/docs/>, rebuilt from `main` on every push.
+<https://protechph.github.io/Waylo/docs/>, rebuilt from `main` on every push.
 
 ## Start here
 
 <div class="waylo-cards" markdown>
 <a href="FAQ.md"><strong>Questions and answers</strong><span>Are the places Google's? Does it work offline? How do I run it with no Google at all?</span></a>
 <a href="../PRIVACY.md"><strong>What reaches Google</strong><span>Every request the app can make, which setting controls it, and what stays on the phone.</span></a>
-<a href="https://github.com/PimpinPumpkin/Waylo/releases"><strong>Download an APK</strong><span>Grab the latest release, or use Obtainium for auto-updates.</span></a>
+<a href="https://github.com/ProTechPh/Waylo/releases"><strong>Download an APK</strong><span>Grab the latest release, or use Obtainium for auto-updates.</span></a>
 <a href="../FEATURES.md"><strong>Features</strong><span>What the app does, one line each.</span></a>
 </div>
 

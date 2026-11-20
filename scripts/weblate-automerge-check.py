@@ -20,7 +20,7 @@ import base64, json, os, re, subprocess, sys
 import xml.etree.ElementTree as ET
 from collections import Counter
 
-REPO = os.environ.get("GITHUB_REPOSITORY", "PimpinPumpkin/Waylo")
+REPO = os.environ.get("GITHUB_REPOSITORY", "ProTechPh/Waylo")
 WEBLATE_LOGIN, WEBLATE_ID, WEBLATE_REPO = "weblate", 1607653, "weblate/Waylo"
 PATH = re.compile(r"^app/src/main/res/values-[A-Za-z]{2,3}(-r?[A-Za-z0-9]{2,4})?/strings\.xml$")
 PLACEHOLDER = re.compile(r"%(?:\d+\$)?[sdf]|%%")

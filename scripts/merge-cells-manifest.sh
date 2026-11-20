@@ -13,7 +13,7 @@
 # DRY_RUN=1 writes the manifest to $MANIFEST_OUT (default ./cells-manifest.json), uploads nothing.
 set -euo pipefail
 source "$(dirname "$0")/gh-retry.sh"
-REPO="${WAYLO_REPO:-PimpinPumpkin/Waylo}"
+REPO="${WAYLO_REPO:-ProTechPh/Waylo}"
 TAG="grid-cells"
 FRESH="${1:-}"
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT

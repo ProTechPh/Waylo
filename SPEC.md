@@ -6272,7 +6272,7 @@ behind the matching holder.
 
 At launch `CalibrationStore` loads its cached bundle, then fetches `calibration.json` and the
 detached `calibration.json.sig` from
-`https://raw.githubusercontent.com/PimpinPumpkin/Waylo/main/`, and when that does not answer
+`https://raw.githubusercontent.com/ProTechPh/Waylo/main/`, and when that does not answer
 (no reply, a transport error, or a copy whose signature does not verify) from the copy on the
 website, `https://velamaps.org/calibration.json` (`WayloLinks`, 11.4). It adopts the remote
 bundle only if:

@@ -21,7 +21,7 @@ import sys
 import urllib.request
 from datetime import datetime, timedelta
 
-REPO = os.environ.get("GITHUB_REPOSITORY", "PimpinPumpkin/Waylo")
+REPO = os.environ.get("GITHUB_REPOSITORY", "ProTechPh/Waylo")
 TOKEN = os.environ.get("GH_TOKEN", "")
 MAX_RELATED = 3
 # Below this similarity a match is more likely a coincidence of common words than the same topic.

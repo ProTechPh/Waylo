@@ -47,15 +47,15 @@ object WayloLinks {
     const val PAINTED_ROADS = "paintedRoads"
 
     private val DEFAULTS: Map<String, String> = mapOf(
-        REPO to "https://github.com/PimpinPumpkin/Waylo",
-        API to "https://api.github.com/repos/PimpinPumpkin/Waylo",
-        RELEASES to "https://github.com/PimpinPumpkin/Waylo/releases/download",
-        RAW to "https://raw.githubusercontent.com/PimpinPumpkin/Waylo/main",
+        REPO to "https://github.com/ProTechPh/Waylo",
+        API to "https://api.github.com/repos/ProTechPh/Waylo",
+        RELEASES to "https://github.com/ProTechPh/Waylo/releases/download",
+        RAW to "https://raw.githubusercontent.com/ProTechPh/Waylo/main",
         SITE to "https://velamaps.org",
         // The GitHub Pages address: the map fonts, the F-Droid repository and the docs. It is not
         // the website and must not become a redirect to it; installed apps and F-Droid clients
         // point here.
-        PAGES to "https://pimpinpumpkin.github.io/Waylo",
+        PAGES to "https://protechph.github.io/Waylo",
         DONATE to "https://buymeacoffee.com/PimpinPumpkin",
     )
 

@@ -106,7 +106,7 @@ jobs:
             curl -fSL -o "core/libs/$f" \
               "https://github.com/${{ github.repository }}/releases/download/obf-runtime/$f" \
             || curl -fSL -o "core/libs/$f" \
-              "https://github.com/PimpinPumpkin/Vela/releases/download/obf-runtime/$f"
+              "https://github.com/ProTechPh/Waylo/releases/download/obf-runtime/$f"
           done
           test "$(stat -c%s core/libs/osmand-java.jar)" -gt 10000000
           test "$(stat -c%s core/libs/osmand-shared-jvm.jar)" -gt 1000000
@@ -165,7 +165,7 @@ jobs:
           f="app/libs/cronet-$v.aar"
           mkdir -p app/libs
           curl -fsSL -o "$f" "https://github.com/${{ github.repository }}/releases/download/cronet-runtime/cronet-$v.aar" \
-          || curl -fsSL -o "$f" "https://github.com/PimpinPumpkin/Vela/releases/download/cronet-runtime/cronet-$v.aar" \
+          || curl -fsSL -o "$f" "https://github.com/ProTechPh/Waylo/releases/download/cronet-runtime/cronet-$v.aar" \
           || bash scripts/build-cronet-aar.sh "$v" app/libs
           test "$(stat -c%s "$f")" -gt 10000000
 
@@ -181,7 +181,7 @@ jobs:
           curl -fSL -o app/libs/sherpa-onnx-1.13.3.aar \
             "https://github.com/${{ github.repository }}/releases/download/tts-runtime/sherpa-onnx-1.13.3.aar" \
           || curl -fSL -o app/libs/sherpa-onnx-1.13.3.aar \
-            "https://github.com/PimpinPumpkin/Vela/releases/download/tts-runtime/sherpa-onnx-1.13.3.aar"
+            "https://github.com/ProTechPh/Waylo/releases/download/tts-runtime/sherpa-onnx-1.13.3.aar"
           test "$(stat -c%s app/libs/sherpa-onnx-1.13.3.aar)" -gt 50000000
 
       - name: Build release APK

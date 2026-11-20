@@ -9,7 +9,7 @@
 set -euo pipefail
 
 DIR="${1:?dir of *.json entry files}"
-REPO="${WAYLO_REPO:-PimpinPumpkin/Waylo}"
+REPO="${WAYLO_REPO:-ProTechPh/Waylo}"
 TAG="road-features"
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
 

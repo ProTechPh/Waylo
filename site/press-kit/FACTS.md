@@ -29,7 +29,7 @@ by one developer.
 | Who makes it | One developer, who goes by PimpinPumpkin. Outside contributors send fixes and volunteers translate it. |
 | Languages | 19 |
 | Where to get it | GitHub releases or Obtainium. Not on Google Play. |
-| Source | https://github.com/PimpinPumpkin/Waylo |
+| Source | https://github.com/ProTechPh/Waylo |
 | Website | https://velamaps.org/ |
 
 ## Accurate ways to describe it
@@ -62,7 +62,7 @@ by one developer.
 
 Google sees an IP address and the question. It does not see an account, a device ID or an app key.
 One setting, "Use Waylo without Google", turns every Google request off, and downloaded regions
-work fully offline. Full detail: https://github.com/PimpinPumpkin/Waylo/blob/main/PRIVACY.md
+work fully offline. Full detail: https://github.com/ProTechPh/Waylo/blob/main/PRIVACY.md
 
 ## Surveillance cameras
 
@@ -80,10 +80,10 @@ know about ones nobody has.
 
 ## Contact
 
-@PimpinPumpkin on GitHub: https://github.com/PimpinPumpkin
+@PimpinPumpkin on GitHub: https://github.com/ProTechPh/Waylo
 
 Security problems: the private report form at
-https://github.com/PimpinPumpkin/Waylo/security/advisories/new
+https://github.com/ProTechPh/Waylo/security/advisories/new
 
 ## In this folder
 

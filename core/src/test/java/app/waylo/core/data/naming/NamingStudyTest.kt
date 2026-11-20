@@ -46,7 +46,7 @@ class NamingStudyTest {
         val per = System.getProperty("wayloStudy")?.toIntOrNull()
         Assume.assumeTrue("set -DwayloStudy=<routes per area>", per != null)
         val http = OkHttpClient.Builder().callTimeout(30, TimeUnit.SECONDS).build()
-        val ua = "WayloMaps-naming-study (github.com/PimpinPumpkin/Waylo)"
+        val ua = "WayloMaps-naming-study (github.com/ProTechPh/Waylo)"
         fun get(url: String): ByteArray? = runCatching {
             http.newCall(Request.Builder().url(url).header("User-Agent", ua).build()).execute().use { r -> if (r.isSuccessful) r.body?.bytes() else null }
         }.getOrNull()
@@ -525,7 +525,7 @@ class NamingStudyTest {
         val dir = System.getProperty("wayloLines")?.let { java.io.File(it) } ?: java.io.File(javaClass.getResource("/google_lines")!!.toURI())
         val http = OkHttpClient.Builder().callTimeout(30, TimeUnit.SECONDS).build()
         fun get(url: String): ByteArray? = runCatching {
-            http.newCall(Request.Builder().url(url).header("User-Agent", "WayloMaps-naming-study (github.com/PimpinPumpkin/Waylo)").build())
+            http.newCall(Request.Builder().url(url).header("User-Agent", "WayloMaps-naming-study (github.com/ProTechPh/Waylo)").build())
                 .execute().use { r -> if (r.isSuccessful) r.body?.bytes() else null }
         }.getOrNull()
         val keep = java.io.File("$out.tiles").apply { mkdirs() }

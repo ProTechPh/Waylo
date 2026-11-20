@@ -31,7 +31,7 @@ Most of this is invisible. It shows in four places:
 - The community services (FOSSGIS OSRM and Valhalla, Nominatim, Photon, Overpass, Transitous)
   are covered in [chapter 5](05-routing.md), [chapter 6](06-search.md) and
   [chapter 9](09-transit.md). They and the calibration fetch are sent `WayloConfig.WAYLO_UA`
-  (`WayloMaps/0.4 (+https://github.com/PimpinPumpkin/Waylo)`), never the browser identity,
+  (`WayloMaps/0.4 (+https://github.com/ProTechPh/Waylo)`), never the browser identity,
   because their usage policies ask for a client they can contact.
 
 Request shapes, response paths, headers and constants are in

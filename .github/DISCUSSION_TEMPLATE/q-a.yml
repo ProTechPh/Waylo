@@ -3,11 +3,11 @@ body:
     attributes:
       value: |
         This is for questions about using Waylo. Something that is broken goes in a
-        [bug report](https://github.com/PimpinPumpkin/Waylo/issues/new?template=bug_report.yml), and something you
-        want added goes in a [feature request](https://github.com/PimpinPumpkin/Waylo/issues/new?template=feature_request.yml).
+        [bug report](https://github.com/ProTechPh/Waylo/issues/new?template=bug_report.yml), and something you
+        want added goes in a [feature request](https://github.com/ProTechPh/Waylo/issues/new?template=feature_request.yml).
         Those are tracked and closed when they are done. A question here is not.
 
-        The [FAQ](https://pimpinpumpkin.github.io/Waylo/docs/) answers the common ones.
+        The [FAQ](https://protechph.github.io/Waylo/docs/) answers the common ones.
   - type: checkboxes
     id: kind
     attributes:
