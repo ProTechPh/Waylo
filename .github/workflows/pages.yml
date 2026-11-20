@@ -1,0 +1,57 @@
+name: Pages
+
+# The landing page and the docs, published together: `site/` at the root and the MkDocs build from
+# scripts/build-docs-site.py under /docs/. GitHub Pages serves this artifact, so the Pages source
+# in the repository settings has to be "GitHub Actions", not a branch folder.
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'site/**'
+      - 'docs/**'
+      - 'scripts/build-docs-site.py'
+      - 'README.md'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Build the docs
+        run: |
+          pip install --quiet -r site/requirements-docs.txt
+          python3 scripts/build-docs-site.py
+      - name: Assemble the site
+        # Everything in site/ is published except the build inputs, and the docs take /docs/.
+        run: |
+          mkdir -p build/pages
+          cp -r site/. build/pages/
+          rm -rf build/pages/mkdocs.yml build/pages/requirements-docs.txt build/pages/docs-theme
+          cp -r build/docs-site build/pages/docs
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        with:
+          path: build/pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@13b55b33dd8996121833dbc1db458c793a334630 # v3.0.1
