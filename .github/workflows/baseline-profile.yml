@@ -39,38 +39,38 @@ jobs:
       - uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
 
       - name: Fetch obf routing runtime jars
-        # :core compiles against these (see ci.yml's identical step).
+        # :core compiles against these (see ci.yml's identical step). gh, not curl: private repo.
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p core/libs
-          for f in osmand-java.jar osmand-shared-jvm.jar gnu-trove-osmand.jar kxml2-vela.jar; do
-            curl -fSL -o "core/libs/$f" \
-              "https://github.com/${{ github.repository }}/releases/download/obf-runtime/$f" \
-            || curl -fSL -o "core/libs/$f" \
-              "https://github.com/ProTechPh/Waylo/releases/download/obf-runtime/$f"
-          done
+          gh release download obf-runtime --repo "${{ github.repository }}" \
+            --pattern '*.jar' --dir core/libs --clobber
 
       - name: Fetch Cronet runtime AAR
         # Chromium's own prebuilt Cronet for the version pinned in gradle.properties, packed as one
-        # AAR (gitignored). From the `cronet-runtime` infra release, else the upstream repo's, else
-        # packed right here from Chromium's bucket by the same script the release uses.
+        # AAR (gitignored). From the `cronet-runtime` infra release, else packed right here from
+        # Chromium's bucket by the same script the release uses.
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           v=$(sed -n 's/^waylo.cronetVersion=//p' gradle.properties)
           f="app/libs/cronet-$v.aar"
           mkdir -p app/libs
-          curl -fsSL -o "$f" "https://github.com/${{ github.repository }}/releases/download/cronet-runtime/cronet-$v.aar" \
-          || curl -fsSL -o "$f" "https://github.com/ProTechPh/Waylo/releases/download/cronet-runtime/cronet-$v.aar" \
+          gh release download cronet-runtime --repo "${{ github.repository }}" \
+            --pattern "cronet-$v.aar" --dir app/libs --clobber \
           || bash scripts/build-cronet-aar.sh "$v" app/libs
           test "$(stat -c%s "$f")" -gt 10000000
 
       - name: Fetch the TTS runtime AAR
         # Same fetch as ci.yml: the sherpa-onnx AAR is gitignored and hosted on the tts-runtime
         # release, and :app does not build without it (the Aug 2026 cron failed exactly here).
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p app/libs
-          curl -fSL -o app/libs/sherpa-onnx-1.13.3.aar \
-            "https://github.com/${{ github.repository }}/releases/download/tts-runtime/sherpa-onnx-1.13.3.aar" \
-          || curl -fSL -o app/libs/sherpa-onnx-1.13.3.aar \
-            "https://github.com/ProTechPh/Waylo/releases/download/tts-runtime/sherpa-onnx-1.13.3.aar"
+          gh release download tts-runtime --repo "${{ github.repository }}" \
+            --pattern 'sherpa-onnx-1.13.3.aar' --dir app/libs --clobber
 
       - name: Generate baseline profile
         run: |
