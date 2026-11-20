@@ -58,8 +58,6 @@ Degoogled systems like GrapheneOS are the target, and it installs on ordinary An
   </tr>
 </table>
 
-<p align="center"><img src="docs/not-google-maps.png" width="280" alt="A tub of I Can't Believe It's Not Butter relabeled I can't believe it's not Google Maps"></p>
-
 ## What it does
 
 | | |
