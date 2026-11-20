@@ -159,6 +159,8 @@ android {
     // Real release signing comes from CI env vars; local dev falls back to the
     // debug keystore so `adb install` still works.
     //   WAYLO_KEYSTORE_PATH / WAYLO_KEYSTORE_PASSWORD / WAYLO_KEY_ALIAS (=waylo)
+    // The key lives outside the repository. Its certificate SHA-256 is printed in README and on
+    // the site; a new key has to change both, and installed builds cannot update across a new key.
     signingConfigs {
         create("releaseFromEnv") {
             val path = System.getenv("WAYLO_KEYSTORE_PATH")
