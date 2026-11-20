@@ -10,7 +10,9 @@
 # and every `--limit N` query saw the same window), so the data releases are created on the repo's
 # root commit and sort to the bottom, under every app release. Checked 2026-09-28: a release on this
 # commit listed last of 33.
-CELLS_RELEASE_TARGET=5e9cee460e0da3a0ec2a488eec2dbba372d0c1b7
+# Waylo's root commit (git rev-list --max-parents=0 HEAD). The pre-rename SHA from Vela does not
+# exist in this repository, and `gh release create --target` rejects it.
+CELLS_RELEASE_TARGET=818d2ffef4a60e619bf1a564888e9839e76e7a94
 
 bake_bytes() { stat -f%z "$1" 2>/dev/null || stat -c%s "$1"; }
 
