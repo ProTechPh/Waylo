@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # The user-facing changelog: one "- <subject>" line per commit in a range, SKIPPING commits that
 # change nothing a user can see (user 2026-09-22: "repo documentation updates don't need to go in
-# the Vela version notes in the app"). The in-app What's new and update dialogs show these lines
+# the Waylo version notes in the app"). The in-app What's new and update dialogs show these lines
 # verbatim, so a docs sweep read as a feature. A commit is skipped when:
-#   - every file it touches is documentation (*.md, docs/, site/, fdroid/metadata/, LICENSE,
+#   - every file it touches is documentation (*.md, docs/, site/, LICENSE,
 #     .github/ISSUE_TEMPLATE/), or
 #   - every line it adds or removes in any other file is a comment or blank (a comment sweep), or
 #   - its subject starts with "Docs:".
@@ -19,7 +19,7 @@ REV="${1:?usage: changelog.sh [-n N | --latest] <rev-or-range>}"
 
 is_doc_path() {
   case "$1" in
-    *.md|docs/*|site/*|fdroid/metadata/*|LICENSE|.github/ISSUE_TEMPLATE/*) return 0 ;;
+    *.md|docs/*|site/*|LICENSE|.github/ISSUE_TEMPLATE/*) return 0 ;;
     *) return 1 ;;
   esac
 }

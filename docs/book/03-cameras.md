@@ -96,7 +96,7 @@ The avoid rule only chooses among routes the routers offer. Try side streets aro
 
 The code has no road network and relies on the router's snap. A point that lands on the same
 road returns the same route and fails on its count. Each try is a multi-stop trip, so its time
-includes live traffic through the point. Logcat tag `VelaFlockRoute` prints the counts and each
+includes live traffic through the point. Logcat tag `WayloFlockRoute` prints the counts and each
 try.
 
 The kept route carries its waypoints (`Route.detourPlan`), and a drive started on it holds them

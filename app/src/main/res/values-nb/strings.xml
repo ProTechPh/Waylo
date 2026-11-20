@@ -24,10 +24,10 @@
     <string name="settings_follow_system">Følg systemet</string>
     <string name="settings_theme_light">Lys</string>
     <string name="settings_theme_dark">Mørk</string>
-    <string name="settings_appearance_hint">Gjelder kun Vela.</string>
+    <string name="settings_appearance_hint">Gjelder kun Waylo.</string>
     <string name="settings_app_name_title">Appnavn</string>
     <string name="settings_app_name_generic">Bare kall det «Maps»</string>
-    <string name="settings_app_name_generic_hint">Viser startikonet som «Maps» i stedet for «Vela Maps», slik at det ser ut som standardversjonen. Det kan hende du må legge til en snarvei på startskjermen på nytt etter at du har byttet.</string>
+    <string name="settings_app_name_generic_hint">Viser startikonet som «Maps» i stedet for «Waylo Maps», slik at det ser ut som standardversjonen. Det kan hende du må legge til en snarvei på startskjermen på nytt etter at du har byttet.</string>
     <string name="settings_dynamic_color">Material You-farger</string>
     <string name="settings_dynamic_color_hint">Toner knapper og aksenter i henhold til bakgrunnsbildet ditt. Kartet forblir nøytralt.</string>
     <string name="settings_map_style">Kartstil</string>

@@ -59,7 +59,7 @@ jobs:
             "https://github.com/${{ github.repository }}/releases/download/tts-runtime/sherpa-onnx-1.13.3.aar" \
           || curl -fSL -o app/libs/sherpa-onnx-1.13.3.aar \
             "https://github.com/PimpinPumpkin/Vela/releases/download/tts-runtime/sherpa-onnx-1.13.3.aar"
-          v=$(sed -n 's/^vela.cronetVersion=//p' gradle.properties)
+          v=$(sed -n 's/^waylo.cronetVersion=//p' gradle.properties)
           curl -fSL -o "app/libs/cronet-$v.aar" "https://github.com/${{ github.repository }}/releases/download/cronet-runtime/cronet-$v.aar" \
             || curl -fSL -o "app/libs/cronet-$v.aar" "https://github.com/PimpinPumpkin/Vela/releases/download/cronet-runtime/cronet-$v.aar" \
             || bash scripts/build-cronet-aar.sh "$v" app/libs

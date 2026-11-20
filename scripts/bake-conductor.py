@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The bake conductor: runs Vela's data bakes one at a time, hands off.
+"""The bake conductor: runs Waylo's data bakes one at a time, hands off.
 
 Every heavy bake (places, place packs, road features, basemap, grid cells, overlays) shares the
 repository's 1,000 GitHub API requests an hour with CI, the F-Droid index and each other. On their
@@ -26,7 +26,7 @@ import subprocess
 import sys
 import time
 
-REPO = os.environ.get("GITHUB_REPOSITORY", "PimpinPumpkin/Vela")
+REPO = os.environ.get("GITHUB_REPOSITORY", "PimpinPumpkin/Waylo")
 TAG = "bake-conductor"
 DRY = os.environ.get("DRY_RUN") == "1"  # print what would happen, change nothing
 MATRIX_JOB = re.compile(r"^[\w-]+ \(([a-z0-9][a-z0-9-]*)[,)]")

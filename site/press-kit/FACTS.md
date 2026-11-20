@@ -1,15 +1,15 @@
-# Vela Maps: fact sheet
+# Waylo Maps: fact sheet
 
-Everything here may be quoted or reused in coverage of Vela.
+Everything here may be quoted or reused in coverage of Waylo.
 
 ## One sentence
 
-Vela is a free, open-source maps and navigation app for Android that works without Google Play
+Waylo is a free, open-source maps and navigation app for Android that works without Google Play
 Services or a Google account.
 
 ## One paragraph
 
-Vela is a free, open-source maps and navigation app for Android, built for phones without Google
+Waylo is a free, open-source maps and navigation app for Android, built for phones without Google
 Play Services. The map and the places on it come from open data such as OpenStreetMap and Overture
 Maps. For the things open data does not have, like reviews, opening hours and traffic-aware
 routes, the phone looks them up on Google's public website the way a logged-out browser would,
@@ -20,7 +20,7 @@ by one developer.
 
 | | |
 | --- | --- |
-| Name | Vela Maps, or Vela. Named for the constellation "the Sails". |
+| Name | Waylo Maps, or Waylo. Named for the constellation "the Sails". |
 | Platform | Android 8 and newer. No iOS version. |
 | Price | Free. No ads, no account, no paid tier. |
 | License | GPLv3 |
@@ -28,8 +28,8 @@ by one developer.
 | Started | June 2026 |
 | Who makes it | One developer, who goes by PimpinPumpkin. Outside contributors send fixes and volunteers translate it. |
 | Languages | 19 |
-| Where to get it | GitHub releases, Obtainium, or Vela's own F-Droid repository. Not on Google Play. |
-| Source | https://github.com/PimpinPumpkin/Vela |
+| Where to get it | GitHub releases or Obtainium. Not on Google Play. |
+| Source | https://github.com/PimpinPumpkin/Waylo |
 | Website | https://velamaps.org/ |
 
 ## Accurate ways to describe it
@@ -61,12 +61,12 @@ by one developer.
 | Save a place or a list | Nothing, ever |
 
 Google sees an IP address and the question. It does not see an account, a device ID or an app key.
-One setting, "Use Vela without Google", turns every Google request off, and downloaded regions
-work fully offline. Full detail: https://github.com/PimpinPumpkin/Vela/blob/main/PRIVACY.md
+One setting, "Use Waylo without Google", turns every Google request off, and downloaded regions
+work fully offline. Full detail: https://github.com/PimpinPumpkin/Waylo/blob/main/PRIVACY.md
 
 ## Surveillance cameras
 
-Vela shows mapped license-plate readers (Flock and others) from the community DeFlock project,
+Waylo shows mapped license-plate readers (Flock and others) from the community DeFlock project,
 and fixed speed cameras from OpenStreetMap. It can warn when one is ahead and can prefer a route
 that passes fewer of them when the detour is small. It shows cameras people have mapped; it cannot
 know about ones nobody has.
@@ -83,7 +83,7 @@ know about ones nobody has.
 @PimpinPumpkin on GitHub: https://github.com/PimpinPumpkin
 
 Security problems: the private report form at
-https://github.com/PimpinPumpkin/Vela/security/advisories/new
+https://github.com/PimpinPumpkin/Waylo/security/advisories/new
 
 ## In this folder
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# dpad_test_suite/nav.sh — Vela-specific D-pad navigation helpers, sourced by tests.
+# dpad_test_suite/nav.sh: Waylo-specific D-pad navigation helpers, sourced by tests.
 # All movement is D-pad-only (the point of the suite). Kept separate from lib.sh (generic).
 
-# dismiss_onboarding — OK through the one-time onboarding dialogs. Each VelaDialog auto-focuses its
+# dismiss_onboarding: OK through the one-time onboarding dialogs. Each WayloDialog auto-focuses its
 # "Not now" button, so a single OK dismisses it; repeat for the chain (voice / offline / …).
 dismiss_onboarding() {
   for _ in 1 2 3 4 5; do

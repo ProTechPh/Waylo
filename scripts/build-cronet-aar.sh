@@ -6,7 +6,7 @@
 # The files come from the public `chromium-cronet` bucket that Chromium's official Cronet builders
 # upload to for every version (https://storage.googleapis.com/chromium-cronet/android/<v>/Release/
 # cronet/). Nothing is compiled here: it is the same binary Chromium ships, repackaged. Maven's newest
-# cronet-embedded is 143, a dozen majors behind the Chrome Vela claims to be.
+# cronet-embedded is 143, a dozen majors behind the Chrome Waylo claims to be.
 #
 # Usage: scripts/build-cronet-aar.sh [version] [out-dir]   (version blank = Chrome for Android stable)
 set -euo pipefail

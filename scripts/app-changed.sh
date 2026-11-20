@@ -7,4 +7,4 @@
 set -euo pipefail
 changed="$(git diff --name-only "$1" "$2")"
 [ -n "$changed" ] || exit 1
-grep -qvE '\.md$|^docs/|^LICENSE$|^\.gitignore$|^fdroid/metadata/|^\.github/ISSUE_TEMPLATE/|^site/' <<<"$changed"
+grep -qvE '\.md$|^docs/|^LICENSE$|^\.gitignore$|^\.github/ISSUE_TEMPLATE/|^site/' <<<"$changed"

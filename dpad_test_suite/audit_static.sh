@@ -12,7 +12,7 @@
 # See docs/dpad.md for the rules this encodes.
 set -uo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SRC="$ROOT/app/src/main/java/app/vela"
+SRC="$ROOT/app/src/main/java/app/waylo"
 VERBOSE="${1:-}"
 
 python3 - "$SRC" "$VERBOSE" <<'PY'
@@ -85,7 +85,7 @@ RE_SLIDER   = re.compile(r'\bSlider\s*\(')
 RE_RAWDIALOG= re.compile(r'(?<!Alert)(?<!Date)(?<!Time)\bDialog\s*\(')
 RE_POPUP    = re.compile(r'\bPopup\s*\(')
 # Files allowed to host a raw Dialog/Popup (the sanctioned auto-focus seams + full-screen viewers).
-RAW_OK = {"VelaMenu.kt", "VelaDialog.kt", "PlaceSheet.kt", "ReviewsPanel.kt"}
+RAW_OK = {"WayloMenu.kt", "WayloDialog.kt", "PlaceSheet.kt", "ReviewsPanel.kt"}
 
 for path in walk():
     name, base = rel(path), os.path.basename(path)
@@ -93,10 +93,10 @@ for path in walk():
     for i, ln in enumerate(lines):
         n = i + 1
         # A/B. Material menu/dialog shortcuts that can't auto-focus
-        if base != "VelaMenu.kt" and has(RE_DROPDOWN, ln):
-            viol.append(("HIGH", f"{name}:{n}", "bare DropdownMenu — use VelaMenu"))
-        if base != "VelaDialog.kt" and has(RE_ALERT, ln):
-            viol.append(("HIGH", f"{name}:{n}", "bare AlertDialog — use VelaDialog"))
+        if base != "WayloMenu.kt" and has(RE_DROPDOWN, ln):
+            viol.append(("HIGH", f"{name}:{n}", "bare DropdownMenu: use WayloMenu"))
+        if base != "WayloDialog.kt" and has(RE_ALERT, ln):
+            viol.append(("HIGH", f"{name}:{n}", "bare AlertDialog: use WayloDialog"))
         # C. theme
         if base != "AppTheme.kt" and has(RE_ISSYS, ln):
             viol.append(("MED", f"{name}:{n}", "isSystemInDarkTheme() — use isAppInDarkTheme()"))
@@ -125,7 +125,7 @@ for path in walk():
             check.append(("slider", f"{name}:{n}", "Slider — confirm D-pad arrows adjust it and it's focus-reachable"))
         # H. raw Dialog/Popup outside the sanctioned files
         if base not in RAW_OK and (has(RE_RAWDIALOG, ln) or has(RE_POPUP, ln)):
-            check.append(("window", f"{name}:{n}", "raw Dialog/Popup — must auto-focus a .focusable() element (VelaDialog/VelaMenu pattern)"))
+            check.append(("window", f"{name}:{n}", "raw Dialog/Popup: must auto-focus a .focusable() element (WayloDialog/WayloMenu pattern)"))
         # I. text field escape
         if has(RE_FIELD, ln):
             if "dpadFieldEscape" not in "".join(lines[max(0,i-2):i+22]):

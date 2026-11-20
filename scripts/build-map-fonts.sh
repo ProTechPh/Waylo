@@ -7,8 +7,8 @@
 # requests, so the app only swaps the style's glyphs URL (see ui/map/MapFonts).
 #
 # Publish: upload map-fonts.zip to the fixed-tag `map-fonts` GitHub release
-# (prerelease, like the other infrastructure releases); fdroid-repo.yml unpacks it
-# into the Pages site at /Vela/fonts/. Re-run only if the fonts ever change.
+# (prerelease, like the other infrastructure releases); unpacked into the Pages site
+# into the Pages site at /Waylo/fonts/. Re-run only if the fonts ever change.
 #
 # Usage: scripts/build-map-fonts.sh [workdir]
 set -euo pipefail
@@ -62,4 +62,4 @@ node "$HERE/flex_glyphs.js" flex
 python3 "$HERE/composite_glyphs.py" flex fonts_mid fonts_out
 (cd fonts_out && zip -qr "$WORK/map-fonts.zip" "Noto Sans Regular" "Noto Sans Bold" "Noto Sans Italic")
 echo "Built $WORK/map-fonts.zip"
-echo "Publish: gh release create map-fonts $WORK/map-fonts.zip --prerelease --title 'Map font glyphs (infrastructure)' --notes 'Roboto-over-Noto glyph PBFs for the basemap; served via GitHub Pages by fdroid-repo.yml. Do not delete.'"
+echo "Publish: gh release create map-fonts $WORK/map-fonts.zip --prerelease --title 'Map font glyphs (infrastructure)' --notes 'Roboto-over-Noto glyph PBFs for the basemap. Do not delete.'"

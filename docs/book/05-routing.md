@@ -112,7 +112,7 @@ names, and the drive asks for it again ([chapter 4](04-navigation.md)).
 a street name that cannot be confirmed is left out.
 
 Valhalla's step text skips the short pieces inside a junction when it picks a name, and it
-named one left turn after a bridge 120 m further on. So Vela asks the same server for the
+named one left turn after a bridge 120 m further on. So Waylo asks the same server for the
 matched road pieces (`trace_attributes`) and checks every turn against them (`checkedRoad`):
 
 - A name is said only if the path is on that street within the step's first half and within
@@ -120,12 +120,12 @@ matched road pieces (`trace_attributes`) and checks every turn against them (`ch
   another street for `RENAME_HOLD_M` (40 m), that name is said. Otherwise the turn has no name.
 - Valhalla counts staying on a numbered route as going straight, even through a corner. Where
   the matched line turns 60 degrees or more with no step near and the street name changes
-  there, Vela adds the turn.
+  there, Waylo adds the turn.
 - OSRM reads a rename's direction at the node, so a street that turns a corner into another
   came out "straight" and was not said. A rename where its line turns 60 degrees or more within
   10 m is said as a turn. A nameless slip lane followed by "straight onto" a street is one turn
   onto that street, as Google says it.
-- At a roundabout, Valhalla's enter step carries the ring's own name. Vela says the street you
+- At a roundabout, Valhalla's enter step carries the ring's own name. Waylo says the street you
   leave by.
 - A turn onto the street the driver was just told is said without the name. What counts is the
   name the driver has heard, not the one on the map: a long road that takes the cross street's
@@ -315,7 +315,7 @@ not read as turning round again. Both routers'
 routes are tested, the open router's alternates included (`forwardPick`), with the same price
 limit, and ranked: going on first, then turning round further on (round a block, or back from
 the next exit), then turning round where the car is. A route that still turns a moving car
-round where it is, when nothing better was offered at any price, is not shown: Vela asks again
+round where it is, when nothing better was offered at any price, is not shown: Waylo asks again
 3 s later, twice at most, and then takes what it has. When going on was offered and cost too
 much more, the turn-round is taken at once. A car stopped at a light keeps the course it had
 while moving, so a reroute from the stop is not free to send it back the way it came, unless its
@@ -382,9 +382,9 @@ the rebake) or when the trip crosses into a second file. Walking always uses the
 which failed past about 28 km on that file. Where the app waits a fixed time for this router
 (an avoid, a bike route, a reroute), the search is stopped when the time is up.
 
-### Use Vela without Google
+### Use Waylo without Google
 
-Settings > Privacy > "Use Vela without Google" makes the Google directions call return empty
+Settings > Privacy > "Use Waylo without Google" makes the Google directions call return empty
 before anything is sent. Every caller reads that as "Google did not answer": routes come from
 the open routers alone, with free-flow times, no Google alternates and no Google fallback. An
 avoid is honored only by the on-phone router in a downloaded area. "Live traffic only when I
@@ -405,7 +405,7 @@ saved start and ends within 250 m of the saved end is offered the saved route (`
   drive keeps the points as silent stops, so a traffic re-check keeps you on your route.
 
 Leaving a saved route lets go of it. The reroute drops the hidden points and goes the fastest
-way to the destination, and Vela says so once: "You left your route. Taking the fastest way."
+way to the destination, and Waylo says so once: "You left your route. Taking the fastest way."
 Real stops are kept. It used to route back to the next hidden point, which was often behind
 the car. A camera detour is let go the same way, without the announcement.
 

@@ -66,7 +66,7 @@ jobs:
           gh release view maxspeed-overlays --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
             gh release create maxspeed-overlays --repo "$GITHUB_REPOSITORY" --prerelease \
               --title "Posted speed-limit overlays" \
-              --notes "OSM maxspeed road ways as PMTiles for Vela's keyless posted speed-limit source. Data assets, not a code release. Speed limits © OpenStreetMap contributors, ODbL."
+              --notes "OSM maxspeed road ways as PMTiles for Waylo's keyless posted speed-limit source. Data assets, not a code release. Speed limits © OpenStreetMap contributors, ODbL."
 
   build:
     needs: prep
@@ -87,7 +87,7 @@ jobs:
       - name: Build ${{ matrix.id }} maxspeed PMTiles + upload + emit entry
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VELA_REPO: ${{ github.repository }}
+          WAYLO_REPO: ${{ github.repository }}
           MANIFEST_MODE: emit
           ENTRY_OUT: ${{ matrix.id }}.json
         run: bash scripts/build-maxspeed-region.sh "${{ matrix.id }}" "${{ matrix.name }}" "${{ matrix.pbf_url }}"
@@ -116,7 +116,7 @@ jobs:
       - name: Merge entries into maxspeed-overlay-manifest.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VELA_REPO: ${{ github.repository }}
+          WAYLO_REPO: ${{ github.repository }}
         run: |
           shopt -s nullglob
           files=(entries/*.json)

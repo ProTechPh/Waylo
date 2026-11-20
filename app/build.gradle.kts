@@ -21,15 +21,15 @@ dependencies {
 }
 
 android {
-    namespace = "app.vela"
+    namespace = "app.waylo"
     compileSdk = 37
 
     defaultConfig {
         // `-PappId=<id>` builds the app under another package name: the Android Auto ownership
-        // experiment (2026-09-22, ROADMAP "A Google Play listing") sideloads Vela under the id of
+        // experiment (2026-09-22, ROADMAP "A Google Play listing") sideloads Waylo under the id of
         // an app the account once installed from Play, to learn whether Android Auto's check is
         // Play's library record alone or also the signing certificate. Never a shipped path.
-        applicationId = (project.findProperty("appId") as String?)?.takeIf { it.isNotBlank() } ?: "app.vela"
+        applicationId = (project.findProperty("appId") as String?)?.takeIf { it.isNotBlank() } ?: "app.waylo"
         minSdk = 26
         targetSdk = 35
         // Overridable from CI: -PappVersionCode / -PappVersionName (ci.yml derives them from the
@@ -158,24 +158,24 @@ android {
 
     // Real release signing comes from CI env vars; local dev falls back to the
     // debug keystore so `adb install` still works.
-    //   VELA_KEYSTORE_PATH / VELA_KEYSTORE_PASSWORD / VELA_KEY_ALIAS (=vela)
+    //   WAYLO_KEYSTORE_PATH / WAYLO_KEYSTORE_PASSWORD / WAYLO_KEY_ALIAS (=waylo)
     signingConfigs {
         create("releaseFromEnv") {
-            val path = System.getenv("VELA_KEYSTORE_PATH")
+            val path = System.getenv("WAYLO_KEYSTORE_PATH")
             if (!path.isNullOrBlank() && File(path).exists()) {
                 storeFile = File(path)
-                storePassword = System.getenv("VELA_KEYSTORE_PASSWORD")
-                keyAlias = System.getenv("VELA_KEY_ALIAS") ?: "vela"
-                keyPassword = System.getenv("VELA_KEYSTORE_PASSWORD")
+                storePassword = System.getenv("WAYLO_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("WAYLO_KEY_ALIAS") ?: "waylo"
+                keyPassword = System.getenv("WAYLO_KEYSTORE_PASSWORD")
             }
         }
     }
 
     // One APK per chip type (2026-09-23, `-PabiSplits`, turned on in CI by the ABI_SPLITS repo
     // variable). Each output adds its chip's digit to the versionCode (ApkChoice.TAGS order:
-    // armv7 1, arm64 2, x86 3, x86_64 4; the all-in-one APK keeps 0), so the F-Droid repo sees
-    // distinct codes and moving from the all-in-one APK to a chip APK of the same build is an
-    // upgrade. Without the flag the build is the single all-in-one APK, as before.
+    // armv7 1, arm64 2, x86 3, x86_64 4; the all-in-one APK keeps 0), so distinct codes remain
+    // distinct and moving from the all-in-one APK to a chip APK of the same build is an upgrade.
+    // Without the flag the build is the single all-in-one APK, as before.
     splits {
         abi {
             isEnable = project.hasProperty("abiSplits")
@@ -211,7 +211,7 @@ android {
     packaging {
         resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" }
         // The neural-TTS runtime (ONNX Runtime + sherpa-onnx, from the vendored AAR) ships its .so
-        // for all 4 ABIs; Vela targets arm64 phones, so drop the other ABIs' copies — they'd add
+        // for all 4 ABIs; Waylo targets arm64 phones, so drop the other ABIs' copies — they'd add
         // ~65 MB for no device we support. MapLibre and other libs stay multi-ABI (untouched).
         jniLibs {
             excludes += listOf(
@@ -257,12 +257,12 @@ dependencies {
     implementation(libs.androidx.webkit)
     // Cronet, Chromium's own network stack, for Google-host requests (app/net/CronetTransport,
     // calibration `useCronet`) and the WebView proxy (`webProxy`). Chromium's OWN prebuilt Release
-    // build for the Chrome for Android version in gradle.properties `vela.cronetVersion`, packed into
+    // build for the Chrome for Android version in gradle.properties `waylo.cronetVersion`, packed into
     // one AAR by scripts/build-cronet-aar.sh (gitignored; CI fetches it from the `cronet-runtime`
     // infra release). Chromium license (BSD) plus third-party licenses, LICENSE inside the AAR.
-    // Maven's cronet-embedded stopped at 143 while Vela claims a current Chrome. Its protobuf is
+    // Maven's cronet-embedded stopped at 143 while Waylo claims a current Chrome. Its protobuf is
     // shaded inside (org.chromium.net.internal), so nothing clashes with OsmAnd's.
-    val cronetVersion = providers.gradleProperty("vela.cronetVersion").get()
+    val cronetVersion = providers.gradleProperty("waylo.cronetVersion").get()
     implementation(files("libs/cronet-$cronetVersion.aar"))
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
@@ -295,9 +295,9 @@ dependencies {
 }
 
 // On-demand harnesses need their -D properties in the test JVM; Gradle does not forward them
-// (the same trap core/build.gradle.kts documents for velaTrip).
+// (the same trap core/build.gradle.kts documents for wayloTrip).
 tasks.withType<Test>().configureEach {
-    listOf("velaPmtiles", "velaLat", "velaLng", "velaArchive", "velaArchiveUrl", "velaPatch", "velaFingerprint").forEach { k ->
+    listOf("wayloPmtiles", "wayloLat", "wayloLng", "wayloArchive", "wayloArchiveUrl", "wayloPatch", "wayloFingerprint").forEach { k ->
         System.getProperty(k)?.let { systemProperty(k, it) }
     }
 }

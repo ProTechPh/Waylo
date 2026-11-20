@@ -24,10 +24,10 @@
     <string name="settings_follow_system">ตามระบบ</string>
     <string name="settings_theme_light">สว่าง</string>
     <string name="settings_theme_dark">มืด</string>
-    <string name="settings_appearance_hint">ใช้กับ Vela เท่านั้น</string>
+    <string name="settings_appearance_hint">ใช้กับ Waylo เท่านั้น</string>
     <string name="settings_app_name_title">ชื่อแอป</string>
     <string name="settings_app_name_generic">ตั้งชื่อแค่ว่า \"แผนที่\"</string>
-    <string name="settings_app_name_generic_hint">แสดงไอคอนแอปเป็นแผนที่ธรรมดาแทนแผนที่ Vela เพื่อมุมมองแบบค่าเริ่มต้น คุณอาจจะต้องเพิ่มทางลัดหน้าจอหลักอีกครั้งหลังจากการเปลี่ยน</string>
+    <string name="settings_app_name_generic_hint">แสดงไอคอนแอปเป็นแผนที่ธรรมดาแทนแผนที่ Waylo เพื่อมุมมองแบบค่าเริ่มต้น คุณอาจจะต้องเพิ่มทางลัดหน้าจอหลักอีกครั้งหลังจากการเปลี่ยน</string>
     <string name="settings_dynamic_color">สีแบบ Material You</string>
     <string name="settings_dynamic_color_hint">ปรับโทนสีและสีปุ่มตามวอลเปเปอร์ แผนที่ยังคงอยู่เหมือนเดิม</string>
     <string name="settings_map_style">สไตล์แผนที่</string>
@@ -58,7 +58,7 @@
     <string name="settings_voice_none_hint">ยังไม่มีเสียงพูด เปิดคลังเสียงด้านล่างเพื่อดาวน์โหลดเสียงพูดธรรมชาติบนอุปกรณ์ (ไม่ต้องใช้บัญชี เล่นแบบเรียลไทม์แม้แต่บนโทรศัพท์เก่า)เอนจิน TTS ระบบที่คุณติดตั้งจะปรากฏที่นี่ให้คุณเลือกด้วย</string>
     <string name="settings_voice_test">ทดสอบเสียงพูด</string>
     <string name="settings_voice_system_settings">ตั้งค่าเสียงพูดของระบบ</string>
-    <string name="settings_voice_test_hint">แตะทดสอบเสียงเพื่อฟัง แนะนําให้ใช้ Vela Voice คุณสามารถแทนที่ด้วยเครื่องมือแปลงข้อความเป็นเสียงที่ติดตั้งไว้ได้</string>
+    <string name="settings_voice_test_hint">แตะทดสอบเสียงเพื่อฟัง แนะนําให้ใช้ Waylo Voice คุณสามารถแทนที่ด้วยเครื่องมือแปลงข้อความเป็นเสียงที่ติดตั้งไว้ได้</string>
     <string name="settings_voice_library">คลังเสียงพูด</string>
     <string name="settings_voice_advanced">ตัวเลือกเสียงพูดเพิ่มเติม</string>
     <string name="settings_voice_try_label">ลองใช้เสียงพูดกับข้อความใดก็ได้</string>
@@ -81,8 +81,8 @@
     <string name="settings_vibrate_hint">จะมีเสียงเตือนตามทิศทางในแต่ละการเลี้ยว แยกความแตกต่างระหว่างซ้ายกับขวา เพื่อให้คุณตามเส้นทางได้ตามความรู้สึก ตั้งค่าให้เหมาะกับโหมดการเดินทาง (เช่น เปิดสําหรับปั่นจักรยานและเดินหรือปิดขณะขับรถ)</string>
     <string name="settings_keep_screen_on">เปิดหน้าจอค้างไว้ขณะกำลังนำทาง</string>
     <string name="settings_keep_screen_on_hint">เปิดหน้าจอค้างไว้ขณะการเลี้ยวทีละเทิร์น</string>
-    <string name="map_voice_downloading">กำลังดาวน์โหลดเสียงพูด Vela · %1$d%%</string>
-    <string name="map_voice_installing">กำลังติดตั้งเสียงพูด Vela</string>
+    <string name="map_voice_downloading">กำลังดาวน์โหลดเสียงพูด Waylo · %1$d%%</string>
+    <string name="map_voice_installing">กำลังติดตั้งเสียงพูด Waylo</string>
     <string name="map_region_downloading">กำลังดาวน์โหลด %1$s การกำหนดเส้นทาง · %2$d%%</string>
     <string name="map_region_places_downloading">กำลังบันทึก %1$s สถานที่สำหรับการค้นหาออฟไลน์ · %2$d%%</string>
     <string name="map_region_placesfile_downloading">กำลังบันทึก %1$s สถานที่สำหรับแผนที่ · %2$d%%</string>

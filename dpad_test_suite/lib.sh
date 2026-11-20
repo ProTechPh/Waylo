@@ -9,7 +9,7 @@
 # Override the device with `ADB="adb -s <serial>"`.
 set -uo pipefail
 
-PKG="${VELA_PKG:-app.vela}"
+PKG="${WAYLO_PKG:-app.waylo}"
 ADB="${ADB:-adb}"
 
 # ---- D-pad keycodes -------------------------------------------------------------------------

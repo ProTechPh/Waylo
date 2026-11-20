@@ -54,7 +54,7 @@ jobs:
         # AAR (gitignored). From the `cronet-runtime` infra release, else the upstream repo's, else
         # packed right here from Chromium's bucket by the same script the release uses.
         run: |
-          v=$(sed -n 's/^vela.cronetVersion=//p' gradle.properties)
+          v=$(sed -n 's/^waylo.cronetVersion=//p' gradle.properties)
           f="app/libs/cronet-$v.aar"
           mkdir -p app/libs
           curl -fsSL -o "$f" "https://github.com/${{ github.repository }}/releases/download/cronet-runtime/cronet-$v.aar" \

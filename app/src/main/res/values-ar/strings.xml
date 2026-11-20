@@ -24,10 +24,10 @@
     <string name="settings_follow_system">اتباع النظام</string>
     <string name="settings_theme_light">فاتح</string>
     <string name="settings_theme_dark">داكن</string>
-    <string name="settings_appearance_hint">يسري على Vela فقط.</string>
+    <string name="settings_appearance_hint">يسري على Waylo فقط.</string>
     <string name="settings_app_name_title">اسم التطبيق</string>
     <string name="settings_app_name_generic">تسميته «Maps» فقط</string>
-    <string name="settings_app_name_generic_hint">يعرض أيقونة المشغّل باسم Maps العادي بدلاً من Vela Maps لمظهر أقرب إلى النظام. قد تحتاج إلى إعادة إضافة اختصار الشاشة الرئيسية بعد التبديل.</string>
+    <string name="settings_app_name_generic_hint">يعرض أيقونة المشغّل باسم Maps العادي بدلاً من Waylo Maps لمظهر أقرب إلى النظام. قد تحتاج إلى إعادة إضافة اختصار الشاشة الرئيسية بعد التبديل.</string>
     <string name="settings_dynamic_color">ألوان Material You</string>
     <string name="settings_dynamic_color_hint">تلوّن الأزرار وعناصر التمييز بألوان خلفيتك. تبقى الخريطة بألوان محايدة.</string>
     <string name="settings_map_style">نمط الخريطة</string>
@@ -59,7 +59,7 @@
     <string name="settings_voice_none_hint">لا يوجد صوت بعد. افتح مكتبة الأصوات أدناه لتنزيل صوت طبيعي يعمل على الجهاز (دون حساب، وبسرعة فورية حتى على الهواتف القديمة). كما سيظهر هنا أي محرّك تحويل نص إلى كلام تثبّته على النظام لتختاره.</string>
     <string name="settings_voice_test">تجربة الصوت</string>
     <string name="settings_voice_system_settings">إعدادات صوت النظام</string>
-    <string name="settings_voice_test_hint">اضغط «تجربة الصوت» للاستماع إليه. يُوصى بصوت Vela، ويمكنك اختيار أي محرّك تحويل نص إلى كلام مثبّت بدلاً منه.</string>
+    <string name="settings_voice_test_hint">اضغط «تجربة الصوت» للاستماع إليه. يُوصى بصوت Waylo، ويمكنك اختيار أي محرّك تحويل نص إلى كلام مثبّت بدلاً منه.</string>
     <string name="settings_voice_library">مكتبة الأصوات</string>
     <string name="settings_voice_advanced">خيارات الصوت المتقدمة</string>
     <string name="settings_voice_try_label">جرّب الصوت على أي نص</string>
@@ -82,8 +82,8 @@
     <string name="settings_vibrate_hint">اهتزازات مميّزة عند كل انعطاف، تختلف بين اليسار واليمين، لتتبع المسار بالإحساس. اضبطها لكل وسيلة تنقّل (مثلاً: تشغيل للدراجة والمشي، وإيقاف أثناء القيادة).</string>
     <string name="settings_keep_screen_on">إبقاء الشاشة مضاءة أثناء الملاحة</string>
     <string name="settings_keep_screen_on_hint">تُبقي الشاشة مستيقظة أثناء الإرشاد خطوة بخطوة.</string>
-    <string name="map_voice_downloading">جارٍ تنزيل صوت Vela · %1$d%%</string>
-    <string name="map_voice_installing">جارٍ تثبيت صوت Vela…</string>
+    <string name="map_voice_downloading">جارٍ تنزيل صوت Waylo · %1$d%%</string>
+    <string name="map_voice_installing">جارٍ تثبيت صوت Waylo…</string>
     <string name="map_region_downloading">جارٍ تنزيل توجيه %1$s · %2$d%%</string>
     <string name="map_region_places_downloading">جارٍ حفظ أماكن %1$s للبحث دون اتصال · %2$d%%</string>
     <string name="map_region_placesfile_downloading">جارٍ حفظ أماكن %1$s للخريطة · %2$d%%</string>
@@ -162,7 +162,7 @@
         <item quantity="other">%1$d كاميرا على هذا المسار</item>
     </plurals>
     <string name="settings_read_all_reviews">زر «قراءة كل المراجعات»</string>
-    <string name="settings_read_all_reviews_hint">يضيف زر «قراءة كل المراجعات» الذي يفتح صفحة مراجعات Google الكاملة داخل التطبيق مع كل المراجعات. إيقافه = قائمة مراجعات Vela الخاصة فقط.</string>
+    <string name="settings_read_all_reviews_hint">يضيف زر «قراءة كل المراجعات» الذي يفتح صفحة مراجعات Google الكاملة داخل التطبيق مع كل المراجعات. إيقافه = قائمة مراجعات Waylo الخاصة فقط.</string>
     <string name="settings_buildings_3d">المباني ثلاثية الأبعاد</string>
     <string name="settings_buildings_3d_hint">مبانٍ بارزة عند التقريب الشديد حين تكون الخريطة مائلة. قد يجعل إيقاف هذا الخيار التحريك أكثر سلاسة على الهواتف القديمة.</string>
     <string name="settings_building_overlay">ملء المباني الناقصة</string>
@@ -173,14 +173,14 @@
     <string name="settings_nav_trace_hint">يسجّل حركة كاميرا الخريطة أثناء الملاحة لتشخيص الخريطة المهتزّة أو «العائمة». لا يحتوي على أي بيانات موقع، فقط الاتجاهات والسرعات والتوقيتات، لذا يمكن إرفاقه بتقرير الأخطاء بأمان.</string>
     <string name="settings_nav_trace_export">مشاركة تتبّع الملاحة</string>
     <string name="settings_nav_trace_empty">لم يُسجَّل أي تتبّع بعد. تنقّل إلى مكان ما أولاً.</string>
-    <string name="settings_voice_vela_name">صوت Vela (%1$s)</string>
-    <string name="settings_voice_install_vela">تثبيت صوت Vela (%1$d ميغابايت)</string>
-    <string name="settings_voice_install_vela_hint">الصوت الموصى به للملاحة. أعد تثبيته من هنا في أي وقت إذا فُقد أو فشل تنزيله.</string>
+    <string name="settings_voice_waylo_name">صوت Waylo (%1$s)</string>
+    <string name="settings_voice_install_waylo">تثبيت صوت Waylo (%1$d ميغابايت)</string>
+    <string name="settings_voice_install_waylo_hint">الصوت الموصى به للملاحة. أعد تثبيته من هنا في أي وقت إذا فُقد أو فشل تنزيله.</string>
     <string name="settings_texture_render">عرض التوافق</string>
     <string name="settings_texture_render_hint">يرسم الخريطة عبر مسار توافق يتجنب بعض أخطاء برامج تشغيل الرسوميات في بعض الأجهزة. يُفعَّل تلقائياً إذا تسبّبت الخريطة في تعطل التطبيق عند بدء التشغيل. أبطأ قليلاً؛ ويتطلب إعادة تشغيل التطبيق ليسري.</string>
     <string name="settings_texture_render_auto_hint">فُعِّل تلقائياً على %1$s بعد أن تسبّبت الخريطة في تعطل التطبيق عند بدء التشغيل مرتين. إذا عملت الخريطة والخيار معطّل فاتركه معطّلاً: فهو أبطأ وقد يجعل الخريطة تتقطع أثناء القيادة. يتطلب إعادة تشغيل التطبيق ليسري.</string>
     <string name="settings_show_reviews">عرض المراجعات</string>
-    <string name="settings_show_reviews_hint">إيقاف = لا تعرض صفحات الأماكن أي مراجعات، ولا يجلبها Vela أبداً.</string>
+    <string name="settings_show_reviews_hint">إيقاف = لا تعرض صفحات الأماكن أي مراجعات، ولا يجلبها Waylo أبداً.</string>
     <string name="settings_load_photos">تحميل الصور</string>
     <string name="settings_load_photos_hint">إيقاف = لا تعرض صفحات الأماكن أي صور، ولا يُنزَّل شيء لها. يوفّر البيانات.</string>
     <string name="settings_hide_adult">إخفاء فئات البالغين</string>
@@ -196,7 +196,7 @@
     <string name="settings_region_updates_wifi">عبر Wi-Fi</string>
     <string name="settings_region_updates_mobile">عبر Wi-Fi وبيانات الجوال</string>
     <string name="settings_offline_places_with_downloads">تضمين الأماكن مع التنزيلات</string>
-    <string name="settings_offline_places_with_downloads_hint">يجلب تنزيل المنطقة بيانات الأماكن الخاصة بـ Vela لها أيضاً، فتظهر الأنشطة التجارية على الخريطة دون إشارة. نحو نصف غيغابايت لولاية كبيرة. إيقاف = تُبثّ الأماكن أثناء الاتصال فقط.</string>
+    <string name="settings_offline_places_with_downloads_hint">يجلب تنزيل المنطقة بيانات الأماكن الخاصة بـ Waylo لها أيضاً، فتظهر الأنشطة التجارية على الخريطة دون إشارة. نحو نصف غيغابايت لولاية كبيرة. إيقاف = تُبثّ الأماكن أثناء الاتصال فقط.</string>
     <string name="settings_offline_cached_places">الاحتفاظ بالأماكن التي عرضتها للاستخدام دون اتصال</string>
     <string name="settings_offline_cached_places_hint">كل مكان تفتحه أثناء الاتصال يُحفظ على هذا الهاتف مع ما حُمّل له (التفاصيل والمراجعات والصور التي رأيتها)، فيُفتح حتى دون إشارة. يُحتفظ بأحدث 400 مكان لمدة شهر. يؤدي «مسح السجل» و«حذف كل البيانات دون اتصال» إلى إزالتها.</string>
     <string name="settings_offline_cached_places_clear">مسح الأماكن المخزّنة مؤقتاً</string>
@@ -255,7 +255,7 @@
     <string name="settings_link_action_place">عرض المكان</string>
     <string name="settings_link_action_directions">فتح الاتجاهات</string>
     <string name="settings_link_action_start">بدء الملاحة</string>
-    <string name="settings_link_action_hint">ما يحدث حين يمرّر إليك تطبيق آخر موقعاً إلى Vela. يناسب «بدء الملاحة» تطبيقات التوصيل التي ترسل محطة تلو أخرى.</string>
+    <string name="settings_link_action_hint">ما يحدث حين يمرّر إليك تطبيق آخر موقعاً إلى Waylo. يناسب «بدء الملاحة» تطبيقات التوصيل التي ترسل محطة تلو أخرى.</string>
     <string name="settings_confirm_end_nav">السؤال قبل إنهاء الملاحة</string>
     <string name="settings_confirm_end_nav_hint">زر الرجوع أثناء القيادة يسأل دائماً أولاً. وعند تشغيل هذا الخيار يسأل زر X الأحمر أيضاً</string>
     <string name="nav_end_confirm_title">إنهاء الملاحة؟</string>
@@ -274,10 +274,10 @@
     <string name="settings_start_view_place">مكان أختاره</string>
     <string name="settings_start_view_use_current">استخدام عرض الخريطة الحالي</string>
     <string name="settings_start_view_drive">وضع القيادة</string>
-    <string name="settings_start_view_hint">موضع الخريطة عند تشغيل Vela. وضع القيادة هو الخريطة وحدها بتخطيط القيادة، لهاتف أو جهاز لوحي مثبّت. وأي رابط من تطبيق آخر يفتح على مكانه الخاص كما هو.</string>
+    <string name="settings_start_view_hint">موضع الخريطة عند تشغيل Waylo. وضع القيادة هو الخريطة وحدها بتخطيط القيادة، لهاتف أو جهاز لوحي مثبّت. وأي رابط من تطبيق آخر يفتح على مكانه الخاص كما هو.</string>
     <string name="driving_mode">وضع القيادة</string>
     <string name="driving_mode_leave">مغادرة وضع القيادة</string>
-    <string name="settings_start_view_saved">سيفتح Vela على هذا العرض.</string>
+    <string name="settings_start_view_saved">سيفتح Waylo على هذا العرض.</string>
     <string name="settings_speed_display">عرض السرعة وحدّ السرعة</string>
     <string name="settings_speed_display_hint">سرعتك والحد المعلن أثناء القيادة، على الهاتف وعلى شاشة السيارة</string>
     <string name="settings_car_speed">سرعتك على شاشة السيارة</string>
@@ -322,13 +322,13 @@
     <string name="settings_saved_places_hint">انسخ احتياطياً أماكنك المميّزة بنجمة إلى ملف، أو استعدها على جهاز آخر. يدمج الاستيراد ما في الملف مع ما لديك، ولا يستبدل أو يزيل أي شيء، كما يقرأ ملفات GPX وKML وGeoJSON المصدَّرة من تطبيقات خرائط أخرى.</string>
     <string name="settings_import_nothing_new">كل ما في هذا الملف محفوظ بالفعل.</string>
     <string name="settings_import_unreadable">تعذّر فتح هذا الملف.</string>
-    <string name="settings_import_wrong_format">لم يُعثر على أماكن في هذا الملف. يقرأ Vela ملفاته المصدَّرة وملفات GPX وKML وGeoJSON المحفوظة من تطبيقات خرائط أخرى.</string>
+    <string name="settings_import_wrong_format">لم يُعثر على أماكن في هذا الملف. يقرأ Waylo ملفاته المصدَّرة وملفات GPX وKML وGeoJSON المحفوظة من تطبيقات خرائط أخرى.</string>
     <string name="settings_import_wrong_format_named">لم يُعثر على أماكن في ملف %1$s هذا.</string>
     <string name="settings_import_no_picker">لا تتوفر أداة اختيار ملفات على هذا الجهاز، لذا لا يمكن اختيار ملف.</string>
     <string name="settings_no_saved_places">لا توجد أماكن محفوظة بعد</string>
     <string name="settings_export">تصدير</string>
     <string name="settings_import">استيراد</string>
-    <string name="settings_data_privacy_hint">يتصل Vela بنقاط Google العامة مباشرة من هذا الجهاز: دون خادم وسيط ولا حساب ولا مفتاح API. ترى Google عنوان IP واستعلامك ومنطقة الخريطة، لا هويتك.</string>
+    <string name="settings_data_privacy_hint">يتصل Waylo بنقاط Google العامة مباشرة من هذا الجهاز: دون خادم وسيط ولا حساب ولا مفتاح API. ترى Google عنوان IP واستعلامك ومنطقة الخريطة، لا هويتك.</string>
     <string name="nav_overview">نظرة عامة على المسار</string>
     <string name="settings_map_places">الأماكن على الخريطة</string>
     <string name="settings_house_numbers">أرقام المنازل</string>
@@ -339,19 +339,19 @@
     <string name="settings_show_pois">عرض الأماكن</string>
     <string name="settings_show_pois_hint">أيقونات الأنشطة التجارية والأماكن على خريطة التصفح. إيقاف = خريطة نظيفة؛ وتظل الأماكن المبحوث عنها ظاهرة.</string>
     <string name="settings_places_source">أيقونات الأماكن على الخريطة</string>
-    <string name="settings_places_source_open">بيانات Vela</string>
+    <string name="settings_places_source_open">بيانات Waylo</string>
     <string name="settings_places_source_google">Google</string>
     <string name="settings_places_source_both">كلاهما</string>
-    <string name="settings_places_source_open_hint">الأيقونات من بيانات Vela الخاصة. لا يتصل التحريك بـ Google أبداً، ويعمل دون اتصال.</string>
+    <string name="settings_places_source_open_hint">الأيقونات من بيانات Waylo الخاصة. لا يتصل التحريك بـ Google أبداً، ويعمل دون اتصال.</string>
     <string name="settings_places_source_google_hint">الأيقونات من Google. كل تحريك يرسل موضع خريطتك إلى Google، ولا يُرسم شيء دون اتصال.</string>
-    <string name="settings_places_source_both_hint">أيقونات Vela، إضافة إلى أي شيء إضافي لدى Google بعد أن تتوقف عن التحريك.</string>
+    <string name="settings_places_source_both_hint">أيقونات Waylo، إضافة إلى أي شيء إضافي لدى Google بعد أن تتوقف عن التحريك.</string>
     <string name="settings_places_source_note">يظل البحث أو الضغط على مكان يسأل Google عن الساعات والمراجعات والصور أياً كان اختيارك.</string>
     <string name="settings_places_source_more">معرفة المزيد</string>
     <string name="settings_places_source_more_credit">Overture Maps</string>
     <string name="settings_places_lookup">البحث عن الأماكن المضغوطة في Google</string>
-    <string name="settings_places_lookup_hint">الضغط على مكان يجلب ساعاته ومراجعاته وصوره من Google، ويتذكّر Vela المطابقة لتكون الضغطة التالية فورية. إيقاف = يعرض المكان المضغوط ما لدى بيانات Vela فقط (الاسم والنوع والعنوان والهاتف والموقع) ولا يصل أي شيء عن الضغطة إلى Google. ما زال البحث والاتجاهات يستخدمان Google.</string>
-    <string name="settings_places_source_more_title">مصدر بيانات الأماكن في Vela</string>
-    <string name="settings_places_source_more_body">بيانات الأماكن في Vela هي Overture Maps، وهي مجموعة بيانات مفتوحة للأنشطة التجارية تشارك في صيانتها Meta وMicrosoft وجهات أخرى، إضافة إلى AllThePlaces الذي يجمع السلاسل التجارية من محدّدات مواقع متاجرها، مع تصحيح OpenStreetMap لموضع كل متجر فعلياً. يدمج Vela المصادر الثلاثة في بلاط الخريطة ويقدّمها من مستودعه على GitHub، فلا يصل شيء مما تتصفحه إلى Meta أو Google.\n\nتُبثّ البيانات أثناء التصفح وتُنزَّل مع المنطقة للاستخدام دون اتصال. وحيث لا تتوفر لدى Vela بيانات لمنطقة ما، تعود الخريطة إلى Google.\n\nيأتي البحث وتفاصيل الأماكن والساعات والمراجعات والصور دائماً من Google، أياً كان الخيار الذي تختاره.</string>
+    <string name="settings_places_lookup_hint">الضغط على مكان يجلب ساعاته ومراجعاته وصوره من Google، ويتذكّر Waylo المطابقة لتكون الضغطة التالية فورية. إيقاف = يعرض المكان المضغوط ما لدى بيانات Waylo فقط (الاسم والنوع والعنوان والهاتف والموقع) ولا يصل أي شيء عن الضغطة إلى Google. ما زال البحث والاتجاهات يستخدمان Google.</string>
+    <string name="settings_places_source_more_title">مصدر بيانات الأماكن في Waylo</string>
+    <string name="settings_places_source_more_body">بيانات الأماكن في Waylo هي Overture Maps، وهي مجموعة بيانات مفتوحة للأنشطة التجارية تشارك في صيانتها Meta وMicrosoft وجهات أخرى، إضافة إلى AllThePlaces الذي يجمع السلاسل التجارية من محدّدات مواقع متاجرها، مع تصحيح OpenStreetMap لموضع كل متجر فعلياً. يدمج Waylo المصادر الثلاثة في بلاط الخريطة ويقدّمها من مستودعه على GitHub، فلا يصل شيء مما تتصفحه إلى Meta أو Google.\n\nتُبثّ البيانات أثناء التصفح وتُنزَّل مع المنطقة للاستخدام دون اتصال. وحيث لا تتوفر لدى Waylo بيانات لمنطقة ما، تعود الخريطة إلى Google.\n\nيأتي البحث وتفاصيل الأماكن والساعات والمراجعات والصور دائماً من Google، أياً كان الخيار الذي تختاره.</string>
     <string name="settings_show_civic">الحدائق والمدارس والأماكن العامة</string>
     <string name="settings_show_civic_hint">الطبقة غير التجارية من أيقونات الأماكن. إيقافه يعرض الأنشطة التجارية فقط.</string>
     <string name="settings_show_transit_stops">محطات النقل العام</string>
@@ -362,7 +362,7 @@
     <string name="settings_poi_size_large">كبير</string>
     <string name="settings_poi_icon_size_hint">الحجم الصغير يناسب الشاشات منخفضة الدقة مثل شاشات السيارات، حيث تبدو الأيقونات الافتراضية كبيرة أكثر من اللازم.</string>
     <string name="settings_live_rechecks">إعادة فحص حركة المرور المباشرة أثناء الملاحة</string>
-    <string name="settings_live_rechecks_hint">كل بضع دقائق أثناء القيادة، يسأل Vela جوجل عن حركة المرور الحديثة انطلاقاً من موقعك الحالي. هذا ما يتيح عروض المسارات الأسرع ووقت الوصول المباشر، لكنه يخبر Google أيضاً بموضعك على المسار. عند الإيقاف: يُعاد حساب المسار عند خروجك عنه كالمعتاد.</string>
+    <string name="settings_live_rechecks_hint">كل بضع دقائق أثناء القيادة، يسأل Waylo جوجل عن حركة المرور الحديثة انطلاقاً من موقعك الحالي. هذا ما يتيح عروض المسارات الأسرع ووقت الوصول المباشر، لكنه يخبر Google أيضاً بموضعك على المسار. عند الإيقاف: يُعاد حساب المسار عند خروجك عنه كالمعتاد.</string>
     <string name="nav_edit_route">تعديل المسار</string>
     <string name="nav_edit_route_hint">إضافة محطة في الطريق</string>
     <string name="nav_bar_to_stop">إلى %1$s</string>
@@ -395,13 +395,13 @@
     <string name="google_usage_kind_lists">القوائم المشتركة</string>
     <string name="google_usage_kind_page">صفحات Google (%1$s)</string>
     <string name="google_usage_kind_other">أخرى</string>
-    <string name="settings_block_google_telemetry_hint">تُبلّغ صفحات Google عن نفسها: نبضات تسجيل واستدعاءات خلفية من شريط الحساب. لا شيء مما يعرضه Vela يحتاج إليها. تُرسل افتراضياً لأن المتصفح الذي لا يرسلها يبدو أقل شبهاً بالبشر في نظر Google، وهذا جزء مما يحدد ما إذا كانت جلستك ستحصل على العرض المحدود. شغّل هذا الخيار للرد عليها على الهاتف بدلاً من ذلك.</string>
+    <string name="settings_block_google_telemetry_hint">تُبلّغ صفحات Google عن نفسها: نبضات تسجيل واستدعاءات خلفية من شريط الحساب. لا شيء مما يعرضه Waylo يحتاج إليها. تُرسل افتراضياً لأن المتصفح الذي لا يرسلها يبدو أقل شبهاً بالبشر في نظر Google، وهذا جزء مما يحدد ما إذا كانت جلستك ستحصل على العرض المحدود. شغّل هذا الخيار للرد عليها على الهاتف بدلاً من ذلك.</string>
     <string name="settings_google_session_limited">تمنح Google هذا الهاتف حالياً عرضاً محدوداً: صور أقل في كل صفحة، وغياب أوقات الذروة في بعض الأماكن، و«مزيد من المراجعات» لا يحمّل شيئاً. يزول ذلك عادةً من تلقاء نفسه بعد فترة. والجلسة الجديدة تبدأ محدودة أيضاً، لذا نادراً ما يفيد بدء جلسة جديدة.</string>
     <string name="place_limited_view">تعرض Google عرضاً محدوداً الآن، لذا قد تغيب أوقات الذروة ومزيد من المراجعات هنا.</string>
-    <string name="settings_google_session_hint">تتذكّر Google هذا الهاتف عبر ملف تعريف ارتباط، فيمكن ربط ما يبحث عنه Vela طوال بقائه، دون أي اسم أو حساب. بدء جلسة جديدة يحدّ من ذلك. والجلسة الجديدة تحصل على عرض أقصر من Google لفترة (مراجعات أقل، وغياب أوقات الذروة في بعض الأماكن).</string>
+    <string name="settings_google_session_hint">تتذكّر Google هذا الهاتف عبر ملف تعريف ارتباط، فيمكن ربط ما يبحث عنه Waylo طوال بقائه، دون أي اسم أو حساب. بدء جلسة جديدة يحدّ من ذلك. والجلسة الجديدة تحصل على عرض أقصر من Google لفترة (مراجعات أقل، وغياب أوقات الذروة في بعض الأماكن).</string>
     <string name="settings_google_session_week">بدء جلسة جديدة كل أسبوع (موصى به)</string>
     <string name="settings_google_session_day">بدء جلسة جديدة كل يوم</string>
-    <string name="settings_google_session_launch">بدء جلسة جديدة عند كل فتح لـ Vela (الأكثر خصوصية)</string>
+    <string name="settings_google_session_launch">بدء جلسة جديدة عند كل فتح لـ Waylo (الأكثر خصوصية)</string>
     <string name="settings_google_session_launch_hint">كلفة هذا الخيار: تعامل Google كل جلسة كزائر جديد، فتحصل غالباً على عرضها الأقصر (نحو خمس مراجعات، وغياب أوقات الذروة كثيراً). تُحمَّل الأماكن أبطأ قليلاً وتستهلك بيانات أكثر، لأن أولى إجابات الجلسة الجديدة تأتي مقتطعة فيُعاد طلبها. يعيد Android تشغيل التطبيقات في الخلفية، فقد يعني هذا عدة جلسات جديدة في اليوم، وقد يستدعي كثرة الزوار الجدد من اتصال واحد مزيداً من فحوص الروبوتات لدى Google. وتظل Google ترى عنوان IP لديك، وهو يربط الجلسات من اتصال واحد خلال فترة قصيرة على أي حال.</string>
     <string name="settings_google_session_now">بدء جلسة جديدة الآن</string>
     <string name="settings_google_session_done">بدأت جلسة Google جديدة</string>
@@ -412,10 +412,10 @@
     <string name="settings_clear_history_confirm_body">ستُحذف عمليات البحث الأخيرة والأماكن الأخيرة وسجل المواقف وكل رحلة مسجّلة. لا يمكن التراجع عن ذلك. لا تتأثر الأماكن والقوائم المحفوظة.</string>
     <string name="settings_clear_history_done">تم مسح السجل</string>
     <string name="settings_privacy_button">البيانات التي تتلقاها Google</string>
-    <string name="settings_google_free">استخدام Vela دون Google</string>
-    <string name="settings_google_free_hint">لا يُرسل شيء إلى Google. يستخدم البحث OpenStreetMap ومناطقك المنزّلة، وتأتي الأماكن على الخريطة من بيانات Vela الخاصة، وتأتي المسارات من الموجّه المفتوح دون حركة مرور مباشرة. ستفقد المراجعات والصور وساعات عمل Google وأوقات الوصول المباشرة وStreet View واللقطات القريبة بالأقمار الصناعية. تأتي اتجاهات النقل العام من المخطِّط المفتوح. تظل المناطق المنزّلة تعمل بالكامل دون اتصال.</string>
+    <string name="settings_google_free">استخدام Waylo دون Google</string>
+    <string name="settings_google_free_hint">لا يُرسل شيء إلى Google. يستخدم البحث OpenStreetMap ومناطقك المنزّلة، وتأتي الأماكن على الخريطة من بيانات Waylo الخاصة، وتأتي المسارات من الموجّه المفتوح دون حركة مرور مباشرة. ستفقد المراجعات والصور وساعات عمل Google وأوقات الوصول المباشرة وStreet View واللقطات القريبة بالأقمار الصناعية. تأتي اتجاهات النقل العام من المخطِّط المفتوح. تظل المناطق المنزّلة تعمل بالكامل دون اتصال.</string>
     <string name="settings_diagnostics">التشخيص</string>
-    <string name="settings_diagnostics_hint">معطّل افتراضياً. عند تشغيله يحتفظ Vela بسجل محلي قصير يمكنك تصديره وتسليمه لمطوّر. لا يُرفع شيء، وإيقافه يمحو السجل.</string>
+    <string name="settings_diagnostics_hint">معطّل افتراضياً. عند تشغيله يحتفظ Waylo بسجل محلي قصير يمكنك تصديره وتسليمه لمطوّر. لا يُرفع شيء، وإيقافه يمحو السجل.</string>
     <string name="settings_share_diagnostics">مشاركة التشخيص</string>
     <string name="settings_diag_nothing">لم يُسجَّل شيء بعد. استخدم التطبيق ثم صدّر.</string>
     <string name="settings_diag_export">تصدير جلسة التصحيح</string>
@@ -458,30 +458,30 @@
     <string name="settings_trip_batch_none">كل الرحلات المحددة أقصر من مسافة الاقتطاع، فلا يتبقى ما يُشارك. جرّب مسافة أصغر.</string>
     <string name="settings_trip_batch_confirm">مشاركة ملف zip</string>
     <string name="settings_name_trips">تسمية كل رحلة عند حفظها</string>
-    <string name="settings_name_trips_hint">بعد انتهاء رحلة قيادة مسجّلة، يسألك Vela عن الاسم الذي تريده لها. معطّل افتراضياً؛ ويمكنك دائماً إعادة تسمية الرحلة لاحقاً من القائمة أدناه.</string>
+    <string name="settings_name_trips_hint">بعد انتهاء رحلة قيادة مسجّلة، يسألك Waylo عن الاسم الذي تريده لها. معطّل افتراضياً؛ ويمكنك دائماً إعادة تسمية الرحلة لاحقاً من القائمة أدناه.</string>
     <string name="trip_name_prompt_title">سمِّ هذه الرحلة</string>
     <string name="trip_name_prompt_save">حفظ الاسم</string>
     <string name="trip_name_prompt_skip">ليس الآن</string>
     <string name="settings_no_trips_hint">لا توجد رحلات مسجّلة بعد. تنقّل إلى مكان ما والخيار مفعّل وستظهر هنا لإعادة تشغيلها.</string>
     <string name="settings_trip_consent_title">حفظ رحلاتك؟</string>
-    <string name="settings_trip_consent_body">سيسجّل Vela أثر GPS لكل ملاحة على هذا الهاتف، ليمكن إعادة تشغيل الرحلة للاختبار دون قيادتها مجدداً. هذا أكثر كشفاً من التشخيص (إذ يلتقط مساراتك بدقة) لكنه يبقى على الهاتف ولا يُرفع أبداً. يمكنك إيقافه في أي وقت.</string>
+    <string name="settings_trip_consent_body">سيسجّل Waylo أثر GPS لكل ملاحة على هذا الهاتف، ليمكن إعادة تشغيل الرحلة للاختبار دون قيادتها مجدداً. هذا أكثر كشفاً من التشخيص (إذ يلتقط مساراتك بدقة) لكنه يبقى على الهاتف ولا يُرفع أبداً. يمكنك إيقافه في أي وقت.</string>
     <string name="settings_turn_on">تشغيل</string>
     <string name="settings_cancel">إلغاء</string>
-    <string name="settings_crash_hint">أُغلق Vela بشكل غير متوقع مؤخراً. يساعد إرسال تقرير التعطل (تتبّع المكدّس) في إصلاح المشكلة. وهو ملف نصي عادي لا يتضمن بيانات شخصية.</string>
+    <string name="settings_crash_hint">أُغلق Waylo بشكل غير متوقع مؤخراً. يساعد إرسال تقرير التعطل (تتبّع المكدّس) في إصلاح المشكلة. وهو ملف نصي عادي لا يتضمن بيانات شخصية.</string>
     <string name="settings_crash_export">تصدير تقرير التعطل</string>
     <string name="settings_crash_discard">تجاهل</string>
     <string name="settings_crash_diag_offer">التشخيص معطّل، لذا لم يُسجَّل شيء قبل هذا التعطل. شغّله لالتقاط مزيد من التفاصيل إن تكرر الأمر.</string>
     <string name="settings_crash_enable_diag">تشغيل التشخيص</string>
     <string name="settings_diag_consent_title">تشغيل التشخيص؟</string>
-    <string name="settings_diag_consent_body">سيحتفظ Vela بسجل محلي قصير لعمليات بحثك ومساراتك وأي أخطاء. لا يغادر الهاتف أبداً ما لم تضغط «تصدير» وتختر وجهة إرساله. أوقفه في أي وقت لمحو السجل.</string>
+    <string name="settings_diag_consent_body">سيحتفظ Waylo بسجل محلي قصير لعمليات بحثك ومساراتك وأي أخطاء. لا يغادر الهاتف أبداً ما لم تضغط «تصدير» وتختر وجهة إرساله. أوقفه في أي وقت لمحو السجل.</string>
     <string name="settings_about">حول</string>
-    <string name="settings_about_hint">Vela عميل خرائط منزوع من Google: بلاط مفتوح للخريطة الأساسية، وبيانات Google المجموعة للأماكن والتوجيه وأوقات الوصول المراعية لحركة المرور، وصوت Piper يعمل على الهاتف. رخصة GPLv3. لا يتطلب Play Services.</string>
+    <string name="settings_about_hint">Waylo عميل خرائط منزوع من Google: بلاط مفتوح للخريطة الأساسية، وبيانات Google المجموعة للأماكن والتوجيه وأوقات الوصول المراعية لحركة المرور، وصوت Piper يعمل على الهاتف. رخصة GPLv3. لا يتطلب Play Services.</string>
     <string name="settings_support">الدعم</string>
-    <string name="settings_support_hint">Vela مجاني وخالٍ من الإعلانات. إذا أصبح مفيداً لك، فإن التبرع يساعد على استمرار التطوير. اختياري تماماً.</string>
-    <string name="settings_support_button">ادعم Vela</string>
+    <string name="settings_support_hint">Waylo مجاني وخالٍ من الإعلانات. إذا أصبح مفيداً لك، فإن التبرع يساعد على استمرار التطوير. اختياري تماماً.</string>
+    <string name="settings_support_button">ادعم Waylo</string>
     <string name="donate_no_browser">لا يوجد متصفح مثبّت لفتح صفحة التبرع</string>
     <string name="settings_version">الإصدار</string>
-    <string name="settings_version_line">Vela %1$s (الإصدار الداخلي %2$d)</string>
+    <string name="settings_version_line">Waylo %1$s (الإصدار الداخلي %2$d)</string>
     <string name="settings_installer_play">ثُبّت بواسطة %1$s. هذا التثبيت مهيّأ لـ Android Auto؛ وسيؤدي التحديث من داخل التطبيق إلى إبطال ذلك، لذا حدّث عبر أداة التثبيت نفسها.</string>
     <string name="settings_installer_started_by">بدأ التثبيتَ %1$s، وهذا ما تتحقق منه إصدارات Android Auto الأحدث.</string>
     <string name="settings_installer_none">تثبيت يدوي (لا يوجد مثبّت مسجّل). لن يعرض Android Auto هذا التثبيت.</string>
@@ -497,7 +497,7 @@
     <string name="settings_voice_show_less">عرض أقل</string>
     <string name="settings_voice_this_voice">هذا الصوت</string>
     <string name="settings_voice_remove_title">إزالة %1$s؟</string>
-    <string name="settings_voice_remove_body">هذا هو صوت Vela الوحيد لديك. ستعود الإرشادات الصوتية إلى محرّك تحويل النص إلى كلام في النظام (أو تصمت إذا لم يكن هناك محرّك مثبّت) إلى أن تنزّل صوتاً آخر.</string>
+    <string name="settings_voice_remove_body">هذا هو صوت Waylo الوحيد لديك. ستعود الإرشادات الصوتية إلى محرّك تحويل النص إلى كلام في النظام (أو تصمت إذا لم يكن هناك محرّك مثبّت) إلى أن تنزّل صوتاً آخر.</string>
     <string name="settings_voice_remove">إزالة</string>
     <string name="settings_voice_gender_female">أنثى</string>
     <string name="settings_voice_gender_male">ذكر</string>
@@ -729,10 +729,10 @@
     <string name="mapscreen_your_destination">وجهتك</string>
     <string name="root_not_now">ليس الآن</string>
     <string name="root_voice_title">صوت الملاحة المنطوق</string>
-    <string name="root_voice_body_intro">يعمل صوت Vela الخاص بالكامل على هاتفك: إرشادات منطوقة طبيعية، دون حساب ودون تطبيق إضافي. موصى به، تنزيل لمرة واحدة بحجم %1$d ميغابايت.</string>
+    <string name="root_voice_body_intro">يعمل صوت Waylo الخاص بالكامل على هاتفك: إرشادات منطوقة طبيعية، دون حساب ودون تطبيق إضافي. موصى به، تنزيل لمرة واحدة بحجم %1$d ميغابايت.</string>
     <string name="root_voice_body_system">تفضّل عدم التنزيل؟ استخدم صوتاً موجوداً على هاتفك.</string>
     <string name="root_voice_body_outro">غيّره في أي وقت من الإعدادات ← الصوت.</string>
-    <string name="root_voice_download">تنزيل صوت Vela</string>
+    <string name="root_voice_download">تنزيل صوت Waylo</string>
     <string name="root_voice_use_system">استخدام صوت النظام</string>
     <string name="nav_maneuver_continue">تابع</string>
     <string name="nav_gps_lost">جارٍ البحث عن إشارة GPS…</string>
@@ -755,7 +755,7 @@
     <string name="steps_continue">تابع</string>
     <string name="welcome_tagline">خرائط وملاحة، منزوعة من Google.</string>
     <string name="welcome_feature_no_tracking_title">بلا تتبّع</string>
-    <string name="welcome_feature_private_body">دون حساب ولا إعلانات ولا تحليلات ولا خادم تابع لـ Vela.</string>
+    <string name="welcome_feature_private_body">دون حساب ولا إعلانات ولا تحليلات ولا خادم تابع لـ Waylo.</string>
     <string name="welcome_feature_places_title">أماكن ومسارات حقيقية</string>
     <string name="welcome_feature_places_body">بحث مباشر ومراجعات وصور ونقل عام واتجاهات تراعي حركة المرور.</string>
     <string name="welcome_feature_open_source_title">مجاني ومفتوح المصدر</string>
@@ -763,7 +763,7 @@
     <string name="welcome_get_started">ابدأ</string>
     <string name="welcome_continue">متابعة</string>
     <string name="welcome_cameras_title">كاميرات اللوحات</string>
-    <string name="welcome_cameras_intro">تشير هذه الشارة إلى كاميرا Flock أو أي قارئ آخر للوحات السيارات على الخريطة. يمكن لـ Vela أيضاً:</string>
+    <string name="welcome_cameras_intro">تشير هذه الشارة إلى كاميرا Flock أو أي قارئ آخر للوحات السيارات على الخريطة. يمكن لـ Waylo أيضاً:</string>
     <string name="camera_badge_plate">علامة كاميرا لوحات السيارات</string>
     <string name="camera_badge_speed">علامة كاميرا السرعة</string>
     <string name="welcome_cameras_avoid">تجنّبها في المسار</string>
@@ -783,9 +783,9 @@
     <string name="settings_whatsnew">ما الجديد في هذا الإصدار</string>
     <string name="settings_whatsnew_hint">ملاحظات الإصدار للنسخة التي تستخدمها.</string>
     <string name="whatsnew_show_after_updates">عرض ما الجديد بعد التحديثات</string>
-    <string name="welcome_donate_title">هل يعجبك Vela؟</string>
-    <string name="welcome_donate_body">Vela مجاني وخالٍ من الإعلانات، ويُبنى بإمكانات متواضعة. إذا أصبح مفيداً لك، فإن تبرعاً صغيراً لمرة واحدة يساعد على استمراره. اختياري تماماً، وهذه هي المرة الوحيدة التي سيُطلب فيها ذلك. وهناك دائماً خيار «الدعم» في الإعدادات أيضاً.</string>
-    <string name="welcome_donate_confirm">ادعم Vela</string>
+    <string name="welcome_donate_title">هل يعجبك Waylo؟</string>
+    <string name="welcome_donate_body">Waylo مجاني وخالٍ من الإعلانات، ويُبنى بإمكانات متواضعة. إذا أصبح مفيداً لك، فإن تبرعاً صغيراً لمرة واحدة يساعد على استمراره. اختياري تماماً، وهذه هي المرة الوحيدة التي سيُطلب فيها ذلك. وهناك دائماً خيار «الدعم» في الإعدادات أيضاً.</string>
+    <string name="welcome_donate_confirm">ادعم Waylo</string>
     <string name="welcome_donate_dismiss">لاحقاً</string>
     <string name="search_close_cd">إغلاق البحث</string>
     <string name="search_fill_cd">وضع في مربع البحث</string>
@@ -832,17 +832,17 @@
     <string name="mapvm_replaying">جارٍ إعادة تشغيل %1$s…</string>
     <string name="replay_play">تشغيل</string>
     <string name="replay_pause">إيقاف مؤقت</string>
-    <string name="mapvm_export_saved_subject">أماكن Vela المحفوظة (%1$d)</string>
+    <string name="mapvm_export_saved_subject">أماكن Waylo المحفوظة (%1$d)</string>
     <string name="mapvm_export_saved_chooser">تصدير الأماكن المحفوظة</string>
-    <string name="mapvm_export_trip_subject">رحلة Vela: %1$s (%2$d نقطة)</string>
-    <string name="mapvm_export_trips_subject">رحلات Vela: %1$d رحلة قيادة (%2$d نقطة)</string>
-    <string name="mapvm_export_trip_scrubbed_subject">رحلة Vela: %1$d نقطة، مع اقتطاع الطرفين</string>
+    <string name="mapvm_export_trip_subject">رحلة Waylo: %1$s (%2$d نقطة)</string>
+    <string name="mapvm_export_trips_subject">رحلات Waylo: %1$d رحلة قيادة (%2$d نقطة)</string>
+    <string name="mapvm_export_trip_scrubbed_subject">رحلة Waylo: %1$d نقطة، مع اقتطاع الطرفين</string>
     <string name="mapvm_share_trip_chooser">مشاركة الرحلة</string>
     <string name="mapvm_voice_sample">بعد ربع ميل، انعطف يميناً إلى شارع Main.</string>
     <string name="mapvm_not_enough_space">لا توجد مساحة فارغة كافية لـ %1$s (%2$d ميغابايت)</string>
     <string name="mapvm_voice_downloaded">تم تنزيل %1$s</string>
     <string name="mapvm_voice_download_failed">فشل تنزيل %1$s</string>
-    <string name="mapvm_vela_voice_removed">تمت إزالة صوت Vela</string>
+    <string name="mapvm_waylo_voice_removed">تمت إزالة صوت Waylo</string>
     <string name="mapvm_opening_installer">جارٍ فتح المثبّت لـ %1$s…</string>
     <string name="mapvm_pan_to_area_first">افتح الخريطة وحرّكها إلى منطقة أولاً</string>
     <string name="mapvm_offline_routing_ready">التوجيه دون اتصال جاهز: %1$s</string>
@@ -863,18 +863,18 @@
     <string name="navservice_notif_action_end">إنهاء</string>
     <string name="navservice_channel_name">الملاحة</string>
     <string name="navservice_channel_turns_name">تنبيهات الانعطاف المنطوقة</string>
-    <string name="update_available_title">يتوفر Vela %1$s</string>
+    <string name="update_available_title">يتوفر Waylo %1$s</string>
     <string name="update_downloading">جارٍ التنزيل… %1$d%%</string>
     <string name="update_later">ليس الآن</string>
     <string name="update_install">تحديث</string>
     <string name="update_download_failed">فشل تنزيل التحديث. حاول مرة أخرى لاحقاً.</string>
-    <string name="update_car_title">سيؤدي هذا التحديث إلى إسقاط Vela من Android Auto</string>
-    <string name="update_car_body">ثُبّت Vela بالطريقة التي يقبلها Android Auto. تثبيت هذا التحديث من هنا يستبدل ذلك، وستتوقف السيارة عن إدراج Vela إلى أن تثبّت الملف بالأداة التي استخدمتها في المرة الأولى (AAEnabler أو King Installer).\n\nاحفظ الملف وثبّته بتلك الطريقة لإبقاء السيارة تعمل.</string>
+    <string name="update_car_title">سيؤدي هذا التحديث إلى إسقاط Waylo من Android Auto</string>
+    <string name="update_car_body">ثُبّت Waylo بالطريقة التي يقبلها Android Auto. تثبيت هذا التحديث من هنا يستبدل ذلك، وستتوقف السيارة عن إدراج Waylo إلى أن تثبّت الملف بالأداة التي استخدمتها في المرة الأولى (AAEnabler أو King Installer).\n\nاحفظ الملف وثبّته بتلك الطريقة لإبقاء السيارة تعمل.</string>
     <string name="update_car_save">حفظ الملف</string>
     <string name="update_car_anyway">التحديث على أي حال</string>
     <string name="download_notif_channel">التنزيلات</string>
     <string name="download_notif_title">جارٍ تنزيل %1$s</string>
-    <string name="download_label_update">تحديث Vela</string>
+    <string name="download_label_update">تحديث Waylo</string>
     <string name="download_label_map_data">بيانات الخريطة</string>
     <string name="download_label_offline_places">الأماكن دون اتصال</string>
     <string name="map_area_downloading">جارٍ حفظ هذه المنطقة للاستخدام دون اتصال · %1$d%%</string>
@@ -954,8 +954,8 @@
     <string name="car_setting_avoid_ferries">تجنّب العبّارات</string>
     <string name="car_setting_traffic">حركة المرور</string>
     <string name="car_location_title">السماح بالوصول إلى الموقع</string>
-    <string name="car_location_body">يحتاج Vela إليه لعرض موضعك وتقديم الاتجاهات</string>
-    <string name="car_location_denied">الموقع معطّل. فعّله لـ Vela من إعدادات هاتفك.</string>
+    <string name="car_location_body">يحتاج Waylo إليه لعرض موضعك وتقديم الاتجاهات</string>
+    <string name="car_location_denied">الموقع معطّل. فعّله لـ Waylo من إعدادات هاتفك.</string>
     <string name="car_no_route">لا يتوفر مسار. تحقق من موقعك.</string>
     <string name="map_parking_saved">تم حفظ موقف السيارة</string>
     <string name="map_parking_no_fix">بانتظار تحديد الموقع</string>
@@ -967,7 +967,7 @@
     <string name="map_parking_earlier">مواقف سابقة</string>
     <string name="map_parking_clear">مسح الموقف</string>
     <string name="map_parking_moved">تم نقل الموقف إلى هنا</string>
-    <string name="map_import_needs_google">لا يمكن فتح قائمة Google Maps مشتركة بينما يعمل Vela دون Google.</string>
+    <string name="map_import_needs_google">لا يمكن فتح قائمة Google Maps مشتركة بينما يعمل Waylo دون Google.</string>
     <string name="map_link_needs_google">خيار «فتح روابط Google Maps المشتركة» معطّل في الإعدادات ← الخصوصية.</string>
     <string name="map_link_unreadable">تعذّر فتح ذلك الرابط.</string>
     <string name="settings_performance">الأداء</string>
@@ -976,9 +976,9 @@
     <string name="settings_full_place_load">تحميل كل الصور والمراجعات</string>
     <string name="settings_full_place_load_hint">عند الإيقاف، يحمّل المكان أولى صوره وأول صفحة من المراجعات، ويجلب «مزيد من الصور» أو «كل المراجعات» الباقي. عند التشغيل، يستعرض كل مكان تفتحه معرض صوره بالكامل وما يصل إلى 50 مراجعة، وهذا أبطأ ويرسل إلى Google طلبات أكثر بكثير.</string>
     <string name="settings_speech_preload">تحميل البحث الصوتي عند البدء</string>
-    <string name="settings_speech_preload_hint">يحمّل نموذج البحث الصوتي عند فتح Vela، فيصغي الميكروفون فوراً. يستهلك نحو 300 ميغابايت إلى أن تمر دقيقتان من الهدوء. عند الإيقاف، يُحمَّل عند الضغط على مربع البحث. مفعّل افتراضياً على الهواتف ذات ذاكرة نحو 8 غيغابايت أو أكثر.</string>
+    <string name="settings_speech_preload_hint">يحمّل نموذج البحث الصوتي عند فتح Waylo، فيصغي الميكروفون فوراً. يستهلك نحو 300 ميغابايت إلى أن تمر دقيقتان من الهدوء. عند الإيقاف، يُحمَّل عند الضغط على مربع البحث. مفعّل افتراضياً على الهواتف ذات ذاكرة نحو 8 غيغابايت أو أكثر.</string>
     <string name="settings_google_uses">ما تُستخدم Google من أجله</string>
-    <string name="settings_google_uses_hint">أوقف خياراً وسيكفّ Vela عن طلبه من Google. وكل مفتاح موجود أيضاً في صفحته الخاصة.</string>
+    <string name="settings_google_uses_hint">أوقف خياراً وسيكفّ Waylo عن طلبه من Google. وكل مفتاح موجود أيضاً في صفحته الخاصة.</string>
     <string name="settings_google_uses_traffic">حركة المرور والمسارات</string>
     <string name="settings_google_free_links">فتح روابط Google Maps المشتركة</string>
     <string name="settings_maps_links">روابط Google Maps</string>
@@ -993,11 +993,11 @@
     <string name="settings_storage_no_space">لا توجد مساحة كافية هناك: تحتاج البيانات دون اتصال إلى نحو %1$d ميغابايت.</string>
     <string name="settings_storage_moved">تم نقل البيانات دون اتصال.</string>
     <string name="settings_storage_failed">لم يكتمل النقل؛ وتبقى البيانات دون اتصال حيث كانت.</string>
-    <string name="settings_maps_links_on">تُفتح روابط Google Maps في Vela.</string>
-    <string name="settings_maps_links_partial">تُفتح بعض روابط Google Maps في Vela. أضف الباقي ضمن «الفتح افتراضياً» لتُفتح كل أنواع الروابط.</string>
-    <string name="settings_maps_links_off">يفتح Android روابط Google Maps في المتصفح. لفتحها في Vela، فعّل «فتح الروابط المدعومة» وأضف الروابط ضمن «الفتح افتراضياً».</string>
+    <string name="settings_maps_links_on">تُفتح روابط Google Maps في Waylo.</string>
+    <string name="settings_maps_links_partial">تُفتح بعض روابط Google Maps في Waylo. أضف الباقي ضمن «الفتح افتراضياً» لتُفتح كل أنواع الروابط.</string>
+    <string name="settings_maps_links_off">يفتح Android روابط Google Maps في المتصفح. لفتحها في Waylo، فعّل «فتح الروابط المدعومة» وأضف الروابط ضمن «الفتح افتراضياً».</string>
     <string name="settings_maps_links_open">إعدادات «الفتح افتراضياً»</string>
-    <string name="settings_google_free_links_hint">الرابط القصير من Google Maps (maps.app.goo.gl) لا يبيّن وجهته. عند تفعيل هذا الخيار، يسأل Vela مُقصِّر روابط Google مرة واحدة دون ملفات تعريف ارتباط، ثم يفتح المكان بالمصادر المفتوحة. أما روابط google.com/maps الكاملة فتُفتح دون سؤال. وتظل القوائم المشتركة بحاجة إلى Google.</string>
+    <string name="settings_google_free_links_hint">الرابط القصير من Google Maps (maps.app.goo.gl) لا يبيّن وجهته. عند تفعيل هذا الخيار، يسأل Waylo مُقصِّر روابط Google مرة واحدة دون ملفات تعريف ارتباط، ثم يفتح المكان بالمصادر المفتوحة. أما روابط google.com/maps الكاملة فتُفتح دون سؤال. وتظل القوائم المشتركة بحاجة إلى Google.</string>
     <string name="map_mymap_failed">تعذّر فتح تلك الخريطة المخصصة. ربما لم تُشارَك عبر رابط.</string>
     <string name="map_import_failed">تعذّر استيراد تلك القائمة. تحقق من الرابط وحاول مجدداً.</string>
     <string name="place_clear_parking">مسح الموقف</string>
@@ -1080,8 +1080,8 @@
     <string name="settings_voice_volume_normal">عادي</string>
     <string name="settings_voice_volume_louder">أعلى</string>
     <string name="settings_voice_volume_loudest">الأعلى</string>
-    <string name="settings_voice_volume_hint">مدى ارتفاع الإرشادات المنطوقة فوق الوسائط التي تشغّلها. المستويات الأعلى تنطبق على صوت Vela؛ أما أصوات النظام فلا يمكن إلا خفضها.</string>
-    <string name="place_avoid_not_honored">قد تستمر هذه المسارات في استخدام طرق ذات رسوم أو طرق سريعة أو عبّارات: تعذّر الوصول إلى Google لتوجيهك بعيداً عنها، والموجّه المفتوح لا يستطيع ذلك. في المنطقة المنزّلة يتجنبها Vela دون اتصال.</string>
+    <string name="settings_voice_volume_hint">مدى ارتفاع الإرشادات المنطوقة فوق الوسائط التي تشغّلها. المستويات الأعلى تنطبق على صوت Waylo؛ أما أصوات النظام فلا يمكن إلا خفضها.</string>
+    <string name="place_avoid_not_honored">قد تستمر هذه المسارات في استخدام طرق ذات رسوم أو طرق سريعة أو عبّارات: تعذّر الوصول إلى Google لتوجيهك بعيداً عنها، والموجّه المفتوح لا يستطيع ذلك. في المنطقة المنزّلة يتجنبها Waylo دون اتصال.</string>
     <string name="settings_lists_export_hint">انسخ قوائمك احتياطياً إلى ملف، أو استعدها على جهاز آخر. يقبل الاستيراد أيضاً قائمة من مجلد «Saved» في Google Takeout (ملف CSV لكل قائمة)؛ ويُبحث عن كل مكان فيها، لذا يتطلب اتصالاً.</string>
     <string name="settings_lists_imported">تم استيراد %1$d قائمة</string>
     <string name="settings_takeout_list_default">قائمة مستوردة</string>
@@ -1122,9 +1122,9 @@
     <string name="settings_takeout_busy">لا تزال إحدى القوائم قيد الاستيراد، فانتظر انتهاءها أولاً.</string>
     <string name="settings_places_imported">تم استيراد %1$d مكان</string>
     <string name="settings_no_lists">لا توجد قوائم لتصديرها بعد</string>
-    <string name="mapvm_export_lists_subject">قوائم Vela (%1$d)</string>
+    <string name="mapvm_export_lists_subject">قوائم Waylo (%1$d)</string>
     <string name="mapvm_export_lists_chooser">تصدير القوائم</string>
-    <string name="mapvm_export_list_subject">قائمة Vela: %1$s</string>
+    <string name="mapvm_export_list_subject">قائمة Waylo: %1$s</string>
     <string name="mapvm_export_list_chooser">تصدير القائمة</string>
     <string name="lists_empty_hint">لا توجد قوائم بعد. اضغط «جديدة» لإنشاء واحدة، أو احفظ مكاناً من صفحته.</string>
     <plurals name="lists_place_count">

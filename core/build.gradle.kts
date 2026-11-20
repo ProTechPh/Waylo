@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "app.vela.core"
+    namespace = "app.waylo.core"
     testOptions {
         // The on-demand obf harnesses (ObfSpeedLimitProbeTest, ObfRoadNamesProbeTest) run the real
         // engine on the JVM, and its android.util.Log lines would otherwise throw "not mocked".
@@ -31,7 +31,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.rhino.runtime)
     // OsmAnd obf routing engine (ObfRouteEngine): the router + binary obf reader as plain Java
-    // jars, vendored from OsmAndMapCreator's lib (GPLv3, same license as Vela). Gitignored like
+    // jars, vendored from OsmAndMapCreator's lib (GPLv3, same license as Waylo). Gitignored like
     // the sherpa AAR - CI fetches them from the `obf-runtime` infra release; locally copy them in
     // (see CLAUDE.md). Everything else the router needs is already on Android (org.json,
     // kotlin-stdlib) or in this module (kotlinx-serialization). commons-logging + kxml2 are the
@@ -57,23 +57,23 @@ dependencies {
 }
 
 // Forward the trip-audit harness property into the TEST JVM (see NavReplayTest.auditSharedTripLog):
-// `-DvelaTrip=…` on the command line sets a GRADLE-daemon property, which the forked test JVM does
+// `-DwayloTrip=…` on the command line sets a GRADLE-daemon property, which the forked test JVM does
 // NOT inherit — without this the documented audit command silently skipped the test every time.
 tasks.withType<Test>().configureEach {
-    System.getProperty("velaTrip")?.let { systemProperty("velaTrip", it) }
-    System.getProperty("velaSeg")?.let { systemProperty("velaSeg", it) }
-    System.getProperty("velaProbe")?.let { systemProperty("velaProbe", it) }
-    System.getProperty("velaObf")?.let { systemProperty("velaObf", it) }
-    System.getProperty("velaCells")?.let { systemProperty("velaCells", it) }
-    System.getProperty("velaLive")?.let { systemProperty("velaLive", it) }
-    System.getProperty("velaStudy")?.let { systemProperty("velaStudy", it) }
-    System.getProperty("velaOne")?.let { systemProperty("velaOne", it) }
-    System.getProperty("velaLines")?.let { systemProperty("velaLines", it) }
-    System.getProperty("velaNudge")?.let { systemProperty("velaNudge", it) }
-    System.getProperty("velaCensus")?.let { systemProperty("velaCensus", it) }
-    System.getProperty("velaNoSteps")?.let { systemProperty("velaNoSteps", it) }
-    System.getProperty("velaFeedProbe")?.let { systemProperty("velaFeedProbe", it) }
+    System.getProperty("wayloTrip")?.let { systemProperty("wayloTrip", it) }
+    System.getProperty("wayloSeg")?.let { systemProperty("wayloSeg", it) }
+    System.getProperty("wayloProbe")?.let { systemProperty("wayloProbe", it) }
+    System.getProperty("wayloObf")?.let { systemProperty("wayloObf", it) }
+    System.getProperty("wayloCells")?.let { systemProperty("wayloCells", it) }
+    System.getProperty("wayloLive")?.let { systemProperty("wayloLive", it) }
+    System.getProperty("wayloStudy")?.let { systemProperty("wayloStudy", it) }
+    System.getProperty("wayloOne")?.let { systemProperty("wayloOne", it) }
+    System.getProperty("wayloLines")?.let { systemProperty("wayloLines", it) }
+    System.getProperty("wayloNudge")?.let { systemProperty("wayloNudge", it) }
+    System.getProperty("wayloCensus")?.let { systemProperty("wayloCensus", it) }
+    System.getProperty("wayloNoSteps")?.let { systemProperty("wayloNoSteps", it) }
+    System.getProperty("wayloFeedProbe")?.let { systemProperty("wayloFeedProbe", it) }
     // Painted-roads bake (PaintedRoadsBakeTest): a whole state's streets need a big heap.
-    System.getProperty("velaPaintIn")?.let { systemProperty("velaPaintIn", it); maxHeapSize = "20g" }
-    System.getProperty("velaPaintOut")?.let { systemProperty("velaPaintOut", it) }
+    System.getProperty("wayloPaintIn")?.let { systemProperty("wayloPaintIn", it); maxHeapSize = "20g" }
+    System.getProperty("wayloPaintOut")?.let { systemProperty("wayloPaintOut", it) }
 }

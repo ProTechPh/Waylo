@@ -1,8 +1,8 @@
-# Vela - maintainer notes
+# Waylo - maintainer notes
 
-Vela Maps (`app.vela`) is a maps and navigation app for Android phones without Google Play
+Waylo Maps (`app.waylo`) is a maps and navigation app for Android phones without Google Play
 services. The map is open data. The phone asks Google's public web endpoints, with no account
-and no key, for search, place details, routes and traffic. There is no Vela server. GPLv3.
+and no key, for search, place details, routes and traffic. There is no Waylo server. GPLv3.
 
 This file is the short list of rules and traps for anyone changing the code, human or AI. How
 the app works is in [SPEC.md](SPEC.md) (every rule and constant) and [the book](docs/book/README.md)
@@ -118,15 +118,15 @@ addresses and "checked on a drive to X" notes add up to where the developer live
 - A log line never carries a coordinate, typed text or a place name. A page probe logs
   `location.pathname.split('/@')[0]`: Google puts the session's location after `/@`.
 - `scripts/check-location.sh` runs in the pre-push hook against a private list at
-  `~/.vela-location-terms` and fails the push when a term matches. It never says which. CI
+  `~/.waylo-location-terms` and fails the push when a term matches. It never says which. CI
   runs the same test from the `LOCATION_TERMS` secret. After editing the list:
-  `gh secret set LOCATION_TERMS < ~/.vela-location-terms`.
+  `gh secret set LOCATION_TERMS < ~/.waylo-location-terms`.
 
-### What Vela never does
+### What Waylo never does
 
 - No Google Play services, Firebase, Fused location, Play Integrity or any Google SDK.
 - No static Google API key. Requests are made the way a logged-out browser makes them.
-- No Vela backend, account or telemetry.
+- No Waylo backend, account or telemetry.
 - No proprietary assets in the repo (fonts, map data, voices).
 
 ## Build
@@ -139,9 +139,9 @@ addresses and "checked on a drive to X" notes add up to where the developer live
 
 - Run release builds on a device. A debug build drops frames (14.8% janky against 1.1% on a
   Pixel 4a for the same gestures) and reads as a performance bug.
-- Never uninstall Vela from a test phone: it deletes saved places, trips and permission
+- Never uninstall Waylo from a test phone: it deletes saved places, trips and permission
   grants. Install over it with `adb install -r`, with `-PappVersionCode=` set to the installed
-  build's code. A side-by-side test build is `-PappId=app.vela.dev`.
+  build's code. A side-by-side test build is `-PappId=app.waylo.dev`.
 - A fresh clone needs the vendored binaries first (OsmAnd router jars, the Cronet AAR, the
   sherpa-onnx AAR). `docs/BUILDING.md` lists them.
 - Toolchain versions are in `gradle/libs.versions.toml` and `gradle.properties`. compileSdk
@@ -229,24 +229,15 @@ map fonts, road features, cameras, grid cells, UK fuel prices. Those files exist
 
 ### GitHub Pages is one artifact
 
-`fdroid-repo.yml` deploys the landing page (`site/`), the F-Droid repository (`/repo`), the map
-fonts (`/fonts`) and the docs site (`/docs`) together. A second Pages workflow would replace
-all of it. Never rerun only a failed deploy job; start a fresh run.
-
-The same workflow also publishes the landing page, the press page, the privacy page (built
-from `PRIVACY.md` by `scripts/build-site-privacy.py`, so edit the Markdown, never an HTML
-copy) and the press kit to
-velamaps.org (Cloudflare Pages, project `velamaps`). That is the website only. `/repo`, `/fonts`
-and `/docs` live at the GitHub Pages address and must stay there: installed apps fetch their map
-fonts from it and every F-Droid client points at it. Do not set a custom domain on the GitHub
-Pages site, which would turn that address into a redirect.
+There is no Pages workflow in this repo anymore (the F-Droid repo workflow was removed).
+The landing page, press page, privacy page and press kit are no longer published by CI.
+If you need them back, add a dedicated Pages workflow.
 
 ### Keys
 
-- App signing: `~/.vela-signing/vela-release.jks`, repo secrets `VELA_KEYSTORE_*`. The
+- App signing: `~/.waylo-signing/waylo-release.jks`, repo secrets `WAYLO_KEYSTORE_*`. The
   certificate's SHA-256 is published in the README.
-- F-Droid index: `~/.vela-signing/fdroid.p12`.
-- Remote settings: `~/.vela-signing/vela-calibration.key`. The public half is pinned in
+- Remote settings: `~/.waylo-signing/waylo-calibration.key`. The public half is pinned in
   `CalibrationStore.PINNED_PUBLIC_KEY`.
 
 None of these is ever committed.
@@ -263,13 +254,12 @@ signed file the app fetches at launch (SPEC 11).
   the field name there. Fields have been added and never parsed.
 - A new Google request goes into calibration the day it ships.
 - Every link to the project itself (repository, releases, site, this file) comes from
-  `VelaLinks` (SPEC 11.4), never a literal, so a moved repository or a renamed account is a
+  `WayloLinks` (SPEC 11.4), never a literal, so a moved repository or a renamed account is a
   signed `links` push and a defaults edit, not a hunt through the code.
-- The website carries a copy of the file and its signature (`fdroid-repo.yml` publishes them
-  with the site), and the app reads that copy when GitHub does not answer. Keep both files in
-  the same commit; the site deploys on a push to either.
+- The website no longer carries a copy of the file (the Pages workflow was removed). The app
+  reads the calibration file from GitHub directly.
 - Before pushing a change, run the health probe against it:
-  `./gradlew :core:testDebugUnitTest --tests '*GoogleHealthProbeTest' -DvelaLive=true`.
+  `./gradlew :core:testDebugUnitTest --tests '*GoogleHealthProbeTest' -DwayloLive=true`.
 - Read the live file before saying a dial is off. Compiled defaults and fleet values differ.
 - A dial that opens the app up for inspection (WebView inspector, network log, reply dumps)
   reads `AppTune.localOn`, which only adb can set.
@@ -283,7 +273,7 @@ signed file the app fetches at launch (SPEC 11).
 - `:app` cannot be read from `:core`. A setting that must act inside `:core` is mirrored into
   a flag there (`NoGoogle`, `LowRamMode`, `LowDataMode`, `CategoryFilter`, `RoutingPrefs`, `RoadNumbers`).
 - Settings are process-wide holders (`ui/AppTheme`, `ui/Units`, `ui/PlaceContent.kt` and the
-  like), started in `VelaApp`. A holder that is not started there reads its default on every
+  like), started in `WayloApp`. A holder that is not started there reads its default on every
   launch.
 - `MapViewModel` is large. Navigation lives in `NavController`, reached through `NavController.Host`.
 - A hidden Google page is a subclass of `web/HiddenWebView`. Never copy the WebView plumbing.
@@ -343,13 +333,13 @@ signed file the app fetches at launch (SPEC 11).
   hands it to Cronet. A separate client breaks the count and the browser identity.
 - Google requests send the calibrated browser identity (`calibration.current().userAgent`,
   `BrowserHeaders`). OSRM, Valhalla, Nominatim, Photon, Overpass and Transitous get
-  `VelaConfig.VELA_UA`, the honest one. Never mix them.
+  `WayloConfig.WAYLO_UA`, the honest one. Never mix them.
 - Never add a Google request value every install sends identically. Derive counters, callback
   names, spans and viewports per session (`RequestShape`, `BrowserViewport`).
 - Timed Google requests are spread with `core/util/Jitter`.
 - Never probe Google's review feed from the maintainer's own connection.
 - Any new Overpass query goes through `OverpassEndpoints.run`. Nominatim's maintainer asked
-  Vela off public Overpass for bulk work; baked files are the first source.
+  Waylo off public Overpass for bulk work; baked files are the first source.
 - A long download runs through `MapViewModel.downloadLaunch`, which outlives the screen and
   holds a foreground service, and it shows a Cancel wherever it shows progress.
 - An empty answer from the nearby-places fan-out is a failure, not a result. Never cache it.
@@ -380,7 +370,7 @@ signed file the app fetches at launch (SPEC 11).
   queryable layer is black at opacity 0.004.
 - An unstyled `LineLayer` draws black. A new twin layer is colored in every palette function.
 - A `fill-pattern` from the style cannot be cleared. Hide the layer and add a flat twin.
-- An image added under a name the sprite also has loses to the sprite. Use `vela-` names.
+- An image added under a name the sprite also has loses to the sprite. Use `waylo-` names.
 - Draw order and collision order are the same thing: the topmost symbol layer places first.
   A layer that must not evict icons goes below them.
 - A filter change or a data-driven paint change re-runs placement for the whole layer. Do not
@@ -407,20 +397,20 @@ signed file the app fetches at launch (SPEC 11).
   gesture setting after it.
 - Three things move the camera to the fix in the first second of a launch: the first run of the
   recenter branch, the first target fly, and the launch-center effect. A map that opens anywhere
-  else starts with all three marked done (`startFramed` in `VelaMapView`).
+  else starts with all three marked done (`startFramed` in `WayloMapView`).
 
 ### Frame rate
 
 - Measure before changing physics. Record the screen and take a Perfetto trace. A hitch at
   the GPS fix rate is main-thread work.
 - `dumpsys gfxinfo` cannot see the map, which draws on its own GL thread. Use
-  `debug.vela.fps` (read at map creation) and `scripts/map-fps.sh`.
-- `debug.vela.hide "<prefix or type:symbol>"` hides layers for bisecting.
+  `debug.waylo.fps` (read at map creation) and `scripts/map-fps.sh`.
+- `debug.waylo.hide "<prefix or type:symbol>"` hides layers for bisecting.
 - Check thread CPU first: `adb shell top -H -b -n 2 -d 5 -p <pid> -o TID,%CPU,CMD`.
   MapLibre's native threads inherit the name of the Java thread that started them.
 - Test in a dense city at replay speed, with cool-downs. The 4a throttles after a few minutes
   and every number drops.
-- A layer A/B (`debug.vela.hide`) alternates its arms in a balanced order and has a placebo arm
+- A layer A/B (`debug.waylo.hide`) alternates its arms in a balanced order and has a placebo arm
   with some other layer hidden. The first sweep into a zoom level pays for cold tiles, so the
   arm that always goes first looks worse. Compare total frames over identical gestures.
 - A `withFrameNanos` loop needs an idle exit, and every write in it is change-gated. A parked
@@ -438,8 +428,8 @@ signed file the app fetches at launch (SPEC 11).
 
 ### Compose
 
-- A Compose `DropdownMenu` or `AlertDialog` cannot be given focus. Use `VelaMenu` and
-  `VelaDialog`.
+- A Compose `DropdownMenu` or `AlertDialog` cannot be given focus. Use `WayloMenu` and
+  `WayloDialog`.
 - Every screen opens with something focused (`rememberDpadAutoFocus`), every control has a
   focus ring (`dpadHighlight`), and every gesture has a key path. D-pad code calls the touch
   paths. `docs/dpad.md` has the rest. CI runs `dpad_test_suite/audit_static.sh`.
@@ -475,7 +465,7 @@ signed file the app fetches at launch (SPEC 11).
 - Every `Maneuver` sent to the car has an icon. The host draws no turn card for one without.
 - When a new car `Surface` arrives, release the old one. It holds the buffer queue's connection.
 - A row image that has colors is `Row.IMAGE_TYPE_SMALL`. The host tints `IMAGE_TYPE_ICON`.
-- Only `VelaCarSession` pushes the drive screen.
+- Only `WayloCarSession` pushes the drive screen.
 - `updateTrip()` goes out at most once a second. The host drops faster ones.
 - `MapSnapshot.pixelForLatLng` answers for a point behind a tilted camera with its mirror image.
   Anything drawn on the car map goes through `project` or `pathOf`, which leave such points out.
@@ -540,39 +530,39 @@ signed file the app fetches at launch (SPEC 11).
 - A drive with no GPS: Simulate driving. Turn both off for real use.
 - A moving test without the simulator: add `gps` and `network` test providers before turning
   location on, feed fixes once a second, and turn location off before removing them.
-- Another app language: `adb shell cmd locale set-app-locales app.vela --user 0 --locales ja`.
+- Another app language: `adb shell cmd locale set-app-locales app.waylo --user 0 --locales ja`.
 - Large fonts: `adb shell settings put system font_scale 1.3`.
-- A fixed time of day for transit and opening hours: `setprop debug.vela.tune.demoClock 720`
+- A fixed time of day for transit and opening hours: `setprop debug.waylo.tune.demoClock 720`
   (minutes after midnight). Clear it afterward.
-- Any tuning dial: `setprop debug.vela.tune.<key> <n>`.
-- A route without the map matcher (tile names, the nudged line): `setprop debug.vela.tune.noMatch 1`,
-  then restart the app. `VelaDirections` logs how each stretch was named and the meters nudged.
-- Low-memory path: `setprop debug.vela.lowram true`.
+- Any tuning dial: `setprop debug.waylo.tune.<key> <n>`.
+- A route without the map matcher (tile names, the nudged line): `setprop debug.waylo.tune.noMatch 1`,
+  then restart the app. `WayloDirections` logs how each stretch was named and the meters nudged.
+- Low-memory path: `setprop debug.waylo.lowram true`.
 - A trip between two points without moving the simulated location: open
   `https://www.google.com/maps/dir/?api=1&origin=..&destination=..` as a view intent. Pass
   the whole `am start` command to `adb shell` as one quoted string, or the shell cuts the link
-  at `&`, drops `-p app.vela`, and another maps app opens it.
+  at `&`, drops `-p app.waylo`, and another maps app opens it.
 - A simulated drive's fixes skip the live fix handler (`replaying`). Anything that should run
   per fix in a demo is also called from `NavController`'s replay collector, through `Host`.
 - Two-finger gestures cannot be injected with `input`: use `scripts/touch/two-finger.sh`. Its
   `[repeat] [cycles]` arguments play a zoom sweep out and back in one process. A held back
-  swipe can, with `input motionevent`. `setprop debug.vela.fps true` logs the camera
-  zoom once a second (`VelaFps`), which is how to tell whether a pinch zoomed.
-- Log tags worth knowing: `VelaDirections`, `VelaSteps`, `VelaCapture` and `VelaSpeak` (set to
-  DEBUG; `VelaSpeak` prints every spoken line, names included, so only on a test phone),
-  `VelaTap`, `VelaSearch`, `VelaTransit`, `VelaDelta`, `VelaUpdate`, `VelaWeb`, `VelaSession`,
-  `VelaFps`, `VelaCar`, `VelaSim`, `VelaPassAlert`.
-- The Android Auto desktop head unit shows Vela's car screens but skips the car's install
+  swipe can, with `input motionevent`. `setprop debug.waylo.fps true` logs the camera
+  zoom once a second (`WayloFps`), which is how to tell whether a pinch zoomed.
+- Log tags worth knowing: `WayloDirections`, `WayloSteps`, `WayloCapture` and `WayloSpeak` (set to
+  DEBUG; `WayloSpeak` prints every spoken line, names included, so only on a test phone),
+  `WayloTap`, `WayloSearch`, `WayloTransit`, `WayloDelta`, `WayloUpdate`, `WayloWeb`, `WayloSession`,
+  `WayloFps`, `WayloCar`, `WayloSim`, `WayloPassAlert`.
+- The Android Auto desktop head unit shows Waylo's car screens but skips the car's install
   check. Book chapter 10 has the setup.
 - Restore whatever a test changed on the phone.
 
 Checks to run before trusting a routing change: `core/nav/StepAudit`, then
-`NamingStudyTest.replayCapturedLines` (`-DvelaStudy=1`), then a few real trips on a phone with
+`NamingStudyTest.replayCapturedLines` (`-DwayloStudy=1`), then a few real trips on a phone with
 the step list read by hand. A change to naming from the tiles (`LineNamer`, `RoadNameTiles`)
-also runs `NamingStudyTest.tileStepCensus -DvelaCensus=<file>` before and after and diffs the two
-files: every step of the captured lines, both modes. `-DvelaOne=<file name>` adds each bend's
-inputs. A line with a `<name>.exits` beside it also has Google's exits from its reply. Probe tests that need a region file take `-DvelaObf=<folder>`.
-`RoadCenterTest.deskLine` (`-DvelaNudge=<file>`) nudges a captured line and writes it out for
+also runs `NamingStudyTest.tileStepCensus -DwayloCensus=<file>` before and after and diffs the two
+files: every step of the captured lines, both modes. `-DwayloOne=<file name>` adds each bend's
+inputs. A line with a `<name>.exits` beside it also has Google's exits from its reply. Probe tests that need a region file take `-DwayloObf=<folder>`.
+`RoadCenterTest.deskLine` (`-DwayloNudge=<file>`) nudges a captured line and writes it out for
 drawing.
 
 Reading a shared trip (`SPEC.md` 4.10 has the line kinds): each route block's `RD` line says
@@ -581,16 +571,16 @@ drive decided, and `S` lines are what the voice said (or, marked `(muted)`, woul
 `N` lines are what the nav engine was handed and `RC` lines every route a router answered, with
 a `route answers` note per fetch; both hold positions, so read them through masked tools only.
 To try a rerouting change on a recorded wrong turn, replay the trip on a phone with
-`adb shell setprop debug.vela.tune.replayLive 1` (re-drive, SPEC 4.10).
+`adb shell setprop debug.waylo.tune.replayLive 1` (re-drive, SPEC 4.10).
 To see how a route in it would be named now, save its `RP` line as the only `.txt` in a folder
 and run
-`NamingStudyTest.replayCapturedLines -DvelaStudy=1 -DvelaOne=1 -DvelaLines=<folder>`.
+`NamingStudyTest.replayCapturedLines -DwayloStudy=1 -DwayloOne=1 -DwayloLines=<folder>`.
 
 ## Where things are written down
 
 | File | Holds |
 | --- | --- |
-| `README.md` | What Vela is, what reaches Google, install |
+| `README.md` | What Waylo is, what reaches Google, install |
 | `FEATURES.md` | What the app does, one line each |
 | `SPEC.md` | The technical reference |
 | `docs/book/` | Each subsystem explained |
@@ -601,4 +591,4 @@ and run
 | `docs/TRANSLATING.md` | Languages and how to translate |
 | `docs/dpad.md` | Operation without a touchscreen |
 | `docs/ANDROID-AUTO.md` | Android Auto for users |
-| `CONTRIBUTING.md`, `SECURITY.md`, `FDROID.md` | As named |
+| `CONTRIBUTING.md`, `SECURITY.md` | As named |

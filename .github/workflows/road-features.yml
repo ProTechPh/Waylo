@@ -108,7 +108,7 @@ jobs:
       - name: Build ${{ matrix.id }} + upload file + emit entry
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VELA_REPO: ${{ github.repository }}
+          WAYLO_REPO: ${{ github.repository }}
           MANIFEST_MODE: emit
           ENTRY_OUT: ${{ matrix.id }}.json
         run: bash scripts/build-road-features.sh "${{ matrix.id }}" "${{ matrix.name }}" "${{ matrix.pbf_url }}"
@@ -134,7 +134,7 @@ jobs:
       - name: Merge entries into road-features-manifest.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VELA_REPO: ${{ github.repository }}
+          WAYLO_REPO: ${{ github.repository }}
         run: |
           shopt -s nullglob
           files=(entries/*.json)

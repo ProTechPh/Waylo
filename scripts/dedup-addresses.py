@@ -3,7 +3,7 @@
 
 OpenAddresses statewide data carries one row per UNIT or PARCEL, so an apartment
 complex contributes the same house number dozens of times across its footprint and
-Vela's house-number overlay printed it over the whole building (user 2026-07-10).
+Waylo's house-number overlay printed it over the whole building (user 2026-07-10).
 One label per address is what a map wants: keep the FIRST point for each
 (number, street, ~150 m grid cell) and drop the rest. Streaming, one pass, no
 geometry math - the grid cell stands in for "the same building/complex". Points

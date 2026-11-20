@@ -11,7 +11,7 @@
 #     stable's counter is the closest thing to a floor on active installs.
 #   * the traffic API, which is a ROLLING 14 DAYS. Miss a fortnight and that fortnight is gone.
 #   * which REGIONS people download, per asset, across the data catalogs. Aggregate, anonymous,
-#     and the only signal there is about where Vela is actually used - it decides which bakes are
+#     and the only signal there is about where Waylo is actually used - it decides which bakes are
 #     worth the runner time.
 #
 # Nothing here is telemetry: every number is a byproduct of hosting files, GitHub counts it whether
@@ -26,7 +26,7 @@
 #     installs are invisible here and always will be.
 set -euo pipefail
 
-REPO="${REPO:-PimpinPumpkin/Vela}"
+REPO="${REPO:-PimpinPumpkin/Waylo}"
 OUT="${1:-docs/stats}"
 DAY="$(date -u +%Y-%m-%d)"
 mkdir -p "$OUT"
@@ -39,13 +39,13 @@ api() { gh api -H "Accept: application/vnd.github+json" "$@"; }
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/gh-retry.sh"
 gh_retry api --paginate "repos/$REPO/releases?per_page=30" \
   -q '.[] | {tag: .tag_name, pre: .prerelease, at: .published_at,
-             assets: [.assets[] | {name: .name, dl: .download_count}]} | @json' > /tmp/vela-rel.jsonl
+             assets: [.assets[] | {name: .name, dl: .download_count}]} | @json' > /tmp/waylo-rel.jsonl
 
 python3 - "$OUT" "$DAY" <<'PY'
 import csv, json, os, sys
 
 out, day = sys.argv[1], sys.argv[2]
-rows = [json.loads(l) for l in open('/tmp/vela-rel.jsonl')]
+rows = [json.loads(l) for l in open('/tmp/waylo-rel.jsonl')]
 
 def append(path, header, lines):
     """Append today's rows, replacing any this day already wrote - a re-run (a retry, a manual

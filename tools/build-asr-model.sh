@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds the lean on-device speech-to-text archive Vela downloads for voice search (tier-1),
+# Builds the lean on-device speech-to-text archive Waylo downloads for voice search (tier-1),
 # and uploads it to the `asr-models` GitHub release. Run once (or when bumping the model).
 #
 # The archive is Whisper tiny multilingual (int8) + Silero VAD, taken from the upstream
@@ -17,7 +17,7 @@ set -euo pipefail
 
 WHISPER_URL="https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-whisper-tiny.tar.bz2"
 VAD_URL="https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx"
-REPO="PimpinPumpkin/Vela"
+REPO="PimpinPumpkin/Waylo"
 OUT="${OUT:-out}"
 
 mkdir -p "$OUT" && cd "$OUT"
@@ -63,7 +63,7 @@ if [ "${UPLOAD:-0}" = "1" ]; then
     && gh release upload asr-models --repo "$REPO" --clobber vela-asr-whisper-tiny.tar.gz asr-manifest.json \
     || gh release create asr-models --repo "$REPO" --prerelease \
          --title "ASR models (on-device voice search)" \
-         --notes "On-device speech-to-text (Whisper tiny int8 + Silero VAD) Vela downloads for voice search. Infrastructure release." \
+         --notes "On-device speech-to-text (Whisper tiny int8 + Silero VAD) Waylo downloads for voice search. Infrastructure release." \
          vela-asr-whisper-tiny.tar.gz asr-manifest.json
 fi
 echo "==> done"

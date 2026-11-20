@@ -3,18 +3,44 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Vela mark: two-tone nav chevron (white left, teal right). Drawn in the
-         512-space of docs/logo.svg, scaled into the adaptive-icon safe zone. -->
+    <!-- Waylo mark: Continuous Winding Highway W -->
     <group
         android:scaleX="0.18"
         android:scaleY="0.18"
         android:translateX="7.92"
-        android:translateY="11.16">
+        android:translateY="7.92">
+        <!-- Outer cyan glow accent -->
         <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M256,100 L146,376 L256,318 Z" />
+            android:fillColor="#00000000"
+            android:strokeColor="#39E0C8"
+            android:strokeWidth="62"
+            android:strokeAlpha="0.45"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M95,185 C145,185 160,220 180,290 C196,345 220,355 236,320 C248,290 252,235 256,200 C260,235 264,290 276,320 C292,355 316,345 332,290 C352,220 367,185 417,185" />
+        <!-- White road casing -->
         <path
-            android:fillColor="#39E0C8"
-            android:pathData="M256,100 L366,376 L256,318 Z" />
+            android:fillColor="#00000000"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="52"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M95,185 C145,185 160,220 180,290 C196,345 220,355 236,320 C248,290 252,235 256,200 C260,235 264,290 276,320 C292,355 316,345 332,290 C352,220 367,185 417,185" />
+        <!-- Dark asphalt road surface -->
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#0A383D"
+            android:strokeWidth="38"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M95,185 C145,185 160,220 180,290 C196,345 220,355 236,320 C248,290 252,235 256,200 C260,235 264,290 276,320 C292,355 316,345 332,290 C352,220 367,185 417,185" />
+        <!-- Glowing cyan lane marking / center line -->
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#39E0C8"
+            android:strokeWidth="8"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M95,185 C145,185 160,220 180,290 C196,345 220,355 236,320 C248,290 252,235 256,200 C260,235 264,290 276,320 C292,355 316,345 332,290 C352,220 367,185 417,185" />
     </group>
 </vector>

@@ -1,9 +1,9 @@
-# The documentation site, built by scripts/build-docs-site.py and published at /Vela/docs/ in the
-# same Pages deploy as the landing page and the F-Droid repo (fdroid-repo.yml). The pages are the
+# The documentation site, built by scripts/build-docs-site.py and published at /Waylo/docs/ in the
+# same Pages deploy as the landing page. The pages are the
 # repository's own Markdown; the script stages them into build/docs-src first.
-site_name: Vela docs
-site_url: https://pimpinpumpkin.github.io/Vela/docs/
-site_description: How Vela Maps works, from the FAQ to the full technical specification.
+site_name: Waylo docs
+site_url: https://pimpinpumpkin.github.io/Waylo/docs/
+site_description: How Waylo Maps works, from the FAQ to the full technical specification.
 docs_dir: ../build/docs-src
 site_dir: ../build/docs-site
 use_directory_urls: true
@@ -51,14 +51,14 @@ extra_css:
 
 extra:
   generator: false
-  homepage: https://pimpinpumpkin.github.io/Vela/
+  homepage: https://pimpinpumpkin.github.io/Waylo/
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/PimpinPumpkin/Vela
+      link: https://github.com/PimpinPumpkin/Waylo
       name: Source on GitHub
     - icon: material/download
-      link: https://pimpinpumpkin.github.io/Vela/#download
-      name: Download Vela
+      link: https://pimpinpumpkin.github.io/Waylo/#download
+      name: Download Waylo
 
 plugins:
   - search:
@@ -91,10 +91,10 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Using Vela:
+  - Using Waylo:
       - Questions and answers: faq.md
       - What reaches Google: privacy.md
-      - Install with F-Droid: fdroid.md
+
       - Every feature: features.md
       - Android Auto: android-auto.md
       - D-pad and keypad phones: dpad.md

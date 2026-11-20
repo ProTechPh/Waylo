@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply a Vela delta patch to an installed archive, in place.
+"""Apply a Waylo delta patch to an installed archive, in place.
 
     scripts/pmtiles-apply-patch.py archive.pmtiles patch.vpatch [--verify]
 
@@ -22,7 +22,7 @@ import struct
 import sys
 from pathlib import Path
 
-from velapmtiles import HEADER_LEN, MAGIC, entries_of, fingerprint, varint, write_dir
+from waylopmtiles import HEADER_LEN, MAGIC, entries_of, fingerprint, varint, write_dir
 
 
 def read_plan(raw, comp):
@@ -48,7 +48,7 @@ def main():
     arc = Path(sys.argv[1])
     patch = Path(sys.argv[2])
     with open(patch, "rb") as p:
-        assert p.read(8) == MAGIC, "not a Vela patch"
+        assert p.read(len(MAGIC)) == MAGIC, "not a Waylo patch"
         version = p.read(1)[0]
         assert version == 2, f"patch version {version} is not this applier's"
         head = json.loads(p.read(struct.unpack("<I", p.read(4))[0]))

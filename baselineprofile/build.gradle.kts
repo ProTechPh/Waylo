@@ -11,7 +11,7 @@ plugins {
 }
 
 android {
-    namespace = "app.vela.baselineprofile"
+    namespace = "app.waylo.baselineprofile"
     compileSdk = 37
     defaultConfig {
         minSdk = 28

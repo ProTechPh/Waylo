@@ -17,7 +17,7 @@
 # rev defaults to today (YYYYMMDD) and stamps rows derived from the release. entries-dir is the
 # bake's own entry files: they carry the region's real bake rev and win over the derived row.
 set -euo pipefail
-REPO="${VELA_REPO:-PimpinPumpkin/Vela}"
+REPO="${WAYLO_REPO:-PimpinPumpkin/Waylo}"
 TAG="basemap-tiles"
 REV="${1:-$(date -u +%Y%m%d)}"
 ENTRIES="${2:-}"
@@ -92,7 +92,7 @@ echo "basemap manifest now lists $(jq '.regions | length' "$WORK/basemap-manifes
 # An archive uploaded while this ran is not in the listing; without a concurrency group a
 # merge can be overtaken by a newer upload, so run once more when the release moved.
 gh release view "$TAG" --repo "$REPO" --json assets -q '.assets[] | select(.name | startswith("basemap-") and endswith(".pmtiles")) | "\(.name) \(.size) \(.updatedAt | .[0:10] | gsub("-"; ""))"' > "$WORK/assets.after"
-if ! diff -q "$WORK/assets.txt" "$WORK/assets.after" >/dev/null && [ "${VELA_REPAIR_AGAIN:-0}" = "0" ]; then
+if ! diff -q "$WORK/assets.txt" "$WORK/assets.after" >/dev/null && [ "${WAYLO_REPAIR_AGAIN:-0}" = "0" ]; then
   echo "the release changed during the merge; rebuilding once more"
-  VELA_REPAIR_AGAIN=1 exec bash "$0" "$REV" "$ENTRIES"
+  WAYLO_REPAIR_AGAIN=1 exec bash "$0" "$REV" "$ENTRIES"
 fi

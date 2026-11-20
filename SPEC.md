@@ -1,4 +1,4 @@
-# Vela Maps - technical specification
+# Waylo Maps - technical specification
 
 The technical reference: rules, contracts, constants and thresholds, stated as what the code
 does now. Where this file and the code disagree, the code is right. `docs/book/` explains each
@@ -29,17 +29,17 @@ subsystem in prose; section 16 lists the other documents.
 
 ### 1.1 What it is
 
-Vela Maps (`app.vela`) is a maps and navigation app for Android phones without Google Play
+Waylo Maps (`app.waylo`) is a maps and navigation app for Android phones without Google Play
 services: search, places, routing, traffic-aware ETAs and turn-by-turn navigation. It targets
 GrapheneOS and other ROMs with no GMS. License GPLv3. Distribution is F-Droid and Obtainium.
 
 ### 1.2 Non-negotiables
 
-- No Vela backend. Each install talks to its sources directly from the user's own IP, like one
+- No Waylo backend. Each install talks to its sources directly from the user's own IP, like one
   logged-out browser. There is no shared API key and no server tier.
 - No static shared Google credential. Sessions bootstrap per install (`GoogleSession`). The
   project's legal footing rests on this.
-- Open data draws the map: open vector tiles, and by default Vela's own bake of open datasets
+- Open data draws the map: open vector tiles, and by default Waylo's own bake of open datasets
   for places. Section 1.4 lists what Google is asked for.
 - Degoogled at runtime (section 12): AOSP location and TTS only; no FCM, Firebase, Play
   Integrity or fused location.
@@ -51,14 +51,14 @@ GrapheneOS and other ROMs with no GMS. License GPLv3. Distribution is F-Droid an
 
 - Account sync of any kind.
 - Anything that needs a Google sign-in, such as review "helpful" counts (section 3.4).
-- A Vela-hosted tile, routing or search service.
+- A Waylo-hosted tile, routing or search service.
 
 ### 1.4 Capability and source matrix
 
 | Capability | Source | Reaches Google | Works offline |
 | --- | --- | --- | --- |
 | Basemap | OpenFreeMap Liberty vector tiles, or a downloaded PMTiles region | No | With a downloaded region |
-| Place icons while browsing | Vela data by default (Overture, AllThePlaces and OpenStreetMap, baked in this repo); Google's ambient places or both by setting (section 5.1) | Only in Google or Both mode | Vela data, with a downloaded region |
+| Place icons while browsing | Waylo data by default (Overture, AllThePlaces and OpenStreetMap, baked in this repo); Google's ambient places or both by setting (section 5.1) | Only in Google or Both mode | Waylo data, with a downloaded region |
 | Opening a place | Google listing, correlated to the tapped feature | Yes, unless the lookup toggle is off | Tile data, or a saved copy |
 | Search | Google autocomplete per typing pause (`suggest`), Google `search?tbm=map` on submit, Photon beside them for house-number text; offline, the place packs and the downloaded places archives (`PlacesArchiveSearch`, ranked with the packs in `OfflineRank`) | Yes | Region packs, places archives |
 | Reviews, photos, popular times, About | Photos: one `hspqX` request. Popular times and details: the search reply or one focused search. Reviews: a hidden WebView scrape. The page walk only as fallback or for More photos | Yes | Saved copy only |
@@ -85,22 +85,22 @@ Two Gradle modules.
 
 - `:core` is the UI-agnostic extractor: data sources, parsers, routers, the navigation engine,
   offline stores, remote config, diagnostics. No MapLibre type and no Android UI type appears
-  in it; coordinates convert at the view boundary. Compile-time switches are in `VelaConfig`.
+  in it; coordinates convert at the view boundary. Compile-time switches are in `WayloConfig`.
 - `:app` is the Compose UI, MapLibre Native 13.6.1, the foreground navigation service, the
-  Android Auto service and the five hidden WebView scrapes. Root package `app.vela`,
-  application class `VelaApp`.
+  Android Auto service and the five hidden WebView scrapes. Root package `app.waylo`,
+  application class `WayloApp`.
 
 `:app` reads `:core`; `:core` cannot read `:app`. A setting that must act inside `:core` is
 written by `:app` into a plain flag there: `CategoryFilter.enabled`, `LowRamMode`,
 `LowDataMode`, `NoGoogle`, `RoutingPrefs`, `RoadNumbers`, `SpokenRoadNames`, `SpokenDetail`.
 
-#### Use Vela without Google
+#### Use Waylo without Google
 
 `GoogleFree` (Settings > Privacy, pref `google_free`, default off) mirrors into
 `NoGoogle.enabled`. With it on:
 
 - Search answers from Photon, two requests run together: 20 results softly biased toward the
-  user, and 10 inside a hard box around the view for partial addresses. Vela's own places lead
+  user, and 10 inside a hard box around the view for partial addresses. Waylo's own places lead
   the list (place packs plus the places archive, downloaded or streamed by HTTP range,
   `PlacesArchiveSearch`). Photon is skipped when they answer a category query, or a name query
   with a hit within the view span of its center, at least `GOOGLE_FREE_NEAR_M` (3 km) and at
@@ -131,8 +131,8 @@ written by `:app` into a plain flag there: `CategoryFilter.enabled`, `LowRamMode
 The main classes by package. Parentheses name a class inside the preceding file.
 
 ```
-:core  (app.vela.core)
-  VelaConfig, di/CoreModule
+:core  (app.waylo.core)
+  WayloConfig, di/CoreModule
   model/          LatLng, Place, Route, Maneuver, Transit types
   data/
     MapDataSource, MockMapDataSource
@@ -172,9 +172,9 @@ The main classes by package. Parentheses name a class inside the preceding file.
                   is the one entry point for OSM opening_hours)
   diag/           DiagLog, DiagEvent
 
-:app  (app.vela)
-  MainActivity, VelaApp
-  ui/map/         MapScreen, VelaMapView, MapViewModel, NavController, SearchGates,
+:app  (app.waylo)
+  MainActivity, WayloApp
+  ui/map/         MapScreen, WayloMapView, MapViewModel, NavController, SearchGates,
                   PoiIcons, AmbientStability, FollowEstimator, RoadShields, MapFonts,
                   StyleLayers, MapDpadController
   ui/place/       PlaceSheet (DirectionsPanel), GoogleChooser, RouteTopCard, StopsEditor,
@@ -184,8 +184,8 @@ The main classes by package. Parentheses name a class inside the preceding file.
   ui/search/      SearchBar
   ui/settings/    SettingsScreen, SettingsHub, SettingsScaffold, sections/
   ui/theme/       AppTheme, Theme
-  ui/             settings holders (section 2.3), SheetPalette, Format (Units), VelaMenu,
-                  VelaDialog, DpadFocus, AdaptiveDensity, QuickCategories
+  ui/             settings holders (section 2.3), SheetPalette, Format (Units), WayloMenu,
+                  WayloDialog, DpadFocus, AdaptiveDensity, QuickCategories
   web/            HiddenWebView and its five fetchers (WebDirectionsFetcher,
                   WebPhotoFetcher, WebPopularTimesFetcher, WebReviewsFetcher,
                   WebStopDeparturesFetcher), ReviewsPanel, WebViewIdentity,
@@ -197,7 +197,7 @@ The main classes by package. Parentheses name a class inside the preceding file.
                   PmtilesReader, PmtilesPatch, PmtilesCompact, OverlayTileStore,
                   MaxspeedOverlayStore, GlyphPackStore, OfflineMaps, LegacyGraphs
                   (removes old GraphHopper graphs)
-  car/            VelaCarAppService, VelaCarSession, CarMapRenderer, CarBridge,
+  car/            WayloCarAppService, WayloCarSession, CarMapRenderer, CarBridge,
                   ManeuverMapper, screen/
   data/           RoadFeatures, FlockCameras, ContactAddresses, TransitStopCache,
                   TransitBoardCache
@@ -214,12 +214,12 @@ The main classes by package. Parentheses name a class inside the preceding file.
 
 - `MapDataSource` is the only interface the UI depends on. `GoogleMapsDataSource` is the real
   scraper; `MockMapDataSource` keeps the app usable with no network. `CoreModule` binds one by
-  `VelaConfig.USE_GOOGLE_SOURCE`.
+  `WayloConfig.USE_GOOGLE_SOURCE`.
 - `GoogleSession` bootstraps a logged-out session. The in-memory cookie jar pre-seeds Google's
   `SOCS` and `CONSENT` cookies so an EU session is not sent to `consent.google.com`, and drops
   any `Set-Cookie` that would downgrade `CONSENT`.
 - Settings are process-wide holders, a `mutableStateOf` mirror over `SharedPreferences`,
-  started in `VelaApp.onCreate`. A holder not started there reads its default on every launch.
+  started in `WayloApp.onCreate`. A holder not started there reads its default on every launch.
   They are `AppFont`, `AppLocale`, `AppTheme`, `BikeSafe`, `BuildingDebug`, `BuildingOverlay`,
   `Buildings3d`, `CategoryChipsPref`, `ContactsSearch`, `DetailsRetry`, `DynamicColor`,
   `FasterRouteAuto`, `Flock`, `FlockDetour`, `FlockNavAlert`, `FlockRouteAlert`,
@@ -431,7 +431,7 @@ point (`DestinationPlaces`, 16 kept, a point within 2 m is the same), so a rerou
 to that point asks for the place too. An open-router snap through Google's course (the via-snap,
 the stops snap and `nameRoute`) ends where Google's line ends, not at the pin, when that end is
 within `DestinationPlaces.END_MAX_M` (400 m) of it (`DestinationPlaces.routeEnd`).
-`VelaDirections` logs how far Google's line and each returned route end from the pin.
+`WayloDirections` logs how far Google's line and each returned route end from the pin.
 
 Not reachable without a key or a login. Each was probed and settled:
 
@@ -468,10 +468,10 @@ Two user agents, never mixed:
 
 - Requests to Google send `calibration.current().userAgent` with Chrome's header set, built by
   `BrowserHeaders.browserHeaders` (a navigation) or `browserXhrHeaders` (a data call).
-  `VelaConfig.USER_AGENT`, `SEC_CH_UA` and `CHROME_FULL_VERSION` are only the compiled
+  `WayloConfig.USER_AGENT`, `SEC_CH_UA` and `CHROME_FULL_VERSION` are only the compiled
   fallbacks.
 - Community services (FOSSGIS OSRM and Valhalla, Nominatim, Photon, Overpass, Transitous) and
-  the calibration fetch send `VelaConfig.VELA_UA`, the contactable identifier their usage
+  the calibration fetch send `WayloConfig.WAYLO_UA`, the contactable identifier their usage
   policies ask for.
 
 #### Headers
@@ -541,7 +541,7 @@ OkHttp (no GREASE, ECH or ALPS)
   reply that needs longer is asked through a client with a set deadline
   (`GoogleMapsDataSource.largeReplyHttp`).
 - The library is Chromium's own prebuilt Release build for the Chrome for Android stable
-  version pinned in `gradle.properties` `vela.cronetVersion`, the same major the UA claims.
+  version pinned in `gradle.properties` `waylo.cronetVersion`, the same major the UA claims.
   Bump the two together. Maven's `cronet-embedded` stopped at 143.
 - `scripts/build-cronet-aar.sh` packs the jars, the four ABIs' libraries, Chromium's ProGuard
   rules and its LICENSE from `storage.googleapis.com/chromium-cronet/android/<v>/Release/cronet/`
@@ -566,7 +566,7 @@ OkHttp (no GREASE, ECH or ALPS)
   version from `BrowserHeaders.fullVersionFor` (`Calibration.chromeFullVersion` when it is a
   build of the UA's major, else `<major>.0.0.0`; the GREASE brand keeps `<n>.0.0.0`). Without
   the metadata a WebView with an overridden UA still sends `"Android WebView"`, `?1` and
-  `"Android"` hints. It also turns off file access, content access and geolocation. A `VelaWeb`
+  `"Android"` hints. It also turns off file access, content access and geolocation. A `WayloWeb`
   `identity:` log line records the WebView package and which switches took.
 - A WebView adds `X-Requested-With: <package name>` to every request it sends itself, and no
   app setting removes it: Chromium abandoned the header's removal, and the androidx allow-list
@@ -584,7 +584,7 @@ OkHttp (no GREASE, ECH or ALPS)
   - CORS preflights to a Google host go out over Cronet too. A 204 is answered to the page as
     200, because an intercepted 204 loses its CORS headers.
   - A body the shim cannot read (FormData) leaves from the WebView with the header and is
-    logged `untagged POST body:`. Other `VelaWebProxy` lines: `carries:`, `answers locally:`,
+    logged `untagged POST body:`. Other `WayloWebProxy` lines: `carries:`, `answers locally:`,
     `passes through:`.
   - Any proxy failure returns null and the WebView loads the request itself.
   - Cost on a Pixel 9 place tap: about 0.2 s on the review page's load (2.15 s against 1.92 s).
@@ -594,11 +594,11 @@ OkHttp (no GREASE, ECH or ALPS)
   on or off, and the dial `webProxyBlockLogs` overrides it when set. It is off by default
   because a browser that never sends telemetry looks less like one.
 - A bridge object is visible to the page's scripts, so bridge names are random per process.
-  Scripts are written with `VelaBridge` and `VelaPanel` and pass through `JsNames.of`.
+  Scripts are written with `WayloBridge` and `WayloPanel` and pass through `JsNames.of`.
 
 #### Values that differ per install or per request
 
-A value every install sends identically would pick out Vela and nothing else. `RequestShape`
+A value every install sends identically would pick out Waylo and nothing else. `RequestShape`
 and `BrowserViewport` produce these:
 
 | Value | Rule |
@@ -634,7 +634,7 @@ the review retry. OSRM's retry backoff uses it too.
   session now". A rotation clears the WebView's cookies and site storage, Cronet's disk cache
   when the engine has not opened it yet, and the WebView HTTP cache when the next Google
   WebView is built (`consumeCacheClear`). The button also empties the app's jar
-  (`ResettableCookieJar`). Log tag `VelaSession`.
+  (`ResettableCookieJar`). Log tag `WayloSession`.
 - `web/GoogleStanding` marks the session limited when the first `hspqX` page returns at most 20
   photos (`LIMITED_PHOTO_PAGE_MAX`) with a next page waiting, or when "More reviews" on the
   all-reviews page loads nothing. A first page of 40 or more (`FULL_PHOTO_PAGE_MIN`) clears it.
@@ -657,7 +657,7 @@ requests per load, measured on a Pixel 9.
 #### Dials
 
 - Any `tuning` dial can be overridden on one device with
-  `adb shell setprop debug.vela.tune.<key> <n>` (`ui/AppTune`).
+  `adb shell setprop debug.waylo.tune.<key> <n>` (`ui/AppTune`).
 - `netLog` (Cronet's network log for 90 s and the WebView remote inspector) and `feedDump` (raw
   review-feed replies saved to the app's files) read the property alone (`AppTune.localOn`). A
   bundle cannot turn them on.
@@ -750,7 +750,7 @@ The base class owns:
 - The reap after 120 s idle (`reapIdleMs`), and at once under severe memory pressure.
 - Blocking non-http(s) schemes. A fetcher can refuse hosts through `allowNavigation`; the photo
   walk stays on google.com.
-- Console errors logged under `VelaWeb`.
+- Console errors logged under `WayloWeb`.
 
 Rules for a fetcher:
 
@@ -865,7 +865,7 @@ the page fills it after load, and a small stub sits beside it.
 | Places > Wait for popular times | `DetailsRetry`, `details_retry`, on | off makes `placeTries()` 1 |
 | Privacy > Live traffic only when I tap | `RouteTrafficOnTap`, `route_traffic_on_tap`, off | clears `RoutingPrefs.googleTraffic` for each new trip, so directions, reroutes and rechecks skip Google and the transit chip is not prefetched. The chooser's Show traffic (`requestRouteTraffic`) sets it for that trip and refetches |
 | Navigation > Start drives north-up | `NavNorthUp`, `nav_north_up`, off | sets `navNorthUp` at every drive start. The compass still toggles it per drive, and a tap while the camera is detached also re-centers |
-| Map > Keep north up | `NorthLock`, `keep_north_up`, off | the rotation gesture is off (set after `setAllGesturesEnabled`, which turns it back on), a resting camera more than `NORTH_LOCK_SLACK_DEG` (0.05) off north is turned back at camera idle (a following drive camera is left to its ticker), drives start with `navNorthUp` and the compass toggle keeps it, `VelaMapView` treats `navNorthUp` as on whatever the state says, the free-drive follow stays north-up, the drive compass fades at north, and the car map is north-up, flat and centered while following |
+| Map > Keep north up | `NorthLock`, `keep_north_up`, off | the rotation gesture is off (set after `setAllGesturesEnabled`, which turns it back on), a resting camera more than `NORTH_LOCK_SLACK_DEG` (0.05) off north is turned back at camera idle (a following drive camera is left to its ticker), drives start with `navNorthUp` and the compass toggle keeps it, `WayloMapView` treats `navNorthUp` as on whatever the state says, the free-drive follow stays north-up, the drive compass fades at north, and the car map is north-up, flat and centered while following |
 | Navigation > Navigation icon | `PuckStyle.shape`, `puck_shape`, arrow | see below |
 | Appearance > Map buttons | `MapButtonShape.mode`, `map_button_shape`, `round` | the locate and parking buttons round, or with 16 dp corners (`square`); the FABs read it through `mapButtonShape`, a getter in place of `CircleShape`'s, so `MapScreen` grows no bytecode |
 | Navigation > Road numbers first | `RoadNumbers`, `road_numbers`, off | mirrored into `core/nav/RoadNumbers.preferred`: `roadLabel` and `instructionRoad` put the number on every road that has one (issue #836) |
@@ -934,7 +934,7 @@ without a name.
 | Google off | As "Google silent". No Google request is made | | |
 | Reroute during a drive | The same rules under a deadline, one attempt per source, with the on-device route taken early where a region covers the trip (4.6) | | |
 
-Google is off when `NoGoogle.enabled` is set ("Use Vela without Google") or
+Google is off when `NoGoogle.enabled` is set ("Use Waylo without Google") or
 `RoutingPrefs.googleTraffic` is false ("Live traffic only when I tap", until Show traffic is
 tapped).
 
@@ -987,7 +987,7 @@ The first source that answers:
 3. `LineNamer` with no tile lines: bare turns from the line's bends.
 
 Tiles come second because, measured on 90 routes in six areas, they named 1.4% of named turns
-wrong. `StretchNamer` runs the three. (`debug.vela.tune.noMatch`, adb only and read at launch,
+wrong. `StretchNamer` runs the three. (`debug.waylo.tune.noMatch`, adb only and read at launch,
 turns the matcher off so the other two can be seen on a phone.) The tiles under a stretch are read beside its match:
 `TILE_HEDGE_MS` (1 s; `TILE_HEDGE_URGENT_MS` 0.3 s) into a match that has not answered, and at
 once when it fails. The matcher answers a town stretch in 0.35 to 1.2 s, so a healthy one costs
@@ -1187,7 +1187,7 @@ are its steps' street names for turns the tiles leave bare (`Route.stepNames`, b
     one took a step's street and Google has no other step at the other one (a wide corner the
     tiles read as two bends).
   - Measured on the 7 lines kept with their replies (`google_lines/<name>.names`, written by
-    `NamingStudyTest.tileStepCensus` from a `<name>.raw` reply beside a line; `-DvelaNoSteps`
+    `NamingStudyTest.tileStepCensus` from a `<name>.raw` reply beside a line; `-DwayloNoSteps`
     for the before side): in strict mode 8 bare turns named and 3 bare slight bends on curves
     dropped, in lenient mode 1 curve dropped. The other 32 lines are unchanged. A Davis to El
     Macero reply outside the set also had a corner said twice ("Turn right", then "Turn right
@@ -1341,10 +1341,10 @@ turn agrees with the line in `StepAudit`, and the simulated drives flag nothing 
 #### Checking a trip
 
 Every hybrid logs its stretch sources and `steps vs line: N turns, N agree, ...` under
-`VelaDirections`. `StepAudit` looks up each left or right where the step lengths put it and
+`WayloDirections`. `StepAudit` looks up each left or right where the step lengths put it and
 expects the line to bend that way within 40 m, and expects a step within 60 m of every bend of
-60 degrees or more. `adb shell setprop log.tag.VelaSteps DEBUG` adds the step list with each
-step's source. `log.tag.VelaCapture DEBUG` logs Google's line for a trip. Captured lines live in
+60 degrees or more. `adb shell setprop log.tag.WayloSteps DEBUG` adds the step list with each
+step's source. `log.tag.WayloCapture DEBUG` logs Google's line for a trip. Captured lines live in
 `core/src/test/resources/google_lines/`, and `NamingStudyTest.replayCapturedLines` rebuilds and
 checks the route from each.
 
@@ -1353,7 +1353,7 @@ checks the route from each.
 #### Avoids
 
 `RoutingPrefs.avoidTolls`, `avoidHighways` and `avoidFerries` mirror the chooser's sticky
-toggles and are seeded in `VelaApp`. Every fetch carries them, including the ones `NavSession`
+toggles and are seeded in `WayloApp`. Every fetch carries them, including the ones `NavSession`
 makes for itself (reroute, recheck, changed stops, `nameRoute`), so a reroute cannot route back
 through what the plan avoided. They apply to DRIVE.
 
@@ -1385,7 +1385,7 @@ waited for `WALK_GOOGLE_WAIT_MS` (6 s). Its walk is offered, first, when it is a
 `WALK_GOOGLE_SHORTER` (15%) shorter than the open walk or the open router gave nothing, and
 `LineNamer` can name it within `WALK_NAME_WAIT_MS` (8 s). It is never snapped: a foot route
 forced through points on Google's line doubles back at each one (20 to 120% longer on Davis and
-Sacramento walks). There is no traffic row for walking. Logcat `VelaWalk` gives both lengths.
+Sacramento walks). There is no traffic row for walking. Logcat `WayloWalk` gives both lengths.
 
 #### Cycling
 
@@ -1485,7 +1485,7 @@ During a drive:
   and then the trip's end as destinations in order of arrival.
 
 Step sheet: `NavStopsRow` always leads it. With no stops ahead it reads "Edit route" and opens
-the stops editor. With stops it also offers "Remove next", which after a `VelaDialog` confirm
+the stops editor. With stops it also offers "Remove next", which after a `WayloDialog` confirm
 calls `applyStops(stops.drop(1))`. Title and buttons share a line only when they fit, measured.
 The mid-drive editor's Add stop applies pending edits, closes, and opens the along-route search
 (`NavSearchChips`); a pick joins the drive through `addStopDuringNav`, which puts it LAST among
@@ -1508,7 +1508,7 @@ files answer the posted speed limit (`currentRoadLimit`) and supply romanized ro
 
 Data and selection:
 
-- Region files are baked off-device (`scripts/build-obf-region.sh`, `VelaObfShim`) and hosted as
+- Region files are baked off-device (`scripts/build-obf-region.sh`, `WayloObfShim`) and hosted as
   release assets with a manifest. The catalog is `tools/routing-regions.json`.
 - The router gets every installed region whose box intersects the trip's padded box (a quarter
   of the span each way, 0.27 degrees at least). Both ends must fall inside a candidate's box, or
@@ -1543,7 +1543,7 @@ Memory and highway hierarchy (HH):
   on keeps the car sets. Without it a bike route loses 0.1 to 0.6 s before the fallback.
 - Walking has no set and stays on the plain search, which failed past about 28 km on that state
   file. Grid cells (`build-cells-region.sh`) get no HH.
-- HH asks `OsmandRegions.getRegionsToDownload` which regions hold the trip's ends. Vela ships no
+- HH asks `OsmandRegions.getRegionsToDownload` which regions hold the trip's ends. Waylo ships no
   world-regions index, so its stub returns an empty list, which HH reads as no restriction.
 
 Engine rules:
@@ -1558,7 +1558,7 @@ Engine rules:
   `RouteCalculationProgress.isCancelled`, which both OsmAnd planners poll, and returns empty.
   Time spent waiting for the engine's lock counts. This keeps an abandoned search from holding
   the lock against the speed-limit lookup and the next reroute. Planning with no network passes
-  no limit. `ObfStopProbeTest` (`-DvelaObf=<dir with delaware.obf>`).
+  no limit. `ObfStopProbeTest` (`-DwayloObf=<dir with delaware.obf>`).
 
 Android runtime requirements, all set before any OsmAnd class loads:
 
@@ -1793,7 +1793,7 @@ At 12 m a car gets 42 m and 84 m. `OFF_ROUTE_M` (40 m) and `FAR_OFF_M` (90 m) ar
   in front for one or two. A lane prompt, the turn-now line and the arrival cue never take
   it. The signals come from the downloaded road features. Where no region is downloaded the
   public Overpass server is asked for the first route of a drive only. With the switch off
-  nothing is looked up. Logcat `VelaDirections` prints how many steps got a light, how many
+  nothing is looked up. Logcat `WayloDirections` prints how many steps got a light, how many
   stops have been passed each time one is counted, and every route the drive adopts (at the
   start and each swap) with its typical and live time, the sum of its steps' times, and its leg
   times when it has them: the figures the bar shows come from these.
@@ -1891,7 +1891,7 @@ TRACK_KEEP_M                   300   the car's own track kept for the turn-round
   routes above, are one router's answers alone: on a reroute the one that turns the car round
   least leads while it costs little more (`RouteGeometry.leastTurning`, the `turnRank` and
   allowance of the turn-round rules below), and their `RC` lines carry the same flags. The
-  adb switch `debug.vela.tune.openRouterDown` at 1 (read at launch, `RouterTestHooks`) makes the
+  adb switch `debug.waylo.tune.openRouterDown` at 1 (read at launch, `RouterTestHooks`) makes the
   open router answer nothing, to try these paths on a test phone.
 - A reroute pins its departure heading. OSRM gets `bearings=<heading>,65` for the first
   waypoint and an empty entry for every later one; the count must match the coordinates or the
@@ -2042,7 +2042,7 @@ Without the arming step a pause taken at speed would resume itself three fixes l
 ### 4.7 The puck and the camera
 
 During navigation the drawn position is a filtered estimate of meters along the route, not the
-raw fix. The per-frame loop (the nav ticker) is in `ui/map/VelaMapView.kt`.
+raw fix. The per-frame loop (the nav ticker) is in `ui/map/WayloMapView.kt`.
 
 #### Position and speed
 
@@ -2179,7 +2179,7 @@ Zoom to the next turn (`ZoomToTurn`, Settings > Navigation, off by default; issu
   `ZOOM_TURN_MIN` (12). The zoom eases like the speed zoom
   (0.5 s), so a passed turn eases out to the next one and a near one eases in to the speed's.
   North-up, and under a pinch, the zoom is what it was.
-- Measured on the 4a over a 13 mile simulated drive with the `VelaFps` framing fields: the
+- Measured on the 4a over a 13 mile simulated drive with the `WayloFps` framing fields: the
   projection model and MapLibre's own projection agree within 1 dp at every tilt and zoom;
   framed for 55 degrees while the camera held 52.6, the turn sat 27 dp above the aimed row,
   at the card's edge, for the whole tilted stretch; flat, it sat on the row. Framed with the
@@ -2242,8 +2242,8 @@ values go into `mutableFloatStateOf` holders read in the draw phase.
 #### Where the map opens
 
 - `MapViewModel` seeds `center` and `myLocation` at construction with the simulated point, else
-  `LocationProvider.lastKnown()`: the newest last-known fix the system holds, else the fix Vela
-  last cached in `vela_location`. `VelaMapView` creates the map there at z15.5, and the first
+  `LocationProvider.lastKnown()`: the newest last-known fix the system holds, else the fix Waylo
+  last cached in `waylo_location`. `WayloMapView` creates the map there at z15.5, and the first
   camera pass and the launch-center effect fly to the fix. With no seed the map is MapLibre's
   world view until the first fix.
 - `MainActivity.onCreate` handles the launch intent, then calls `openStartView()`, before the
@@ -2262,7 +2262,7 @@ values go into `mutableFloatStateOf` holders read in the draw phase.
   stored choice is kept, so a new Home brings it back.
 - `drive` ("Driving mode") decides the camera as `here` does and sets `Start.drive`, which turns
   driving mode on (4.7, Driving mode).
-- A held view sets `center`, `startZoom` and `startHold` in `MapUiState`. `VelaMapView` creates
+- A held view sets `center`, `startZoom` and `startHold` in `MapUiState`. `WayloMapView` creates
   the map on `center` at `openZoom` and starts with its three launch moves marked done
   (`startFramed`: the first run of the recenter branch, the first target fly and the
   launch-center effect), so the first frame is the start view and nothing animates. `startZoom`
@@ -2279,9 +2279,9 @@ values go into `mutableFloatStateOf` holders read in the draw phase.
 - A view is `StartCamera`: the point at the middle of the screen and the zoom, noted by the
   map's idle work as `StartView.live`. The viewport box is off-center on a tilted map and the
   camera target is off-center under a sheet's padding. Bearing and tilt are not kept.
-- `MainActivity.onStop` writes `live` as `last_view` in `vela_location`, which backups leave
+- `MainActivity.onStop` writes `live` as `last_view` in `waylo_location`, which backups leave
   out, like the last known fix. The choice (`start_view`) and the picked view
-  (`start_view_loc`, "lat,lng,zoom") are in `vela_settings`. "Use the current map view" stores
+  (`start_view_loc`, "lat,lng,zoom") are in `waylo_settings`. "Use the current map view" stores
   `live` as the picked view and selects `place`.
 - The decision reads the permission state and stored values. It requests no permission and
   sends nothing.
@@ -2444,7 +2444,7 @@ Measured and not worth doing:
 
 - A slower zoom ease for the first 3 s, or deferring the declutter and the first road-label
   pass: the work only moved later.
-- Hiding all of Vela's runtime symbol layers for the first 2.5 s: the reveal has its own dip.
+- Hiding all of Waylo's runtime symbol layers for the first 2.5 s: the reveal has its own dip.
 - Tile workers at background priority: no gain, street detail later.
 - Waiting for the voice lines or for map idle before starting: no gain.
 
@@ -2458,7 +2458,7 @@ seconds ran 40 to 49 fps with all layers and 48 to 60 with it. No one layer grou
 
 - While the bearing error is at least `START_DEG` (15) for `ARM_FRAMES` (3) frames in a row,
   every visible symbol layer is hidden except the street names (`highway-name-major`, `-minor`,
-  the shields, exit numbers, the `vela-nav-` callouts) and the arrow. They return once the error
+  the shields, exit numbers, the `waylo-nav-` callouts) and the arrow. They return once the error
   stays under `CALM_DEG` (4) for `SETTLE_MS` (1 s).
 - Only layers visible when the hide began are touched. The open places layers are re-filtered
   by `applyOpenPlacesHidden` after a restore. The overview takes the layers back first.
@@ -2466,7 +2466,7 @@ seconds ran 40 to 49 fps with all layers and 48 to 60 with it. No one layer grou
   start threshold at 10 degrees, a gentle curve, which holds an 8 to 11 degree error, flipped
   the map through every bend.
 - Settings > Performance "Simplify the map in turns" (`TurnDeclutterPref`, pref
-  `turn_declutter`, default on). Dial `debug.vela.tune.turnDeclutter 0` turns it off, read at
+  `turn_declutter`, default on). Dial `debug.waylo.tune.turnDeclutter 0` turns it off, read at
   each drive's start.
 - A hand gesture hides nothing: strokes with rests between would flip the set twice per stroke.
 - While the camera is off the car the cross-street bubble layers are hidden. The turn and exit
@@ -2501,7 +2501,7 @@ ends shows as dropped map frames (33 against 57 fps on a 117 km demo drive from 
 - An on-device route search ends when its caller stops waiting (4.5).
 - Starting a drive cancels the chooser's background fetches (`cancelChooserPrefetch`).
   `HiddenWebView.request` stops a page whose request was cancelled or timed out, and logs each
-  page asked, answered, given up and destroyed under `VelaWeb`.
+  page asked, answered, given up and destroyed under `WayloWeb`.
 - The streamed speed limit is read, not mounted (`data/StreamedSpeedLimit`): the tile under the
   car at the archive's deepest zoom, decoded by `core/util/MvtLines`, nearest tagged line within
   20 m, twelve tiles kept, an empty tile asked again after 60 s. Mounted as an invisible layer,
@@ -2512,7 +2512,7 @@ ends shows as dropped map frames (33 against 57 fps on a 117 km demo drive from 
   with a quoted comment are never in force, so the plain `maxspeed` shows. The obf path reads
   OsmAnd's plain limit and does not apply them.
 - Whether a downloaded region answers the limit is decided by its boundary (`limitsOnPhone`),
-  not the engine's box. Dial `debug.vela.tune.streamLimits 1` reads the streamed limits over a
+  not the engine's box. Dial `debug.waylo.tune.streamLimits 1` reads the streamed limits over a
   downloaded region too.
 - `offline/ReleaseRedirects`, in the map's HTTP client and the speed-limit reader's, keeps the
   signed address a release file redirects to until a minute before its `se` time, at most 30
@@ -2531,29 +2531,29 @@ theme ticker waits in the background.
 
 #### Measuring
 
-- Frame rate: `debug.vela.fps` and `scripts/map-fps.sh` (section 13). A `VelaFps` line carries
+- Frame rate: `debug.waylo.fps` and `scripts/map-fps.sh` (section 13). A `WayloFps` line carries
   the second's zoom range and bearing change, so a dip at a turn reads off the log. With "Zoom to
   the next turn" on it also carries the next maneuver's screen column and row (`turnX`, `turnY`),
   the row the framing model predicts for the same camera (`pred`), the live card edge (`card`)
   and the one the framer adopted (`top`), the tilt, the ground distance, the arrow's pad and the
   arrow's heading (`hdg`, against the camera's `brg` the yaw), window px, so a miss on a
   drive can be laid at the model or at its inputs.
-- Layer bisect: `debug.vela.hide`, re-applied every 250 ms while set, so layers nav adds at
+- Layer bisect: `debug.waylo.hide`, re-applied every 250 ms while set, so layers nav adds at
   Start are hidden too.
 - Thread CPU first: `adb shell top -H -b -n 2 -d 5 -p <pid> -o TID,%CPU,CMD -s 2`. Coroutine
   workers on both Default and IO are named `DefaultDispatcher-worker`.
-- `debug.vela.tune.offline 1` makes `MapViewModel.isOnline` answer no, so search takes the
+- `debug.waylo.tune.offline 1` makes `MapViewModel.isOnline` answer no, so search takes the
   offline path (`OfflinePoiStore`, the places archives, `OfflineAddressStore.geocode`) on a phone
   that is online. Read on every call; `setprop` it back to 0 after.
-- `debug.vela.tune.demoSpeedup <n>` runs a demo drive at n times real time, as a trip replay
-  runs. `debug.vela.tune.camTurnTau <s>` replaces `CAM_BRG_TAU_TURN`.
+- `debug.waylo.tune.demoSpeedup <n>` runs a demo drive at n times real time, as a trip replay
+  runs. `debug.waylo.tune.camTurnTau <s>` replaces `CAM_BRG_TAU_TURN`.
 - Traps: the travel mode is sticky, and a demo started in walking mode skips the driving
   declutter. A first zoom past z17 dips whatever is hidden; that is the next level's tiles.
   Measure a long route and alternate A and B runs.
 
 Measured and not worth doing:
 
-- One synthesis thread (`debug.vela.tune.synthThreads 1`): prompts about 30 percent slower, the
+- One synthesis thread (`debug.waylo.tune.synthThreads 1`): prompts about 30 percent slower, the
   dips at turns unchanged.
 - A slower turn swing (`camTurnTau` 0.8): 35 to 45 fps on the worst dip over three turns, too
   few to call.
@@ -2776,7 +2776,7 @@ since a cluster's centroid sits in the junction's middle. The corridor fetch is 
 
 #### Street callouts
 
-Cross-street labels are points Vela places, not line-center labels on the basemap layer.
+Cross-street labels are points Waylo places, not line-center labels on the basemap layer.
 
 - The pass runs once per 400 m of progress or when the upcoming turn targets change, never on a
   short timer. A quantum is marked done only once something was placed.
@@ -2819,7 +2819,7 @@ Cross-street labels are points Vela places, not line-center labels on the basema
   active from the fix where it appears. Auditing or replaying a multi-block trip against one
   merged route corrupts it.
 - A drive resumed after its process died records into the trip it interrupted: `launchNav`
-  saves the trip id under `trip` in `vela_nav_resume`, and resume reopens that file
+  saves the trip id under `trip` in `waylo_nav_resume`, and resume reopens that file
   (`TripStore.resumeTrip`), writes a `resumed:` note and its route as a block with reason
   `resume`. With no trip to continue it starts one. The fixes either side of the restart have
   a gap between them.
@@ -2873,21 +2873,21 @@ Cross-street labels are points Vela places, not line-center labels on the basema
   the block was written, whichever is first. The engine speaks in the units of the `routing:`
   note. An older file derives the inputs from the fixes as a drive would: GPS fixes of 50 m or
   better only, with their accuracy, and the fix's heading while moving (a recorded 0 is none).
-- Re-drive, the debug dial `debug.vela.tune.replayLive` at 1: the replay runs at 1x with
+- Re-drive, the debug dial `debug.waylo.tune.replayLive` at 1: the replay runs at 1x with
   `replayMode` off and plays none of the recorded swaps, so today's code reroutes live from the
   drive's own inputs. It is how a rerouting change is tried on a recorded wrong turn. Nothing is
-  written to a trip; the nav notes and route answers go to logcat (`VelaTrip`, and `VelaRC` for
+  written to a trip; the nav notes and route answers go to logcat (`WayloTrip`, and `WayloRC` for
   the routes when that tag is set to DEBUG).
 - The map scales the puck's clocks by `replaySpeedup`: the chosen speed for a trip replay and 1
-  for a demo drive, unless `debug.vela.tune.demoSpeedup` is set.
+  for a demo drive, unless `debug.waylo.tune.demoSpeedup` is set.
 - `NavReplay` runs fixes through the real `NavEngine` and checks cards and voice against the
   maneuver positions, flagging silent turns, early announcements and wrong distances.
   `TripLog.audit(csv)` is the one-call entry. With `N` lines it runs the engine's own inputs,
   headings included; without them it passes each fix's recorded speed, as a live drive does:
   prompt distances, the line at the turn and chained-turn timing scale with speed, and a replay
   without it is timed for a crawl. Not the fix's bearing: one the phone gave none is recorded
-  with 0, which reads as north. The on-demand harnesses take `-DvelaTrip=<abs.csv>`
-  and `-DvelaSeg=<n>`, forwarded to the test JVM in `core/build.gradle.kts`.
+  with 0, which reads as north. The on-demand harnesses take `-DwayloTrip=<abs.csv>`
+  and `-DwayloSeg=<n>`, forwarded to the test JVM in `core/build.gradle.kts`.
 - Demo drive (pref `demo_drive`, off by default): `DemoTrace.fromRoute` turns a planned route
   into one `ReplayFix` per second and runs it down the same hermetic path. The drive keeps a
   realistic pace: each step at its length over its time (4.5 to 38 m/s; the route's average or
@@ -2904,7 +2904,7 @@ Cross-street labels are points Vela places, not line-center labels on the basema
   resumes live GPS. A demo that reaches the end of its route stays on the arrival card, as a
   real drive does, and Done ends it through `stopNav`.
 - `LocationProvider.pinned` holds the simulated position (`SimLocation.onChange` sets it in
-  `VelaApp`). While it is set, or a replay runs, `updates()` asks the phone for no fixes: it
+  `WayloApp`). While it is set, or a replay runs, `updates()` asks the phone for no fixes: it
   emits the pinned point once a second (provider `SIM_PROVIDER`) and mirrors the replay's fixes
   (`REPLAY_PROVIDER`), and `lastKnown()` answers with the pinned point. Every collector follows,
   the car screens included, so a head unit never shows where the phone really is.
@@ -2957,7 +2957,7 @@ Settings > Places > "Place icons on the map" (`MapPoiPrefs.placesSource`, pref
 
 | Value | Label | Draws | Google while browsing |
 | --- | --- | --- | --- |
-| `open` | Vela data (default) | Vela's baked archive (5.2) | None |
+| `open` | Waylo data (default) | Waylo's baked archive (5.2) | None |
 | `both` | Both | The archive, plus what Google adds | One fan-out (5.4) once panning stops |
 | `google` | Google | Google's ambient places | A fan-out per pan or zoom |
 
@@ -2996,7 +2996,7 @@ vegetation exclusion (wood, forest, tree, grass, wetland) must not cover park or
 drive navigation they show fuel only.
 
 Where they hide for the one-set archive or the ambient pool (browsing, at most one marker),
-`vela-osm-parking` shows the basemap's car parks with no name (class `parking`): the bake drops
+`waylo-osm-parking` shows the basemap's car parks with no name (class `parking`): the bake drops
 places without a name and Google's dots have no parking lots, so those lots had no icon at all
 (issue #935). A named lot is in those sources and would draw twice. It is one layer over the
 `poi` source-layer below `poi_r20`, rank under 20 from z15 and every rank from z18, as the tiers.
@@ -3332,7 +3332,7 @@ Then:
   a link made by an older rule outlives the fix. The recorded closures are kept.
 - Offline or with Google off (`googleOff()`), the tap runs no search, reviews or photos. An open
   place shows its tile data or the remembered listing.
-- The `VelaTap` log line carries each gate's counts (`cross=N`) and no coordinates.
+- The `WayloTap` log line carries each gate's counts (`cross=N`) and no coordinates.
 - A tap Google did not match keeps the open data's address, which is often a city alone. With
   no street line (no digit) it takes the address at its point (`fillUnlinkedAddress`): the
   on-device address index (`OfflineAddressStore.reverseGeocode`, `completeAddress`), else the
@@ -3424,7 +3424,7 @@ when the feature ids match. Two requests at most.
   in-nav search and the car's lists. Every query must be one the offline store expands.
   `catalog()` is every chip in the default order, `arranged()` the catalog in the user's order
   and `all()` what the rows show, the arranged list less the chips switched off
-  (`QuickChipsPref`, keys `quick_chips_order` and `quick_chips_hidden` in `vela_settings`). A
+  (`QuickChipsPref`, keys `quick_chips_order` and `quick_chips_hidden` in `waylo_settings`). A
   chip is keyed by its English query, never its position; the fuel chip's key is `Gas station`
   whatever region word its query uses. The order rule is `QuickChipOrder.arrange`: the saved
   keys first, in their order, then every other chip in its default place; a saved key with no
@@ -3489,7 +3489,7 @@ when the feature ids match. Two requests at most.
 
 #### Without Google, from a wide view
 
-- "Near", for answering a name from Vela's own data alone, is capped at
+- "Near", for answering a name from Waylo's own data alone, is capped at
   `GOOGLE_FREE_NEAR_CAP_M` (25 km): from a whole-world view every hit was inside the view and
   the open geocoder was never asked.
 - Over a view wider than `GOOGLE_FREE_WIDE_M` (50 km) a name search leads with the geocoder's
@@ -3528,7 +3528,7 @@ when the feature ids match. Two requests at most.
   of the opened one is written.
 - A star put on a sheet that has a feature id before its details loaded (a picked suggestion)
   loses `bare` when that sheet becomes a listing (`mergeDetails`: same id, same name).
-- None of this asks anything at launch, offline or under "Use Vela without Google". With "Look
+- None of this asks anything at launch, offline or under "Use Waylo without Google". With "Look
   up tapped places on Google" off, an `overture:` entry opened from a list is not looked up.
 - Any other saved or recent place takes a listing's details only from one within 30 m, or
   within 250 m whose name agrees (`PlaceNames.agree`).
@@ -3619,7 +3619,7 @@ when the feature ids match. Two requests at most.
 A link `google.com/maps/d/<viewer|edit|embed>?mid=<id>` (`MapLinkParser.myMapId`) opens like a
 shared list. `MapDataSource.importMyMap` fetches the KML
 (`https://www.google.com/maps/d/kml?mid=<id>&forcekml=1`) and the public viewer page, with no
-key and no session; it is refused under "Use Vela without Google". `core/data/MyMapKml` reads
+key and no session; it is refused under "Use Waylo without Google". `core/data/MyMapKml` reads
 it with regexes, each compiled once in the object and none per placemark. Both fetches use
 `GoogleMapsDataSource.largeReplyHttp`, the shared client with a 90 s call timeout
 (`LARGE_REPLY_TIMEOUT_S`) and a 60 s read timeout: a large map's KML runs to megabytes, and
@@ -3640,7 +3640,7 @@ the shared 12 s timeout cuts it off.
 - Icons: the KML names an icon only by number (`icon-1577-FFD600`). `MyMapKml.iconNames` reads
   the full names from the viewer page and `MyMapKml.iconUrl` builds the address on
   `mt.googleapis.com/vt/icon`, kept as `Place.pinIconUrl` / `ListPlace.iconUrl`. The plain pin
-  (1899), an unnamed icon or a failed viewer fetch keeps Vela's pin. `MyMapIcons` loads the
+  (1899), an unnamed icon or a failed viewer fetch keeps Waylo's pin. `MyMapIcons` loads the
   images (counted as Google requests), and the saved-pin layer draws them
   (`MapMarker.drawn = false` keeps them out of the red result pins).
 - A layer with exactly one line and 2 to `MAX_ROUTE_STOPS` (12) points, the line's ends within
@@ -3649,7 +3649,7 @@ the shared 12 s timeout cuts it off.
   from the user through every stop when the first is within 50 km, skipping it within 150 m,
   and otherwise from the first stop.
 - The result is an `ImportedList` with `shapes`; a map with no pins gets `ShapesOnlySaveBar`.
-  Saving stores `PlaceList.shapes`, and `VelaMapView.ensureShapes` draws them (one GeoJSON
+  Saving stores `PlaceList.shapes`, and `WayloMapView.ensureShapes` draws them (one GeoJSON
   source, a fill layer, a line layer, two label layers), except while navigating.
 - Two or more layers get a Layers chip (`MapLayers`, `MapViewModel.toggleListLayer`,
   `PlaceList.hiddenLayers`; before saving, `pendingHiddenLayers`). A hidden layer is neither
@@ -3703,11 +3703,11 @@ the shared 12 s timeout cuts it off.
   drags it, and a tap removes it. Points cannot be inserted between two existing ones.
 - Save appends a `MapShape` (width 4, an area filled at 25% opacity) to the list
   `list:drawings` ("My drawings").
-- The unfinished shape and a dot per point (`vela-shapes-dots`) draw from a source of their own
-  (`ensureShapeDraft`, `vela-shapes-draft-src`, a fill and a line layer directly above the saved
+- The unfinished shape and a dot per point (`waylo-shapes-dots`) draw from a source of their own
+  (`ensureShapeDraft`, `waylo-shapes-draft-src`, a fill and a line layer directly above the saved
   shapes' fill and line), so a dragged point uploads that one shape. On the saved shapes' source
   every move event would re-upload and re-tile all of them. `MapSurface` passes the unfinished
-  shape as the last of `shapes`; `VelaMapView` takes it off the saved set. The fill and line
+  shape as the last of `shapes`; `WayloMapView` takes it off the saved set. The fill and line
   layers sit under the basemap's labels, or above the satellite imagery when it is on (the
   raster buried them and a drawing showed as bare points, issue #816); the satellite toggle
   drops the four layers and `ensureShapeLayers` seats them again on the fresh raster.
@@ -3723,7 +3723,7 @@ the shared 12 s timeout cuts it off.
 - `SavedPlace.pinned` and `SavedRoute.pinned` (default false) decide what the search page
   shows; the bookmark button's sheet has the pin toggles. Before pins the page listed every
   saved place, so with saved places and none pinned its Saved section shows one line saying
-  where they are (`SavedPinTip`), until "Got it" (`saved_pin_tip_done` in `vela_notices`).
+  where they are (`SavedPinTip`), until "Got it" (`saved_pin_tip_done` in `waylo_notices`).
 - `SavedPlace.icon` and `ListPlace.icon` hold a glyph name or `emoji:X`. The pin draws
   `ListPlace.icon ?: PlaceList.icon` and `SavedPlace.icon ?: "bookmark"` in the list's color.
   "Choose icon" calls `MapViewModel.setPlaceIcon`, which writes every list copy and the
@@ -3736,7 +3736,7 @@ the shared 12 s timeout cuts it off.
   no room keeps the pin); the dark palette recolors it with every symbol layer.
 - A list's editor has a share button in its title row: `PlaceListStore.exportJson(id)` writes that one list
   in the same JSON the export of every list writes, so it imports back as that list, and
-  `MapViewModel.exportListIntent` shares it as `vela-list-<name>.json` (issue #822).
+  `MapViewModel.exportListIntent` shares it as `waylo-list-<name>.json` (issue #822).
 - The sheet's star and its Save pill are filled when the place is quick-saved or in any list
   (`ListPlace.matches`). On a place in a list the pill opens the list chooser, where the ticks
   are; otherwise it toggles the quick-save. The star opens its menu either way.
@@ -3761,7 +3761,7 @@ the shared 12 s timeout cuts it off.
   destination or a remaining stop is skipped. The tone plays on the guidance stream through
   `VoiceGuide.placeTone` and `name` is spoken, so muting the voice mutes both. The status card
   shows the place and its list. Fixes only arrive while the map is open or a drive is
-  running; nothing asks for background location. Log tag `VelaPassAlert` (sound and count,
+  running; nothing asks for background location. Log tag `WayloPassAlert` (sound and count,
   never the name).
 - Parking is one tap on the P button, with a history. Settings > Map "Parking button"
   (`ParkingButton`, default on) hides the button while no spot is saved. With it on, the
@@ -3804,7 +3804,7 @@ the shared 12 s timeout cuts it off.
   are (a chain's branches); with a feature id present the name is never trusted, a same-name
   hit with another id is another place. The choice is `TakeoutCsv.pick`. A row that finds
   nothing is counted and left out, never guessed at. Note and Comment become the
-  place's note. With "Use Vela without Google" on, only pin rows import and the listing rows
+  place's note. With "Use Waylo without Google" on, only pin rows import and the listing rows
   are counted as `needGoogle`, not as misses. The lookups run in `viewModelScope`
   (`importTakeoutCsv` starts them with `async` and awaits), one import at a time
   (`ImportResult.Busy` for a second), so leaving Settings neither loses nor cancels them; the
@@ -3820,14 +3820,14 @@ the shared 12 s timeout cuts it off.
   `ImportResult.ListAdded` carries the name, the count, the misses and the `needGoogle` count.
   Rows are capped at `MAX_ROWS` (2,000). The Takeout zip itself is not read; pick the CSV inside it.
 - Trip shortcuts: the route card's menu pins the trip as a launcher shortcut. Its intent
-  (action `app.vela.action.OPEN_TRIP`) carries names, latitudes and longitudes as parallel
+  (action `app.waylo.action.OPEN_TRIP`) carries names, latitudes and longitudes as parallel
   arrays (NaN means "your location") and the mode. Nothing is stored in the app.
 
 #### Saved routes
 
 "Save this route" in the route chooser's menu stores a `SavedRoute` (encoded 1e-5 polyline,
 ends, mode, name, and the start's name when the trip was planned from a place, `originLabel`;
-`SavedRouteStore`, prefs `vela_saved_routes`). The default name is "Route to <end>", or
+`SavedRouteStore`, prefs `waylo_saved_routes`). The default name is "Route to <end>", or
 "<start> to <end>" from a named start (`defaultSavedRouteName`, issue #815), and the list under
 Settings > Saved places shows "<start> to <end>" under the name when the start is known. They
 are not in the saved-places export.
@@ -3854,12 +3854,12 @@ are not in the saved-places export.
 - During a drive `NavController` keeps one fix per `DRIVE_TRACE_STEP_M` (15 m). On arrival
   `SavedRoutes.droveOwnWay(trace, planned)` (at least `MIN_DRIVE_M`, 500 m, and a real stretch
   off the planned route) fills `drivenRouteOffer`, and the arrival card offers to save the
-  trace. `debug.vela.tune.drivenOfferAlways` forces the offer.
+  trace. `debug.waylo.tune.drivenOfferAlways` forces the offer.
 
 ### 5.8 UK fuel prices
 
 Google's keyless search carries a price for US gas stations (`fuelPrice`, 3.2) and none for UK
-ones. For those Vela reads the UK government's Fuel Finder, which publishes every forecourt's
+ones. For those Waylo reads the UK government's Fuel Finder, which publishes every forecourt's
 prices under the Open Government Licence v3.0.
 
 #### The feed
@@ -3878,7 +3878,7 @@ prices under the Open Government Licence v3.0.
   that next publishes fresh prices closes it. 36 hours is two missed archive updates, and the app
   stops showing prices at 48. The run stays green, because a red hourly run would mail every
   hour. A healthy hour with nothing new makes no API request for this.
-- The app reads Vela's trimmed file and not the archive's own: that one is 7.8 MB (1.3 MB
+- The app reads Waylo's trimmed file and not the archive's own: that one is 7.8 MB (1.3 MB
   gzipped) against 147 KB, and a change to its columns would break every installed app, where
   the bake script absorbs it. Both sit on GitHub, so reading it directly would be no more
   reliable.
@@ -3915,7 +3915,7 @@ prices under the Open Government Licence v3.0.
   The download is checked for the gzip magic and the sha256, parsed, staged beside the target,
   and swapped in with the old copy moved aside first. A failure is retried after
   `RETRY_AFTER_MS` (15 min) and never replaces a good file.
-- The client is the shared one with no call timeout, a 60 s read timeout and `VelaConfig.VELA_UA`.
+- The client is the shared one with no call timeout, a 60 s read timeout and `WayloConfig.WAYLO_UA`.
 - The forecourts are held in flat arrays with a 0.01 degree grid. A severe trim
   (`MemoryPressure.isSevere`) drops them, and the next use reads the file again.
 - `ui/map/UkFuelPrices` watches `MapUiState.results` and `selected` by identity. Google results,
@@ -3984,11 +3984,11 @@ The engine is MapLibre Native Android 13.6.1, artifact `android-sdk-opengl`. The
 ### 6.1 Basemap and fonts
 
 The basemap is an OpenFreeMap style loaded from its live URL so tile paths follow OpenFreeMap's
-current snapshot. Vela's zoom reads about one level lower than Google's for the same visible area
+current snapshot. Waylo's zoom reads about one level lower than Google's for the same visible area
 (512-pixel tiles). Compare against Google by visible area, never by zoom number.
 
 Settings > Appearance > Map look (`MapLook.style`, pref `map_look`, default `liberty`) picks the
-style (`MapStyle`): Liberty is the Vela look, and Bright, Positron, Fiord and Black load as
+style (`MapStyle`): Liberty is the Waylo look, and Bright, Positron, Fiord and Black load as
 OpenFreeMap serves them (Black is OpenFreeMap's Dark style, named so in the app so it is not
 taken for the dark theme). All five share the `openmaptiles` source, the glyph server and the
 sprite, so the offline basemap, the font patch and `basemapSrc` work on each. `MapStyle.painted`
@@ -3996,8 +3996,8 @@ is true for Liberty only: the palettes, `widenStreets`, the road edges, `PoiIcon
 the twin fills of `ensureLayers` and the Map colors setting belong to it. Another look gets
 `applyLookTheme`: the label language on `PLACE_LABEL_LAYERS` and `ROAD_LABEL_LAYERS` (Liberty's
 ids, which Bright and Positron share, plus Fiord's and Black's `place_*`, `water_name` and
-`highway_name_other`), and the per-theme colors of Vela's own layers (`applyVelaLayerColors`).
-Vela's own layers (places, route, markers, house numbers, shields, transit, traffic, satellite)
+`highway_name_other`), and the per-theme colors of Waylo's own layers (`applyWayloLayerColors`).
+Waylo's own layers (places, route, markers, house numbers, shields, transit, traffic, satellite)
 are added on every look; a twin's missing anchor leaves that twin out. `isMapDark()` is
 `MapStyle.darkLook` on an unpainted look (Fiord and Black are dark whatever the theme, Bright and
 Positron light) and `isMapAmoled()` is false. The car map follows the look. The place icon tiers
@@ -4026,8 +4026,8 @@ Roboto for Cyrillic and Greek, Noto for every other script. The folders keep the
 
 Under an installed offline basemap the style is built from JSON (`MapFonts.offlineStyle`): the
 chosen look's patched cache, else the bundled `assets/styles/liberty-roboto.json`. The asset is
-painted as the Vela look whatever the look, in the look's light or dark (`isMapDark()`), so a look
-with no cached style is the Vela look offline and never stock Liberty under another look's colors.
+painted as the Waylo look whatever the look, in the look's light or dark (`isMapDark()`), so a look
+with no cached style is the Waylo look offline and never stock Liberty under another look's colors.
 The Liberty-only passes (`applyMapTheme`, the twins of `ensureLayers`) follow the style that
 loaded, not `MapLook.style` alone. `withLocalBasemap` points its layers at the local
 archive, maps the asset's Roboto stacks to the Noto names (`GlyphPackStore.stackName`), and serves
@@ -4062,8 +4062,8 @@ shares (`widenStreets`, the road edges, label colors, the hide list, borders).
   day/night override first, then the map mode, then the app theme. `isMapAmoled()` is true only
   while the map follows an app in `ThemeMode.AMOLED`. The map surface, its route colors and the
   scale bar take these. Sheets, cards, bars and settings keep `isAppInDarkTheme()`.
-- `VelaTheme` puts the AMOLED surfaces on whichever dark scheme is in use
-  (`ColorScheme.onTrueBlack`): Vela's own, or the wallpaper's with "Material You colors" on,
+- `WayloTheme` puts the AMOLED surfaces on whichever dark scheme is in use
+  (`ColorScheme.onTrueBlack`): Waylo's own, or the wallpaper's with "Material You colors" on,
   whose accents are kept.
 - `styleKey` carries the style URI, the dark and AMOLED flags, the palette, satellite, the puck
   style, the house-number level and the offline basemap archive. A change in any of them reloads
@@ -4087,22 +4087,22 @@ white labels, set against a street-map night style on the Davis fixture at z12.5
 | Park (`park`) | `#d3f8e1` | `#0d3847` | `#050E0A` | `#cfeccd` | `#2c4a34` | `#22413f` |
 | Grass (`landcover_grass`) | `#d3f8e1` | `#0d3847` at 0.9 | `#050E0A` | `#d3f8e2` | `#2c4a34` at 0.9 | `#22413f` at 0.9 |
 | Wood (`landcover_wood`) | `#d3f8e1` | `#0d3847` at 0.95 | `#050E0A` | `#c9f2da` | `#274330` at 0.95 | `#22413f` at 0.95 |
-| Wetland (`vela-wetland`) | `#d3f8e1` | `#0d3847` at 0.9 | `#000000` | `#cdeff0` | `#26403c` at 0.9 | `#22413f` at 0.9 |
-| Pitches (`vela-pitch`, `landuse_pitch`, `landuse_track`) | `#a9eac2` | `#0d4956` | `#050E0A` | `#d3f8e2` | `#2c4a34` | `#255250` |
-| Plaza and parking (`vela-plaza`) | `#dbe0e8` | `#2a3546` | `#0A0C0F` | `#ededed` | `#31363f` | `#3a4d62` |
-| Commercial and retail (`vela-commercial`) | `#fdf9ef` | `#1c2638` | `#000000` | land | `#31363f` at 0.5 | `#2f4256` |
+| Wetland (`waylo-wetland`) | `#d3f8e1` | `#0d3847` at 0.9 | `#000000` | `#cdeff0` | `#26403c` at 0.9 | `#22413f` at 0.9 |
+| Pitches (`waylo-pitch`, `landuse_pitch`, `landuse_track`) | `#a9eac2` | `#0d4956` | `#050E0A` | `#d3f8e2` | `#2c4a34` | `#255250` |
+| Plaza and parking (`waylo-plaza`) | `#dbe0e8` | `#2a3546` | `#0A0C0F` | `#ededed` | `#31363f` | `#3a4d62` |
+| Commercial and retail (`waylo-commercial`) | `#fdf9ef` | `#1c2638` | `#000000` | land | `#31363f` at 0.5 | `#2f4256` |
 | Campuses (`landuse_school`) | `#f0eded` | other landuse | other landuse | land | other landuse | other landuse |
 | Other landuse (remaining `landuse*`, `landcover*` fills) | land | `#2a3546` at 0.5 | `#000000` | land | `#31363f` at 0.5 | `#34465a` at 0.5 |
 | Buildings (`building`, `building-3d`) | `#e8e9ed` | `#1c3b69` | `#0A0C0F` | `#dde1e7` | `#383d45` | `#445976` |
 | Building outline | `#d6d9e6` | `#2e3d6d` | `#14171A` | `#c4c9d1` | `#464c56` | `#5a7094` |
-| Overlay footprints (`vela-ovl-*`), fill / outline | `#e2e3e9` / `#c4c9d1` | `#1c3b69` / `#2e3d6d` | dark value of the picked palette | `#dde1e7` / `#c4c9d1` | `#383d45` / `#464c56` | `#445976` / `#5a7094` |
+| Overlay footprints (`waylo-ovl-*`), fill / outline | `#e2e3e9` / `#c4c9d1` | `#1c3b69` / `#2e3d6d` | dark value of the picked palette | `#dde1e7` / `#c4c9d1` | `#383d45` / `#464c56` | `#445976` / `#5a7094` |
 | Minor, secondary, tertiary and link roads | `#aab9c9` | `#3d5a77` | `#1A1D22` | `#ffffff` | `#565b64` | `#7e7a60` |
 | Trunk and primary | `#aab9c9` | `#476789` | `#22262C` | `#ffffff` | `#6a707b` | `#a39d7c` |
 | Motorway and its links | `#8aa4c0` | `#476789` | `#22262C` | `#f9d27a` | `#9c7f4f` | `#9db1cb` |
 | Service and track | `#9bacbc` | `#2a4056` | `#111418` | `#ffffff` | `#565b64` | `#5e5f55` |
 | Casings | land, then road edges | land, then road edges | `#000000` | motorway `#f0b85a`, trunk and primary `#dadde2`, secondary and tertiary `#e4e6ea`, others land | land | land |
-| Trails (`vela-trails`) | `#7fcdb0` | `#167055` | `#1A3A28` | `#7fcdb0` | `#167055` | `#4a9a70` |
-| Bike paths (`vela-bikeroutes`) | `#007b8b` | `#1f8f9c` | `#0D2D36` | `#007b8b` | `#1f8f9c` | `#35a7b8` |
+| Trails (`waylo-trails`) | `#7fcdb0` | `#167055` | `#1A3A28` | `#7fcdb0` | `#167055` | `#4a9a70` |
+| Bike paths (`waylo-bikeroutes`) | `#007b8b` | `#1f8f9c` | `#0D2D36` | `#007b8b` | `#1f8f9c` | `#35a7b8` |
 | Airport area (`aeroway_fill`) | Liberty's | `#1c2638` | `#0A0C0F` | Liberty's | `#31363f` | `#2f4256` |
 | Runways and taxiways (`aeroway_runway`, `aeroway_taxiway`) | Liberty's | `#2a4056` | `#1A1D22` | Liberty's | `#565b64` | `#5e5f55` |
 | Label text / halo, every symbol layer | Liberty's | `#c3cad6` / `#1a2230` | `#D0D4DC` / `#000000` | Liberty's | `#cdd0d6` / `#1e2228` | `#eef1f5` / `#293a4c` |
@@ -4111,7 +4111,7 @@ white labels, set against a street-map night style on the Davis fixture at z12.5
 - Road names (`highway-name-path`, `highway-name-minor`, `highway-name-major`) use the
   `Noto Sans Bold` stack and a 1.9 halo in every palette, white in the light ones, so a name stays
   legible over the route line. Other labels in the dark palettes get a 1.1 halo.
-- Vela's own label layers (`vela-ambient`, `vela-places-*`, `vela-transit-stops`, `vela-markers`)
+- Waylo's own label layers (`waylo-ambient`, `waylo-places-*`, `waylo-transit-stops`, `waylo-markers`)
   take halo `#FFFFFF` by day, `#11161C` at night and `#000000` in AMOLED. Result labels are
   `#3C4043` by day and `#E8EAED` at night. Dot rings take the Modern land color.
 - Bike paths are OSM `highway=cycleway`, split out of the trails layer, which keeps foot paths.
@@ -4178,7 +4178,7 @@ basemap anyway. A walk or a ride keeps it at opacity 0.
   metadata with "incorrect header check" (maplibre-native issue 4462), so the overlay drew nothing,
   and a state with an address overlay lost its house numbers. `offline/StreamedPmtiles` reads the
   archive with `PmtilesReader.Archive.http` instead and serves its tiles to MapLibre as a plain
-  tile template on `pmtiles.vela.invalid` through the map's HTTP client (`overlaySource`, headers
+  tile template on `pmtiles.waylo.invalid` through the map's HTTP client (`overlaySource`, headers
   read on IO first by `prefetchStreamed`). A downloaded archive file (`pmtiles://file://`) still
   goes to MapLibre as it is; that path loads.
 - The pmtiles path never cold-fetches a tile clamped two or more levels below the camera.
@@ -4196,18 +4196,18 @@ basemap anyway. A walk or a ride keeps it at opacity 0.
   holder is reset in the style-reload block, or a theme, palette or satellite flip leaves sources
   empty.
 
-#### Vela's basemap layers
+#### Waylo's basemap layers
 
 `ensureLayers` adds these on the basemap source (`basemapSrc(style)`):
 
 | Layer | Source layer and filter | From zoom |
 | --- | --- | --- |
-| `vela-wetland` | `landcover`, class wetland | 12 |
-| `vela-plaza` | `transportation` polygons | any |
-| `vela-pitch` | `landuse`, class pitch, playground, track or stadium | 13 |
-| `vela-commercial` | `landuse`, class commercial or retail | 12 |
-| `vela-trails` | `transportation` lines, class path, subclass path or bridleway | 14 |
-| `vela-bikeroutes` | `transportation` lines, class path, subclass cycleway | 14 |
+| `waylo-wetland` | `landcover`, class wetland | 12 |
+| `waylo-plaza` | `transportation` polygons | any |
+| `waylo-pitch` | `landuse`, class pitch, playground, track or stadium | 13 |
+| `waylo-commercial` | `landuse`, class commercial or retail | 12 |
+| `waylo-trails` | `transportation` lines, class path, subclass path or bridleway | 14 |
+| `waylo-bikeroutes` | `transportation` lines, class path, subclass cycleway | 14 |
 
 Trails and bike paths are 0.7 dp wide at z14, 1.6 at z16 and 4 at z19, below `road_minor`.
 
@@ -4215,41 +4215,41 @@ Hidden Liberty layers: `landcover_wetland` and `road_area_pattern` (patterned, r
 twins), `road_path_pedestrian`, `bridge_path_pedestrian`, `bridge_path_pedestrian_casing`,
 `tunnel_path_pedestrian`, `park_outline`, and the six `*_rail_hatching` layers.
 
-Route shields are Vela's own images (`RoadShields`, `vela-shield-*`, one per ref length 1 to 6),
+Route shields are Waylo's own images (`RoadShields`, `waylo-shield-*`, one per ref length 1 to 6),
 installed after the theme pass. They carry the sign's colors in every palette.
-`vela-exit-shield` adds motorway exit numbers from z12.5.
+`waylo-exit-shield` adds motorway exit numbers from z12.5.
 
 A drive hides the basemap's three shield layers: every numbered road in view carried them, the
 other carriageway's too. The driven road gets its own instead (`core/nav/RouteShields`, layer
-`vela-nav-shields`): from the steps' refs and mid-leg renames, one shield `FIRST_AFTER_M`
+`waylo-nav-shields`): from the steps' refs and mid-leg renames, one shield `FIRST_AFTER_M`
 (350 m) into each numbered stretch of `MIN_STRETCH_M` (900 m) or more, then every `EVERY_M`
 (1,600 m), none within `END_CLEAR_M` (300 m) of its end. Computed once per route in
 `MapSurface`, drawn with the same images, placed under the signs and callouts so those win a
-collision. Hidden in the overview with the other `vela-nav-` layers.
+collision. Hidden in the overview with the other `waylo-nav-` layers.
 
 #### Buildings
 
 - The flat `building` fill draws from z16. `building-3d` draws from z17 at 30 percent of its
   height, growing to full height by z19 (`applyBuilding3dGeometry`). With extrusions at z16,
   dense-city towers lean over the roads.
-- Overlay footprints (`vela-ovl-<i>`, minzoom 16) draw beneath `building`, so OSM wins wherever it
+- Overlay footprints (`waylo-ovl-<i>`, minzoom 16) draw beneath `building`, so OSM wins wherever it
   has data. Their colors are in 6.2, their visibility in 6.4.
 
 #### House numbers
 
-- Two layers draw them: `vela-housenumber` (the basemap's `housenumber` source layer) and
-  `vela-addr-<i>` (the address overlay). `vela-housenumber` is hidden while an address overlay is
+- Two layers draw them: `waylo-housenumber` (the basemap's `housenumber` source layer) and
+  `waylo-addr-<i>` (the address overlay). `waylo-housenumber` is hidden while an address overlay is
   mounted, so an address never draws twice.
 - Both gate on `houseNumberMinZoom()` (`HouseNumbers`, pref `housenumber_zoom`: near 18.3, normal
   17.8, far 17.3) and fade in over the next 0.6 levels (`houseNumberFade`).
-- The address archives carry tiles only at z16-17, so `vela-addr-*` has minzoom 17 and its gate is
+- The address archives carry tiles only at z16-17, so `waylo-addr-*` has minzoom 17 and its gate is
   the text field, empty below `houseNumberMinZoom()`. With the gate as the layer minzoom a cold
   source fetched nothing. With an opacity gate every hidden number still ran placement.
 - Both carry `textIgnorePlacement(true)`: they yield to icons but never enter the collision index,
   so a number cannot evict an icon.
-- `vela-addr-*` is inserted below `vela-controls-claim`: above the basemap labels, below the
+- `waylo-addr-*` is inserted below `waylo-controls-claim`: above the basemap labels, below the
   ambient icons.
-- `vela-housenumber` carries a `within` filter, a box one screen wider than the view on every side
+- `waylo-housenumber` carries a `within` filter, a box one screen wider than the view on every side
   (`restrictHouseNumbers`). The basemap tiles stop at z14, so past that every number in a tile
   draws each frame, on screen or not. The throttled idle work moves the box when the view comes
   within a quarter screen of its edge or has shrunk to under a fifth of the view it was built for.
@@ -4264,12 +4264,12 @@ collision. Hidden in the overview with the other `vela-nav-` layers.
 
 #### Symbol order
 
-- Traffic controls draw in two layers. `vela-controls` always draws (`iconAllowOverlap` and
+- Traffic controls draw in two layers. `waylo-controls` always draws (`iconAllowOverlap` and
   `iconIgnorePlacement` true) and sits above the route pieces and bridge geometry, below the
-  basemap text. `vela-controls-claim` (`iconOpacity` 0, `iconAllowOverlap` true,
-  `iconIgnorePlacement` false) sits below `vela-ambient`, above the basemap labels, so street names
-  shift away from sign positions and no Vela icon is evicted.
-- Both dot tiers (`vela-ambient-dots`, `vela-places-dots-<i>`) sit below the basemap's first
+  basemap text. `waylo-controls-claim` (`iconOpacity` 0, `iconAllowOverlap` true,
+  `iconIgnorePlacement` false) sits below `waylo-ambient`, above the basemap labels, so street names
+  shift away from sign positions and no Waylo icon is evicted.
+- Both dot tiers (`waylo-ambient-dots`, `waylo-places-dots-<i>`) sit below the basemap's first
   symbol layer, so a label's halo covers its dot.
 - In a packed area a low-ranked generic open place is not drawn, dot included. The rule applies to
   a row whose tile carries `mark` 0 and no `landmark`, in group default or health, with prominence
@@ -4312,7 +4312,7 @@ to z20. Roads, bridges and tunnels of a class share one curve.
 
 #### Painted roads (developer test, not shipped)
 
-`core/data/PaintedRoads`, `ui/map/PaintedRoadsLayer`, dial `debug.vela.tune.paintedRoads` (1 =
+`core/data/PaintedRoads`, `ui/map/PaintedRoadsLayer`, dial `debug.waylo.tune.paintedRoads` (1 =
 the California bake, 2 = built on the phone). Road markings from OpenStreetMap tags, drawn at
 real scale from z16.5 above the roads and below the route line: medians, road surface (3.3 m a
 lane; bike lanes 1.2 m, set 0.9 m outside), center and lane lines, crosswalks, stop lines
@@ -4326,7 +4326,7 @@ fetches through one HTTP client per process (`paintedRoadsHttp`), built on the f
 client built in that effect would set up TLS on the main thread at each style load.
 
 Bake: `scripts/bake-painted-roads.sh <pbf> <name> --upload` (osmium, `PaintedRoadsBakeTest` with
-`-DvelaPaintIn/-DvelaPaintOut`, tippecanoe z15 layer `paint`) onto the `painted-roads` release.
+`-DwayloPaintIn/-DwayloPaintOut`, tippecanoe z15 layer `paint`) onto the `painted-roads` release.
 A version query on `BAKED_URL` moves the map cache off old tiles after a rebake.
 
 #### Street names
@@ -4359,7 +4359,7 @@ A version query on `BAKED_URL` moves the map cache off old tiles after a rebake.
   15 / 16 / 17.5 / 18.5) and `ROUTE_REAL_M` (8.5 m), capped at `ROUTE_CAP_DP` (32). At 8.5 m it
   covers a two-lane street or one carriageway with a little road showing each side.
 - Alternates use `ALT_REAL_M` (7.65 m), capped at `ALT_CAP_DP` (30), with their edge
-  (`vela-alt-route-edge`) inside that width. Both widths follow `roadWidthScale`.
+  (`waylo-alt-route-edge`) inside that width. Both widths follow `roadWidthScale`.
 - Each route piece has an outline layer `<piece>-ol` on the piece's own source: `#0e326a` by day,
   `#061a45` at night, `ROUTE_OUTLINE_DP` (1.25 dp) a side from z14, down to 0.5 dp at z11. All
   outlines sit below the lowest piece, so an outline's round cap never crosses a fill. Alternates
@@ -4384,7 +4384,7 @@ A version query on `BAKED_URL` moves the map cache off old tiles after a rebake.
   (Douglas-Peucker, `SIMPLIFY_M` 1.5 m, well inside the stripe's half width; at 5 m a curve's
   chord ran up to 4.5 m inside it), the corner kept, and the arrowhead aims along the arrow's
   own last `HEAD_CHORD_M` (6 m) as drawn.
-- The arrows are cut from the line the map draws (`VelaMapView`'s `routePolyline`, the
+- The arrows are cut from the line the map draws (`WayloMapView`'s `routePolyline`, the
   `drawPolyline` moved to road centers and smoothed), passed as `arrows`'s `line`, not from the
   guidance line: a Google route is guided on Google's own line, which runs in a lane up to about
   9 m from the drawn one, and arrows cut from it sat beside the blue line in places. Each
@@ -4392,12 +4392,12 @@ A version query on `BAKED_URL` moves the map cache off old tiles after a rebake.
   puts it, scaled by the two lengths, so a U-turn's other carriageway is never taken for it.
 - `TurnArrows` (holder, `turn_arrows_on`, on by default under Settings > Navigation) is written
   by `NavController` per tick, change-gated on the route and the step like `NavTurnTarget`; it
-  publishes the route and step (`input`), and `VelaMapView` builds the arrows on its drawn line
+  publishes the route and step (`input`), and `WayloMapView` builds the arrows on its drawn line
   off the main thread, so `MapScreen` carries nothing for it. The layers sit above the topmost
-  `vela-route*` line layer, the pieces' pending "-b" copies included, and are seated again when a
-  piece has come in above them (the drive's `vela-route-cut-b` hid the bodies on a 4a), from
-  z14, in this order: `vela-turn-arrows-casing`, `vela-turn-arrows-head-casing`,
-  `vela-turn-arrows`, `vela-turn-arrows-head`. The arrow sits inside the stripe, as Google's
+  `waylo-route*` line layer, the pieces' pending "-b" copies included, and are seated again when a
+  piece has come in above them (the drive's `waylo-route-cut-b` hid the bodies on a 4a), from
+  z14, in this order: `waylo-turn-arrows-casing`, `waylo-turn-arrows-head-casing`,
+  `waylo-turn-arrows`, `waylo-turn-arrows-head`. The arrow sits inside the stripe, as Google's
   does: its dark edge (`TURN_ARROW_EDGE`, an opaque dark indigo) spans `TURN_ARROW_CASING_OF_ROUTE`
   (0.72) of the stripe's width at every zoom and its white `TURN_ARROW_BODY_OF_ROUTE` (0.54),
   both from the stripe's own curve (`realWidthCurve`), with round caps and joins. The head is a
@@ -4409,7 +4409,7 @@ A version query on `BAKED_URL` moves the map cache off old tiles after a rebake.
 
 #### Rasters
 
-- The traffic raster (`vela-traffic`, opacity 0.6) sits above `building-3d`, else `building`, else
+- The traffic raster (`waylo-traffic`, opacity 0.6) sits above `building-3d`, else `building`, else
   below the first symbol layer, so footprints do not paint over the congestion colors. With
   satellite on it sits above the imagery. Its source stops at z16 (issue #800): closer in,
   MapLibre scales the z16 tile, whose lines Google draws thin, so the layer reads the same
@@ -4425,7 +4425,7 @@ A version query on `BAKED_URL` moves the map cache off old tiles after a rebake.
   (`SAT_DEEP_PROBE_ZOOM`) `refreshSatDeep` probes Esri's availability index at the view center, 20
   then 21 then 22, stopping at the first missing level. `ensureSatelliteDeep` adds one raster
   layer above the base at the probed level, or Google's imagery to z21 where Esri stops at 19.
-  "Use Vela without Google" leaves that fallback out.
+  "Use Waylo without Google" leaves that fallback out.
 - The deep layer cross-fades in, opacity 0 at z18.6 to 1 at z19.6, because the deeper tiles are a
   different capture program. Its minzoom is `SAT_DEEP_MIN_ZOOM` (18.6), so it loads no tiles while
   invisible.
@@ -4447,7 +4447,7 @@ drawn under them (issue #840).
 
 #### Dials
 
-"adb" is `setprop debug.vela.tune.<key>` (`AppTune.local`).
+"adb" is `setprop debug.waylo.tune.<key>` (`AppTune.local`).
 
 | Dial | Default | Read from | Scales or switches |
 | --- | --- | --- | --- |
@@ -4519,7 +4519,7 @@ exists and shows one status line asking the user to download those regions again
 
 | Dataset | Workflow and script | Release | Manifest | Rebaked | On the phone |
 | --- | --- | --- | --- | --- | --- |
-| Routing `.obf` | `obf-regions.yml`, `scripts/build-obf-region.sh`, `VelaObfShim` | `obf-regions` | `obf-manifest.json` | 90 days | `obf/` |
+| Routing `.obf` | `obf-regions.yml`, `scripts/build-obf-region.sh`, `WayloObfShim` | `obf-regions` | `obf-manifest.json` | 90 days | `obf/` |
 | Place pack (SQLite) | `poi-packs.yml`, `scripts/build-poi-region.sh`, `poipack_build.py` | `poi-packs` | `poi-pack-manifest.json` | 30 days | `poipacks/` |
 | Places archive (PMTiles) | `places-overlays.yml`, `tools/build-places-region.sh` | `places-overlays` | `places-overlay-manifest.json` | a seventh of the catalog daily | `places/`, or streamed |
 | Basemap archive (PMTiles) | `basemap-tiles.yml`, `tools/build-basemap-region.sh` (planetiler) | `basemap-tiles` | `basemap-manifest.json` | 30 days | `basemap/` |
@@ -4616,7 +4616,7 @@ after every file copied. A failed copy removes the partial destination. MapLibre
 moves in two steps (point MapLibre at a temporary folder, copy `mbgl-offline.db`, reopen at the
 destination), because MapLibre's path change opens a new database and carries nothing over.
 
-`adb shell setprop debug.vela.sdtest true` makes the shared-storage app folder stand in for a
+`adb shell setprop debug.waylo.sdtest true` makes the shared-storage app folder stand in for a
 card.
 
 #### Deleting
@@ -4643,7 +4643,7 @@ places" counts `poipacks/` and `places/`.
 
 | File | Rows | Bakes |
 | --- | --- | --- |
-| `tools/routing-regions.json` | Every Geofabrik country-level extract, US states, Canadian provinces, first-level sub-areas of the countries Geofabrik divides, and regions Vela cuts itself: `id`, `name`, `group`, `pbf_url`, optional `big`, `skip_obf` | obf, place packs, road features, basemap, maxspeed, grid cells |
+| `tools/routing-regions.json` | Every Geofabrik country-level extract, US states, Canadian provinces, first-level sub-areas of the countries Geofabrik divides, and regions Waylo cuts itself: `id`, `name`, `group`, `pbf_url`, optional `big`, `skip_obf` | obf, place packs, road features, basemap, maxspeed, grid cells |
 | `tools/places-regions.json` | `id`, `name`, `bbox` (the OSM extract is matched by id in the routing catalog) | places |
 | `tools/overlay-regions.json` | Groups `us`, `world`, `chunk`; rows carry `qkprefix` where relevant | building overlays |
 | `tools/address-regions.json` | One row per OpenAddresses source | address overlays |
@@ -4738,7 +4738,7 @@ Download all does not fetch the state twice.
 #### The routing file bake
 
 `scripts/build-obf-region.sh` indexes a roads-only extract (`bake_obf_filter`: highway ways,
-ferry and shuttle-train routes, turn restrictions, route relations) with `VelaObfShim` at
+ferry and shuttle-train routes, turn restrictions, route relations) with `WayloObfShim` at
 `JAVA_HEAP` 12g, the most a 16 GB runner allows. It then adds the highway hierarchy
 (`bake_obf_hh`, 4.5). A region where that step fails ships without it. The file is served raw,
 so `sizeMb` equals `installedMb`.
@@ -4878,7 +4878,7 @@ would renumber millions of rows on a rebuild and make the delta as large as the 
 A week of edits moved 1.3% of Kentucky's tiles (3.2% of its bytes, a 4.4 MB patch against a
 183 MB archive), so places and basemap rebakes publish patches. The producer
 (`scripts/pmtiles-make-patch.py`) and the reference applier (`pmtiles-apply-patch.py`) share one
-reader (`velapmtiles.py`). The phone's applier is `offline/PmtilesPatch` (magic `VELAPTCH`,
+reader (`waylopmtiles.py`). The phone's applier is `offline/PmtilesPatch` (magic `WAYLOPTCH`,
 version 2).
 
 - Format. The patch carries the new directory's tile ids, run lengths and tile lengths, plus
@@ -4910,12 +4910,12 @@ version 2).
   `scripts/pmtiles-compact.py` is the same code: a patched 3.36 MB places archive compacted to
   3,259,268 bytes against 3,259,285 for a fresh download of that rev, same fingerprint (the
   17 bytes are the leaf directory a fresh bake writes).
-  `adb shell setprop debug.vela.compact true` compacts after every patch. `PmtilesCompactTest`
+  `adb shell setprop debug.waylo.compact true` compacts after every patch. `PmtilesCompactTest`
   runs a fixture from `scripts/pmtiles-test-fixture.py` through the real producer and applier.
 
 #### Automatic updates
 
-`app.vela.ui.RegionUpdates`, pref `region_update_mode`: `off`, `wifi` (default) or `mobile`.
+`app.waylo.ui.RegionUpdates`, pref `region_update_mode`: `off`, `wifi` (default) or `mobile`.
 `wifi` means an unmetered network as the system reports it.
 
 `maybeAutoPatch` runs `AUTO_PATCH_DELAY_MS` (1 min) after start, every `AUTO_PATCH_POLL_MS`
@@ -4927,7 +4927,7 @@ with a newer rev again. An archive is never downloaded whole automatically. A pa
 fails to apply is.
 
 A tapped Update tries the patch first, then downloads the whole file over the installed copy.
-Every attempt is recorded in the diagnostics ring (kind `delta`) and logcat `VelaDelta` with the
+Every attempt is recorded in the diagnostics ring (kind `delta`) and logcat `WayloDelta` with the
 bytes and the reason for any fallback.
 
 The progress card names the stage (`MapUiState.updateStage`): 0 a download with its percent;
@@ -5005,7 +5005,7 @@ cut out of it (7.2).
 
 `MapViewModel.observeConnectivity`, `core/net/NetHealth`.
 
-- The offline flag latches only when the system has no usable network and none of Vela's own
+- The offline flag latches only when the system has no usable network and none of Waylo's own
   requests got a response within `NetHealth.FRESH_MS` (15 s), or one has failed to reach its
   host since. The check waits at least 3 s and until that window ends.
 - Any HTTP response clears the flag at once (an interceptor first on the shared client and
@@ -5021,7 +5021,7 @@ cut out of it (7.2).
 Each rule prevents a blank map.
 
 1. `withLocalBasemap` removes the `openmaptiles` source from the style JSON and points its
-   layers at `vela-basemap`. The archive is added under that id after the style loads, and the
+   layers at `waylo-basemap`. The archive is added under that id after the style loads, and the
    layers are re-attached. A source declared in the JSON or handed to the style builder never
    gets past the z0 tile.
 2. A labeled tile completes only once every glyph range and the sprite resolve, and with no
@@ -5075,7 +5075,7 @@ which the obf and pack bakes also source.
    per dense cell (Northern California: one dense cell peaks at 3.7 GB, five at 11.8 GB), so
    4 per pass fits a 16 GB runner.
 2. Per cell, `CELL_JOBS` at a time (default 2, CI 3): the routing obf (`bake_obf_filter` and
-   `VelaObfShim`, heap `CELL_HEAP`, default 3g, CI 4g; skipped with no highway way) and the
+   `WayloObfShim`, heap `CELL_HEAP`, default 3g, CI 4g; skipped with no highway way) and the
    place pack (`bake_pack_filter` and `poipack_build.py`; skipped with no POI, address or
    street-point row).
 3. The places slice is `pmtiles extract --region` of the region's places archive, with the
@@ -5092,8 +5092,7 @@ One release per region, tag `cells-<region>`, holds the zips and the fragment
 `cells-<region>.json`. It is created with `--target` the repository's root commit
 (`CELLS_RELEASE_TARGET` in `scripts/bake-lib.sh`). GitHub sorts releases by the target commit's
 date and Obtainium reads only the first 100, so hundreds of data releases created on HEAD
-would push the app's releases off that page. `ci.yml`, `promote-stable.yml` and
-`fdroid-repo.yml` read the whole list through `scripts/app-releases.sh` (GraphQL, three fields a
+would push the app's releases off that page. `ci.yml` and `promote-stable.yml` read the whole list through `scripts/app-releases.sh` (GraphQL, three fields a
 release; the REST listing carries every asset and a page of 100 takes 9 s). `cells-manifest.json` on the `grid-cells` release indexes every region:
 
 ```json
@@ -5138,7 +5137,7 @@ are skipped. The merge job has no concurrency group.
 
 `ObfRouteEngine` hands the router every installed file whose box intersects the trip's padded
 box, so a trip over several cell files routes like one over the region file.
-`ObfCellsProbeTest` (`-DvelaCells=<dir with cells/ and whole/>`) checks four Delaware trips
+`ObfCellsProbeTest` (`-DwayloCells=<dir with cells/ and whole/>`) checks four Delaware trips
 across cell edges: the distance is within 2% of the whole-region file's.
 
 #### 7.6.5 App side
@@ -5313,7 +5312,7 @@ is on screen (`nonTransitRouteUp` in `MapSurface`): orange and red lines read as
   codes and realtime-vs-timetable times, headsigns), so the chooser, the map drawing and guidance
   are unchanged. Walk legs carry no distance text; their steps come from the walk router on
   demand. `TransitOrder.byPreference` applies the route preference the planner lacks.
-- Durations Vela formats itself, the planner's included, use the platform's short units in
+- Durations Waylo formats itself, the planner's included, use the platform's short units in
   every language but English ("6 h 16 min").
 - In the chooser an expanded row frames its legs; with none expanded the camera frames the
   trip's own points (start, stops, destination). With the Google-style picker on, the transit
@@ -5394,7 +5393,7 @@ download self-heals. The selection is `voice_model`, the speaker per voice `voic
 - Every fragment gets terminal punctuation before synthesis, or the last consonant is swallowed.
 - A Piper voice speaks one language. When `NeuralSynth.voiceLanguage` differs from the text's,
   `VoiceGuide` asks `NeuralSynth.voiceFor(lang)`, which loads an installed voice of that language
-  (`VelaPiper.languageOverride`, never persisted, cleared when guidance returns to the
+  (`WayloPiper.languageOverride`, never persisted, cleared when guidance returns to the
   selection's language). Failing that, a system TTS in that language speaks. Failing that, it
   stays silent and fires `langUnavailable`, whose card offers a one-tap download of the
   language's recommended voice (`PiperCatalog.defaultFor`, `MapUiState.statusVoiceDownloadId`).
@@ -5410,7 +5409,7 @@ download self-heals. The selection is `voice_model`, the speaker per voice `voic
   (`selectBestVoice`). Always taking the best-rated voice spoke with one the user had not picked,
   in engines with several voices a language.
 - A system TTS speaks with `USAGE_ASSISTANCE_NAVIGATION_GUIDANCE` and `CONTENT_TYPE_SPEECH`
-  (`setAudioAttributes` in `onInit`), as Vela's own voice and the focus request do. Unlabeled,
+  (`setAudioAttributes` in `onInit`), as Waylo's own voice and the focus request do. Unlabeled,
   its prompts played as music, and a car or a projection app that routes audio by usage mixed
   them into the music instead of ducking it.
 - Audio focus is refcounted through the utterance callbacks. A system TTS `speak()` returning
@@ -5426,12 +5425,12 @@ download self-heals. The selection is `voice_model`, the speaker per voice `voic
   measurement. A new spoken string with numbers, units or punctuation needs the same look, and
   a test.
 - `voice_volume` (0.6 softer, 1 normal, 1.6 louder, 2.2 loudest) scales the neural voice from a
-  leveled base (`VoiceLevel`). The voices render well under full scale: the default Vela voice
+  leveled base (`VoiceLevel`). The voices render well under full scale: the default Waylo voice
   (Piper `en_US-hfc_female-medium`) has a long-run RMS of about 0.053 on a Pixel 4a, a gain of
   2.43 at Normal. Each line gets one gain, `TARGET_RMS` (0.13) over
   the voice's long-run RMS, between 1 and `MAX_LIFT` (4), times the setting. The RMS is summed
   over every speech chunk the voice and speaker have rendered (`VoiceLevel.Meter`; a chunk
-  peaking under `MIN_PEAK`, 0.02, is a pause and is left out) and kept in the `vela_voice_level`
+  peaking under `MIN_PEAK`, 0.02, is a pause and is left out) and kept in the `waylo_voice_level`
   preferences, so the level is the same from the first line of a session. It is not set from
   the loudest sample: that rose from 0.23 to 0.42 over the first minute of a drive and took the
   gain from 3.8 to 2.0. Samples past `KNEE` (0.8) are bent toward full scale by a tanh curve,
@@ -5479,7 +5478,7 @@ A road name can be in a different script than the guidance language.
   reloads the style. Nav bubbles filter on the canonical `name` and display the chosen form.
 - Place, POI and water labels (`PLACE_LABEL_LAYERS`) take the UI language's `name:<lang>` first
   (`placeLabelTextField()`), then the same fallback chain as the roads; `local` is `name` alone.
-  Place names are data and are never transliterated by Vela.
+  Place names are data and are never transliterated by Waylo.
 - `SpokenScript.applyDict` returns in O(length) when the text has no character the reader cannot
   read, and digests each dictionary once per instance. A full scan twice per fix was a 60 ms
   main-thread stall at 1 Hz.
@@ -5497,7 +5496,7 @@ Two tiers, both keyless.
   transcribes noisy far-field audio into the wrong script. Recording takes
   `AUDIOFOCUS_GAIN_TRANSIENT`, so media pauses instead of ducking.
 - Tier 2, handoff: `ACTION_RECOGNIZE_SPEECH` to an installed voice-input app, which records, so
-  Vela needs no microphone permission for it. Only apps that register the activity count; an IME
+  Waylo needs no microphone permission for it. Only apps that register the activity count; an IME
   or a `RecognitionService` cannot be launched this way. The component is the user's pinned one,
   then Android's default, then the first installed app, so the system chooser never interrupts.
 
@@ -5517,7 +5516,7 @@ from Weblate and English spoken guidance. Romanian (`ro`) has a partial translat
 spoken guidance (`RoNavStrings`) and the Mihai Piper voice.
 
 `AppLocale` holds the language (empty means follow the system) and is applied in both
-`MainActivity.attachBaseContext` and `VelaApp.attachBaseContext`. When following the system it
+`MainActivity.attachBaseContext` and `WayloApp.attachBaseContext`. When following the system it
 also restores `Locale.setDefault` to the captured device locale: the override is process-global
 and otherwise leaves date formatting and the scrape's `hl` in the previous language. Changing
 the language calls `recreate()`.
@@ -5525,7 +5524,7 @@ the language calls `recreate()`.
 The directions language (`AppLocale.directions`, key `directions_language`) is empty by default,
 which means the same as the app. Set, it replaces the app language for `NavStringsRegistry`, so
 turn text on the banner and in speech, the voice's target language, the Voice library's
-suggested voice and the Vela voice id follow it. Menus, transit walk lines from `strings.xml`
+suggested voice and the Waylo voice id follow it. Menus, transit walk lines from `strings.xml`
 and the scrape keep the app language. Changing it needs no `recreate()`. A route already
 planned keeps the instructions it was built with.
 
@@ -5545,7 +5544,7 @@ planned keeps the instructions it was built with.
   `fitness_centre`, the MOTIS wire field `cancelled`), marked where they appear.
 
 - Clock: Settings > Appearance > Clock (`clock_mode`) is the device's 12/24-hour setting, or
-  either for Vela alone. `Clock24.on` and `ClockFormat.use24h` carry it; the transit Depart at
+  either for Waylo alone. `Clock24.on` and `ClockFormat.use24h` carry it; the transit Depart at
   time picker dials by it too (it was a fixed 12-hour dial, issues #357 and #762). Transit directions
   times come from the payload's epoch and time zone (`ClockFormat.at`); `ClockFormat.show`
   converts the text of the one page still fetched in English, Google's stop-board fallback.
@@ -5640,7 +5639,7 @@ reuses it.
 
 - UI font: Settings > Appearance > Font offers Google Sans Flex (the default; SIL OFL 1.1, in
   `res/font`, license in `assets/licenses`), the system font (pref `ui_font_system`), or a
-  user file (`filesDir/fonts/ui.ttf`), through `velaTypography(family)`. Scripts Flex lacks
+  user file (`filesDir/fonts/ui.ttf`), through `wayloTypography(family)`. Scripts Flex lacks
   fall through to the system font.
 
 #### Browse map
@@ -5662,28 +5661,28 @@ reuses it.
   dp, the compass at 44 dp less half the stock image), so the four line up when they stack
   in landscape. The compass view is 48 dp whatever image it shows, so the drive compass, whose
   56 dp image is scaled into it, sits at 20 dp under the drive's column, on the same line.
-- The layers button (`LayersCorner`, `ui/map/LayersPanel.kt`) opens a `VelaMenu` of picture
+- The layers button (`LayersCorner`, `ui/map/LayersPanel.kt`) opens a `WayloMenu` of picture
   tiles, four to a row, with a label under each. Three groups: Map type has the five looks
   (`MapStyle`, the same pick as Settings > Appearance > Map look) and Satellite; Map details has
-  traffic, transit lines, terrain and 3D buildings; Place icons has Vela data, Google and Both
-  (`MapPoiPrefs.placesSource`). The "Use Vela without Google" switch stays a row under them. Every
+  traffic, transit lines, terrain and 3D buildings; Place icons has Waylo data, Google and Both
+  (`MapPoiPrefs.placesSource`). The "Use Waylo without Google" switch stays a row under them. Every
   tile flips the holder Settings flips (`MapLook`, `SatelliteLayer`, `Traffic`, `TransitLayer`,
   `Topography`, `Buildings3d`, `GoogleFree`). The chosen or on tile has a 2.5 dp `primary` ring on
   its picture and a `primary` label. Map type is one choice: picking a look while satellite is on
   turns satellite off, and the satellite tile toggles. A look's picture is drawn in Compose from
-  that look's own land, water, park, building and road colors (the Vela look's follow the map
+  that look's own land, water, park, building and road colors (the Waylo look's follow the map
   theme: light, dark or AMOLED); satellite is a drawn green and gray patch; a detail tile is the
   app's glyph for it on a disc that fills `primary` while on. The button takes `primary` while
   satellite, traffic, transit or terrain is on. The gate that shows the button stays in
   `MapScreen`.
-- `VelaProgressBar` (`ui/VelaProgress.kt`) is the only progress bar: rounded ends, null progress
-  means indeterminate. `VelaProgressBarOf` takes the value as a lambda, so an animating bar is
+- `WayloProgressBar` (`ui/WayloProgress.kt`) is the only progress bar: rounded ends, null progress
+  means indeterminate. `WayloProgressBarOf` takes the value as a lambda, so an animating bar is
   read in the draw phase.
 - The replay controls have a grab bar and drag up and down the screen.
 
 `CategoryChipsPref` (Settings > Map): the chip row, one "Categories" chip that opens them in a
-`VelaMenu`, or none. Decided inside `CategoryChips`. The row shows `QuickCategories.all()` in
-the user's order and ends with a More chip (`MoreCategoriesChip`), a `VelaMenu` of every chip in
+`WayloMenu`, or none. Decided inside `CategoryChips`. The row shows `QuickCategories.all()` in
+the user's order and ends with a More chip (`MoreCategoriesChip`), a `WayloMenu` of every chip in
 the catalog, the ones switched off included; a pick runs that search. The one-button menu lists
 `all()` only.
 
@@ -5700,7 +5699,7 @@ the catalog, the ones switched off included; a pick runs that search. The one-bu
 - The floating buttons (`NavFab`: overview, mute, search) and `NavRecenterPill` wear the bar's
   colors, or `primaryContainer` when `wallpaperColorsInUse()` is true. That requires the Material
   You setting on and a phone scheme that passed the sanity check. Where the scheme fell back to
-  Vela's own, a wallpaper-colored button would come out teal.
+  Waylo's own, a wallpaper-colored button would come out teal.
 - Pause sits in the bar's right slot when `PauseInBar` is on (pref `nav_pause_in_bar`, default
   on) and the device is not keypad-first. The right-edge stack then has the speaker button
   (`NavVoiceButton`): the glyph is the voice mode, and a tap slides the three choices out beside
@@ -5837,7 +5836,7 @@ bar chip and on the lock screen.
 - The system raises the chip only while the app holds
   `android.permission.POST_PROMOTED_NOTIFICATIONS`, which the user can turn off in the app's
   notification settings. Without it the notification still posts in the shade.
-- The channel `vela_nav_drive` has DEFAULT importance with no sound and no vibration. A LOW
+- The channel `waylo_nav_drive` has DEFAULT importance with no sound and no vibration. A LOW
   channel is filed as silent, and a phone that hides silent notifications on the lock screen
   would hide the drive there. A channel's importance is fixed once it exists, so the old LOW
   channel is deleted on first run.
@@ -5851,10 +5850,10 @@ The whole UI works with a five-key D-pad and no touchscreen.
 - Every screen opens with something focused (`rememberDpadAutoFocus`), because Compose's own
   focus recovery is nondeterministic. Two exceptions: the bare map opens unfocused, and when
   Settings is the first thing in a session to take focus the first key press lands on Back.
-- A Compose `DropdownMenu` popup and an `AlertDialog` cannot be pre-focused. `VelaMenu` renders a
+- A Compose `DropdownMenu` popup and an `AlertDialog` cannot be pre-focused. `WayloMenu` renders a
   raw `Dialog` with its first item focused on a D-pad-first device and the ordinary
   `DropdownMenu` under touch, capped at 70% of the screen height so a long one scrolls instead
-  of running under the navigation bar. `VelaDialog` is a raw `Dialog` that focuses the dismiss button.
+  of running under the navigation bar. `WayloDialog` is a raw `Dialog` that focuses the dismiss button.
   Their items take focus through `.focusable()` plus `.onKeyEvent` plus `pointerInput`, because
   the nested focusable inside `.clickable` does not accept `requestFocus` in a dialog window.
 - `Modifier.dpadFieldEscape` makes up and down leave a text field.
@@ -5910,7 +5909,7 @@ one destination per `SettingsSection`. `SettingsHub` holds the category rows and
 
 #### Page transitions and predictive back
 
-- `PageTransitions` (pref `page_transitions` in `vela_settings`, default on, Settings >
+- `PageTransitions` (pref `page_transitions` in `waylo_settings`, default on, Settings >
   Appearance) switches off every animation in this list. Back still works, and dragging and
   detent settling are unaffected.
 - Settings pages slide in over 250 ms while the outgoing page moves a quarter width. Back
@@ -5956,13 +5955,13 @@ The photo gallery and the full reviews page render in the activity's own edge-to
 Compose `Dialog` window re-asserts inset-fitted params, so it cannot cover the system bars, and
 it keeps stale bounds after a rotation. A call site posts a request to `GalleryOverlay` or
 `FullReviewsOverlay` (`ui/place/PlaceSheet.kt`), and `PlaceOverlays()`, the last child of
-`VelaRoot`'s root box, draws it above the map, the sheets and Settings. The gallery is drawn
+`WayloRoot`'s root box, draws it above the map, the sheets and Settings. The gallery is drawn
 after the reviews page, so a review photo opens on top of it. The gallery sets white status bar
 icons while it is up and draws a top gradient under the status bar.
 
 ### 10.6 Android Auto
 
-`app/car/` is a navigation-category `CarAppService` (`VelaCarAppService`): the manifest service
+`app/car/` is a navigation-category `CarAppService` (`WayloCarAppService`): the manifest service
 with the `NAVIGATION` and `FEATURE_CLUSTER` categories, `automotive_app_desc.xml` with
 `<uses name="template"/>`, the `androidx.car.app.*` permissions and `minCarApiLevel=1`. It uses
 the same `:core` singletons as the phone (`CarDeps`).
@@ -5975,13 +5974,13 @@ the same `:core` singletons as the phone (`CarDeps`).
 - A car with an instrument cluster opens a second session (`DISPLAY_TYPE_CLUSTER`). It gets
   `ClusterSession`, one bare `NavigationTemplate`, because that display rejects the place-list
   template. Its content comes from `updateTrip()`.
-- `VelaCarSession` runs its own AOSP location feed into the shared `NavSession` (GPS fixes at 50
+- `WayloCarSession` runs its own AOSP location feed into the shared `NavSession` (GPS fixes at 50
   m accuracy or better, or the simulated position), so navigation runs with the phone UI closed. It handles
   `androidx.car.app.action.NAVIGATE` geo intents: coordinates open the route preview, and a
   free-text `q=` opens `SearchCarScreen` on that query, submitted, over the landing list. A drive started
   from the car speaks with the Piper voice when it is installed and chosen (the service attaches
   the synth).
-- `VelaCarSession` is the one place that pushes `ActiveNavCarScreen`: it watches
+- `WayloCarSession` is the one place that pushes `ActiveNavCarScreen`: it watches
   `NavSession.state` and, when a drive starts on the car or on the phone, pops to the landing
   screen and pushes the drive screen. `onCreateScreen` returns the drive screen over the landing
   screen when the car connects during a drive.
@@ -5990,7 +5989,7 @@ the same `:core` singletons as the phone (`CarDeps`).
   `ActiveNavCarScreen` (`NavigationTemplate`). The landing strip also opens `DriveCarScreen`
   (drive mode, below), `SavedCarScreen` (Home, Work and every saved place, capped at the host's
   list limit) and `CarSettingsScreen` (spoken directions, the tolls, highways and ferries avoids,
-  and the Traffic layer, written to the phone's `vela_settings` prefs, `RoutingPrefs` and
+  and the Traffic layer, written to the phone's `waylo_settings` prefs, `RoutingPrefs` and
   `Traffic`). The route preview passes the `RoutingPrefs` avoids to `directions`.
 - The landing list has six rows. At most `MAX_DESTINATIONS` (3) are destinations. Nearby
   categories fill the rest (`NearbyCarScreen.driving()`: gas, EV charging, restaurants, coffee,
@@ -6009,7 +6008,7 @@ the same `:core` singletons as the phone (`CarDeps`).
   the step's `Maneuver`: Android Auto draws no card for a maneuver without one. `updateTrip()`
   is sent when the step, its shown distance, the minutes left or the distance left (in 100 m)
   changes, and at most once a second (`TRIP_MIN_GAP_MS`). The host drops faster updates.
-  `ManeuverMapper` maps Vela maneuvers to car `Maneuver`, `Step` and `Trip`, sets the phone's
+  `ManeuverMapper` maps Waylo maneuvers to car `Maneuver`, `Step` and `Trip`, sets the phone's
   glyph as the icon (`NavGlyphs.bitmap`), and reads the roundabout direction and exit number
   from the route's geometry. The destination estimate's time left takes the route line's
   traffic colors from `Route.trafficRatio`: red over 1.4, yellow over 1.15 (the car API allows
@@ -6053,7 +6052,7 @@ The map:
 - `onSurfaceAvailable` releases the `Surface` it held before taking the new one. A screen change
   delivers a new object for the same buffer queue, and the old object keeps the queue's CPU
   connection until it is released or collected. Until then `lockCanvas` fails on the new one
-  and no frame is drawn. A failed lock logs once under `VelaCar`.
+  and no frame is drawn. A failed lock logs once under `WayloCar`.
 - It resolves the same patched style file as the phone map (a plain style URL leaves the car on
   Noto) and takes the phone's palette through the `StyleLayers` interface
   (`applyMapTheme(SnapshotterHost(...), dark, amoled)`). The palette is applied from the first
@@ -6061,21 +6060,21 @@ The map:
   that first frame is discarded. It is re-applied when the car's day/night changes.
 - The snapshotter cannot add a layer or a source, so the layers the phone's `ensureLayers` adds
   to Liberty at runtime are written into the patched style's JSON before it loads (`CarStyle.inject`):
-  the flat `vela-wetland` and `vela-plaza` twins over the hidden patterned originals, `vela-pitch`
-  and `vela-commercial` above `park`, `vela-trails` and `vela-bikeroutes` below `road_minor`, the
+  the flat `waylo-wetland` and `waylo-plaza` twins over the hidden patterned originals, `waylo-pitch`
+  and `waylo-commercial` above `park`, `waylo-trails` and `waylo-bikeroutes` below `road_minor`, the
   style light at `LIGHT_INTENSITY` (0.25, the phone's `B3D_LIGHT`), and Google's traffic raster
-  (`vela-traffic-src`, the phone's `TRAFFIC_TILES`, `raster-opacity` 0.6, no fade) above the
+  (`waylo-traffic-src`, the phone's `TRAFFIC_TILES`, `raster-opacity` 0.6, no fade) above the
   topmost building layer with visibility `none`. The ids are the phone's, so the palette functions
-  color them. On a look Vela does not paint only the raster goes in (`twins = look.painted`). The twins' filters and anchors are kept the same as `ensureLayers` by hand. While
+  color them. On a look Waylo does not paint only the raster goes in (`twins = look.painted`). The twins' filters and anchors are kept the same as `ensureLayers` by hand. While
   the patched style does not exist yet the plain URL loads, without them; the next render after
   the file appears rebuilds the snapshotter on it (`reloadIfPatched`), so the Traffic switch and
   the fills do not wait for the next connection.
 - `applyOverlays` runs before each themed render: the traffic layer is visible with no route when
-  the phone's Traffic layer is on and "Use Vela without Google" is off, as on the phone, and the
+  the phone's Traffic layer is on and "Use Waylo without Google" is off, as on the phone, and the
   basemap place icon tiers take the phone's `applyPoiTierFilters` (vegetation out; fuel only during
   a drive). Each is set again only when its state changes.
-- Each snapshot's time, zoom, tilt, traffic state and speed are logged under `VelaCar` at debug
-  level (`setprop log.tag.VelaCar DEBUG` on the phone), the measure of what a raster or a tilt
+- Each snapshot's time, zoom, tilt, traffic state and speed are logged under `WayloCar` at debug
+  level (`setprop log.tag.WayloCar DEBUG` on the phone), the measure of what a raster or a tilt
   costs per frame.
 - `QuietSnapshotter` drops the library's overlay, and the renderer draws its own single
   OpenStreetMap credit. The credit and the speed badge stay inside the host's stable area, or the
@@ -6154,7 +6153,7 @@ The map:
 Drive mode (`DriveCarScreen`, a `NavigationTemplate` with no navigation info): the map alone, no
 route and no list, opened from the landing strip's Drive action. Its strip holds search, saved
 places and a list action that pops back to the landing screen; the map strip is recenter and
-zoom. A drive started anywhere replaces it with the drive screen through `VelaCarSession`.
+zoom. A drive started anywhere replaces it with the drive screen through `WayloCarSession`.
 
 ### 10.7 Street View
 
@@ -6273,9 +6272,9 @@ behind the matching holder.
 
 At launch `CalibrationStore` loads its cached bundle, then fetches `calibration.json` and the
 detached `calibration.json.sig` from
-`https://raw.githubusercontent.com/PimpinPumpkin/Vela/main/`, and when that does not answer
+`https://raw.githubusercontent.com/PimpinPumpkin/Waylo/main/`, and when that does not answer
 (no reply, a transport error, or a copy whose signature does not verify) from the copy on the
-website, `https://velamaps.org/calibration.json` (`VelaLinks`, 11.4). It adopts the remote
+website, `https://velamaps.org/calibration.json` (`WayloLinks`, 11.4). It adopts the remote
 bundle only if:
 
 1. the signature verifies (ECDSA P-256 with SHA-256 against `PINNED_PUBLIC_KEY`);
@@ -6324,15 +6323,15 @@ mails the maintainer. Nothing is posted.
 - `scripts/check-chrome-ua.py` fails the workflow when the claimed Chrome major is behind a
   Windows stable major that has been out 7 days, or ahead of stable.
 
-Locally: `./gradlew :core:testDebugUnitTest --tests '*GoogleHealthProbeTest' -DvelaLive=true --rerun-tasks`.
+Locally: `./gradlew :core:testDebugUnitTest --tests '*GoogleHealthProbeTest' -DwayloLive=true --rerun-tasks`.
 
 ---
 
 ### 11.4 The project's own links
 
-Every address the app has of its own project is in `core/config/VelaLinks`: the repository,
+Every address the app has of its own project is in `core/config/WayloLinks`: the repository,
 its API, the download releases, the raw files on main, the website (`site`, velamaps.org), the
-GitHub Pages address (`pages`, where the map fonts, the F-Droid repository and the docs live)
+GitHub Pages address (`pages`, where the map fonts and the docs live)
 and the donate page, and the files derived from them (the settings file, each data manifest,
 the world basemap, the map fonts, the speech models, the UK fuel file, the painted roads).
 The website and the Pages address are separate keys on purpose: the site can move without
@@ -6350,9 +6349,9 @@ site workflow publishes `calibration.json` and its signature to velamaps.org on 
 to them). Moving the project: push a bundle whose `links` name the new places while the old
 ones still answer; each app keeps that bundle and applies it at the next launch, so it asks
 the new places from then on, the settings file included; then change the defaults in
-`VelaLinks` for the next release. If GitHub stops answering before that push, the website's
+`WayloLinks` for the next release. If GitHub stops answering before that push, the website's
 copy is where the bundle goes. The browser identity for the project's own requests
-(`VelaConfig.VELA_UA`) carries the repository link and follows it.
+(`WayloConfig.WAYLO_UA`) carries the repository link and follows it.
 
 ## 12. Degoogled constraints
 
@@ -6439,8 +6438,8 @@ recomposition. Neither can be parallelized, so the rules send each less work.
   and review scroll gave 14.8 percent janky frames (90th percentile 69 ms) in debug and 1.1
   percent (28 ms) in release.
 - `dumpsys gfxinfo` counts the Compose chrome and cannot see the map, which draws on its own GL
-  thread. `VelaMapView` logs the map's frames once a second under `VelaFps` when the system
-  property `debug.vela.fps` is set (read at map creation, so restart). `scripts/map-fps.sh` runs
+  thread. `WayloMapView` logs the map's frames once a second under `WayloFps` when the system
+  property `debug.waylo.fps` is set (read at map creation, so restart). `scripts/map-fps.sh` runs
   the loop and prints min, p10, median and max. A Pixel 4a holds 40 to 55 fps panning at browse
   zoom.
 - A phone throttles after a few minutes. Check `dumpsys thermalservice` and alternate A and B
@@ -6472,7 +6471,7 @@ recomposition. Neither can be parallelized, so the rules send each less work.
 configuration browsing the map does not contact Google. Search, opening a place, a driving route
 and transit directions do. Routes also reach FOSSGIS, transit boards Transitous, reverse
 geocoding Nominatim. A UK gas station without a price makes the phone fetch the fuel price file
-from GitHub (5.8). With "Use Vela without Google" on, only the open services are asked.
+from GitHub (5.8). With "Use Waylo without Google" on, only the open services are asked.
 
 ### 14.1a State files
 
@@ -6513,11 +6512,11 @@ from GitHub (5.8). With "Use Vela without Google" on, only the open services are
 - The debug export's `input` field (`SettingsDump.input`): `touchscreen=yes|no`,
   `keypadFirst=yes|no` (`isDpadFirstDevice`) and `dpadDevices=`, the driver names of the
   physical input devices that report a D-pad, so a report where taps do nothing (a head unit's
-  hardware buttons taken for a keypad, issue #744) shows whether Vela is waiting for keys.
+  hardware buttons taken for a keypad, issue #744) shows whether Waylo is waiting for keys.
 - A recorded drive's notes say what it ran on and fetched. `data:` (at the start and on change)
   lists which of routing, the map, places, buildings, addresses, speed limits and signs come
   from the phone and which are streamed, as counts with no region named. `net 10 s:` counts the
-  map's network requests by host, or by release for Vela's own files (`diag/NetCount`, an
+  map's network requests by host, or by release for Waylo's own files (`diag/NetCount`, an
   interceptor after the local-tile hook, never a path). `signs:` says whether the route's own
   set or the whole-view fallback filled the layer.
 - Speed-limit and building overlays are not streamed where the phone has the data
@@ -6554,7 +6553,7 @@ the geometry.
 - The batch dialog has the same two: "Save to phone" writes the picked trips' full traces as one
   zip (`MapViewModel.saveTripsTo`, `CreateDocument("application/zip")`), and "Share full traces"
   sends that zip (`shareFullTripsZipIntent`). Each entry is named as a single full trace is
-  (`vela-trip-<stamp>-full.csv`).
+  (`waylo-trip-<stamp>-full.csv`).
 
 ### 14.4 Location hygiene
 
@@ -6597,9 +6596,9 @@ and in `location-guard.yml`.
 - Channels. A push to `main` or `canary` builds and tests only. The nightly prerelease
   `v0.5.<run>` is cut by `ci.yml` at 10:30 UTC when `main` has moved in a file that can reach
   the app (`scripts/app-changed.sh`; a dispatch only needs `main` to have moved), titled
-  `Vela <version> nightly` with notes that open "Nightly build." `promote-stable.yml` (Mondays
+  `Waylo <version> nightly` with notes that open "Nightly build." `promote-stable.yml` (Mondays
   16:00 UTC) promotes the newest nightly to stable: same tag, same signed APK, no rebuild,
-  retitled `Vela <version>` with the notes regenerated. Each push to `canary` replaces the one
+  retitled `Waylo <version>` with the notes regenerated. Each push to `canary` replaces the one
   release on the fixed tag `canary`, which is not a `v0.*` tag. Its notes carry the
   `versionCode:` line the updater reads.
 - `release.yml` is the manual path to a channel: input `channel` nightly dispatches `ci.yml`
@@ -6607,8 +6606,7 @@ and in `location-guard.yml`.
   tag. It refuses any ref but `main`, a `main` that moved after the run started, and a `main`
   that is not at the optional `sha`. `promote-stable.yml` takes `tag` (the nightly expected to
   be newest; another one stops the run) and `whats_new` (the hand-written list that leads the
-  notes). The run ends by dispatching `fdroid-repo.yml`, which its own token's releases would
-  not trigger.
+  notes).
 - versionName is `0.5.<run>` (`0.4.<run>` until 2026-10-08; the minor is a name, and the run
   number orders releases across minors) and versionCode `(2000 + run) * 10` plus a chip digit. The run
   number must stay in `ci.yml`: another workflow would restart the count.
@@ -6617,8 +6615,7 @@ and in `location-guard.yml`.
 - Release notes are the commit subjects since the previous `v0.[0-9]*` tag
   (`scripts/changelog.sh`, which leaves out docs-only commits). The in-app dialog shows the body
   as it is, so a stable's notes lead with a hand-written "What's new" list.
-- Docs-only pushes skip CI (`paths-ignore`). A mixed push builds. An `fdroid/metadata` change
-  alone also starts no index rebuild.
+- Docs-only pushes skip CI (`paths-ignore`). A mixed push builds.
 - Nightlies keep a rolling 30. Stables are never pruned: they are the changelog, the bisect
   range and the record of reach.
 
@@ -6627,7 +6624,7 @@ and in `location-guard.yml`.
 `ABI_SPLITS` is `true` since 2026-10-22 (issue #680). With the repository variable `ABI_SPLITS`
 `true`, CI builds with `-PabiSplits` and a release
 carries `<prefix>-arm64.apk`, `-armv7.apk`, `-x86.apk`, `-x86_64.apk` and `<prefix>-all.apk`
-(prefix `vela-maps` or `vela-maps-canary`, `scripts/stage-apks.sh`). Without it, one APK.
+(prefix `waylo-maps` or `waylo-maps-canary`, `scripts/stage-apks.sh`). Without it, one APK.
 
 - Chip digit on the versionCode: all-in-one 0, armv7 1, arm64 2, x86 3, x86_64 4, so moving from
   the all-in-one APK to a chip APK of the same build is an upgrade.
@@ -6657,7 +6654,7 @@ carries `<prefix>-arm64.apk`, `-armv7.apk`, `-x86.apk`, `-x86_64.apk` and `<pref
 - A stable check with nothing newer is 1 request. Nightly and canary checks are 2 to 4, and a
   canary check adds the compare when the nightly's code is higher. An
   offered update adds at most `HISTORY_MAX_RELEASES` (8) for the notes of the versions between
-  installed and offered. Every check logs one `VelaUpdate` line, and the compare one more.
+  installed and offered. Every check logs one `WayloUpdate` line, and the compare one more.
 - `ApkChoice` picks the file for `Build.SUPPORTED_ABIS`. The download uses a client with no call
   timeout. `ApkCheck` requires the zip magic bytes, the release's size and its SHA-256 when
   GitHub publishes one.
@@ -6670,38 +6667,18 @@ carries `<prefix>-arm64.apk`, `-armv7.apk`, `-x86.apk`, `-x86_64.apk` and `<pref
   installing or initiating package is Play, the downloaded APK is offered as a file for that
   tool. "Update anyway" installs it and loses the listing.
 
-#### F-Droid and GitHub Pages
+#### GitHub Pages
 
-- `fdroid-repo.yml` rebuilds the signed repository (latest stable plus the newest nightly) and
-  deploys it to GitHub Pages. `CurrentVersionCode` is pinned to the stable's highest
-  versionCode, read off its APKs, so default clients update weekly.
-- Files are renamed by tag, and the all-in-one APK is dropped where chip APKs exist.
-- `fdroidserver` comes from `tools/fdroid-requirements.txt`, which fixes every version, because
-  the job holds the index key.
-- It triggers on `workflow_run` of CI and the promotion: a release created by CI's own token
-  fires no event for other workflows.
-- The landing page and the press page (`site/`), the press kit (zipped by the workflow from
-  `docs/screenshots`, the logo and `site/press-kit/FACTS.md`), the map fonts and the docs site
-  ride the same Pages artifact. The landing page, the press page, the privacy page (`scripts/build-site-privacy.py` renders
-  `PRIVACY.md` into the site's layout at deploy time) and the press kit are also
-  published to velamaps.org on Cloudflare Pages by the same workflow; `site/_redirects` sends
-  velamaps.org/docs to the GitHub Pages docs. A failed velamaps.org deploy does not stop the
-  GitHub Pages one: the `website` job turns the run red after Pages has deployed. "Invalid
-  access token" in the log means `CLOUDFLARE_API_TOKEN` has expired or been revoked.
-  Never add a second Pages workflow, since `actions/deploy-pages` replaces the whole site. Never
-  re-run only a failed deploy job. Dispatch a fresh run.
-- The docs site (`/Vela/docs/`) is the repository's Markdown built with MkDocs Material by
-  `scripts/build-docs-site.py --strict` and `site/mkdocs.yml`, toolchain pinned in
-  `site/requirements-docs.txt` (MkDocs 2 drops the plugin and theme system). A page is published
-  only if it is in `PAGES` and in the nav. No request leaves the site: system fonts, no
-  `repo_url`, a local search index. `?q=` opens search. A push to `main` that changes Markdown,
-  `docs/**` or `site/**` redeploys.
+The F-Droid repository workflow (and with it the Pages/Cloudflare deploy) was removed.
+The docs site (`/Waylo/docs/`) is the repository's Markdown built with MkDocs Material by
+`scripts/build-docs-site.py --strict` and `site/mkdocs.yml`. A page is published
+only if it is in `PAGES` and in the nav.
 
 #### Keys
 
-The release keystore is outside the repository (`~/.vela-signing/`), with CI secrets
-`VELA_KEYSTORE_BASE64`, `VELA_KEYSTORE_PASSWORD`, `VELA_KEY_ALIAS`. Losing it means installed
-builds can never update. The certificate's SHA-256 is in README and FDROID.md
+The release keystore is outside the repository (`~/.waylo-signing/`), with CI secrets
+`WAYLO_KEYSTORE_BASE64`, `WAYLO_KEYSTORE_PASSWORD`, `WAYLO_KEY_ALIAS`. Losing it means installed
+builds can never update. The certificate's SHA-256 is in README
 (`apksigner verify --print-certs`) and is not the F-Droid index fingerprint. The calibration key
 is separate and also never committed. The `MAPTILER_KEY` secret reaches `BuildConfig` only.
 
@@ -6767,7 +6744,7 @@ composable calls and their arguments count. Content lambdas do not.
 
 | File | Holds |
 | --- | --- |
-| `README.md` | What Vela is, what reaches Google, install |
+| `README.md` | What Waylo is, what reaches Google, install |
 | `FEATURES.md` | A short list of what the app does |
 | `SPEC.md` | This reference |
 | `docs/README.md` | The docs site's index page |
@@ -6776,7 +6753,7 @@ composable calls and their arguments count. Content lambdas do not.
 | `PRIVACY.md` | What each service receives |
 | `SECURITY.md` | Security checks, reporting a vulnerability |
 | `CONTRIBUTING.md` | How to contribute |
-| `FDROID.md` | The F-Droid repository |
+
 | `CLAUDE.md` | Maintainer rules and traps |
 | `docs/FAQ.md` | First questions |
 | `docs/BUILDING.md` | Building from source |

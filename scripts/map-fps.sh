@@ -6,7 +6,7 @@
 # Not gfxinfo: the map draws on its own GL thread in a SurfaceView, so gfxinfo counts the Compose
 # chrome and cheerfully reports "Total frames rendered: 0" for a pan that visibly stutters (checked
 # 2026-09-18). The numbers come from MapLibre's own end-of-frame callback, which the app logs once
-# a second under VelaFps when the system property `debug.vela.fps` is set. The app reads that
+# a second under WayloFps when the system property `debug.waylo.fps` is set. The app reads that
 # property when it creates the map, so this restarts the app.
 #
 # TRAPS from earlier perf sessions: the 4a throttles after minutes of scrubbing, so watch the
@@ -23,9 +23,9 @@ LABEL="${2:-run}"
 # them are logged at 59 fps and drag the median up.
 
 echo "thermal: $(adb -s "$D" shell dumpsys thermalservice 2>/dev/null | grep -m1 'Thermal Status' | tr -d '\r' || echo unknown)"
-adb -s "$D" shell setprop debug.vela.fps true
-adb -s "$D" shell am force-stop app.vela
-adb -s "$D" shell am start -n app.vela/.MainActivity >/dev/null 2>&1
+adb -s "$D" shell setprop debug.waylo.fps true
+adb -s "$D" shell am force-stop app.waylo
+adb -s "$D" shell am start -n app.waylo/.MainActivity >/dev/null 2>&1
 sleep 12
 adb -s "$D" logcat -c
 
@@ -34,11 +34,11 @@ for _ in 1 2 3 4 5 6 7 8; do
   adb -s "$D" shell input swipe 300 900 800 1500 320
 done
 sleep 2
-adb -s "$D" logcat -d -s VelaFps:D 2>/dev/null > /tmp/velafps.txt
+adb -s "$D" logcat -d -s WayloFps:D 2>/dev/null > /tmp/waylofps.txt
 python3 - "$LABEL" <<'PY'
 import re, sys
 label = sys.argv[1]
-fps = [int(m.group(1)) for m in re.finditer(r"VelaFps\s*:\s*(\d+) fps", open("/tmp/velafps.txt").read())]
+fps = [int(m.group(1)) for m in re.finditer(r"WayloFps\s*:\s*(\d+) fps", open("/tmp/waylofps.txt").read())]
 # Drop the first second (the map is still catching up after the restart) and any second with no
 # frames at all, which is an idle gap between gestures rather than a stall.
 fps = [f for f in fps[1:] if f > 0]

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds the documentation site (served at /Vela/docs/ beside the landing page and the F-Droid repo).
+"""Builds the documentation site (served at /Waylo/docs/ beside the landing page and the F-Droid repo).
 
 The Markdown stays where it lives in the repository, where GitHub renders it. This script copies
 each page into build/docs-src under a clean URL, rewrites every relative link (a link to another
@@ -7,7 +7,7 @@ published page points at that page, a link to code or any other file points at G
 images the pages use, and runs MkDocs with site/mkdocs.yml into build/docs-site.
 
     python3 scripts/build-docs-site.py            # build
-    python3 scripts/build-docs-site.py --serve    # build, then serve on http://127.0.0.1:8095/Vela/docs/
+    python3 scripts/build-docs-site.py --serve    # build, then serve on http://127.0.0.1:8095/Waylo/docs/
 
 Adding a page: add it to PAGES (source -> published path) and to the nav in site/mkdocs.yml.
 """
@@ -21,16 +21,16 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "build", "docs-src")
 OUT = os.path.join(ROOT, "build", "docs-site")
-BLOB = "https://github.com/PimpinPumpkin/Vela/blob/main/"
-TREE = "https://github.com/PimpinPumpkin/Vela/tree/main/"
-HOME = "https://pimpinpumpkin.github.io/Vela/"
+BLOB = "https://github.com/PimpinPumpkin/Waylo/blob/main/"
+TREE = "https://github.com/PimpinPumpkin/Waylo/tree/main/"
+HOME = "https://pimpinpumpkin.github.io/Waylo/"
 
 # repository path -> published path (relative to the docs root)
 PAGES = {
     "docs/README.md": "index.md",
     "docs/FAQ.md": "faq.md",
     "PRIVACY.md": "privacy.md",
-    "FDROID.md": "fdroid.md",
+
     "FEATURES.md": "features.md",
     "docs/ANDROID-AUTO.md": "android-auto.md",
     "docs/dpad.md": "dpad.md",
@@ -168,9 +168,9 @@ if __name__ == "__main__":
     if "--serve" in sys.argv:
         stage = os.path.join(ROOT, "build", "docs-serve")
         shutil.rmtree(stage, ignore_errors=True)
-        os.makedirs(os.path.join(stage, "Vela"))
-        shutil.copytree(OUT, os.path.join(stage, "Vela", "docs"))
-        shutil.copyfile(os.path.join(ROOT, "site", "index.html"), os.path.join(stage, "Vela", "index.html"))
-        shutil.copytree(os.path.join(ROOT, "site", "assets"), os.path.join(stage, "Vela", "assets"))
-        print("serving http://127.0.0.1:8095/Vela/docs/")
+        os.makedirs(os.path.join(stage, "Waylo"))
+        shutil.copytree(OUT, os.path.join(stage, "Waylo", "docs"))
+        shutil.copyfile(os.path.join(ROOT, "site", "index.html"), os.path.join(stage, "Waylo", "index.html"))
+        shutil.copytree(os.path.join(ROOT, "site", "assets"), os.path.join(stage, "Waylo", "assets"))
+        print("serving http://127.0.0.1:8095/Waylo/docs/")
         subprocess.run([sys.executable, "-m", "http.server", "8095", "-d", stage])

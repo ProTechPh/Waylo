@@ -24,7 +24,7 @@
 set -euo pipefail
 
 ID="${1:?region id}"; NAME="${2:?display name}"; URL="${3:?source URL or - for ms-global}"; BBOX_CSV="${4:?bbox S,W,N,E}"
-REPO="${VELA_REPO:-PimpinPumpkin/Vela}"
+REPO="${WAYLO_REPO:-PimpinPumpkin/Waylo}"
 TAG="building-overlays"
 SOURCE="${SOURCE:-us-legacy}"
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
@@ -77,7 +77,7 @@ fi
 # --drop-densest-as-needed + the default 500 KB tile cap keep a packed downtown tile from bloating; the
 # gap-fill overlay doesn't need every last footprint in a dense core (OSM already has those).
 echo "→ tiling with tippecanoe ($SOURCE)"
-tippecanoe -o "$WORK/$ID.pmtiles" -l building -n "Vela building overlay: $NAME" \
+tippecanoe -o "$WORK/$ID.pmtiles" -l building -n "Waylo building overlay: $NAME" \
   -Z14 -z16 --drop-densest-as-needed --extend-zooms-if-still-dropping $TIPPE_P \
   --attribution "Buildings © Microsoft (ODbL)" --force "$GEOJSON"
 
@@ -89,7 +89,7 @@ echo "→ $ID: ${SIZE} MB, bbox $BBOX"
 # The overlay catalog release — prerelease so it never becomes the "Latest" the APK auto-tracks.
 gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1 || \
   gh release create "$TAG" --repo "$REPO" --prerelease --title "Open building overlays" \
-    --notes "Microsoft Building Footprints (US + Global ML, ODbL) as PMTiles for Vela's gap-fill building overlay. Data assets, not a code release. Buildings © Microsoft, licensed under ODbL (opendatacommons.org/licenses/odbl/1-0)."
+    --notes "Microsoft Building Footprints (US + Global ML, ODbL) as PMTiles for Waylo's gap-fill building overlay. Data assets, not a code release. Buildings © Microsoft, licensed under ODbL (opendatacommons.org/licenses/odbl/1-0)."
 
 gh release upload "$TAG" "$WORK/$ID.pmtiles" --clobber --repo "$REPO"
 

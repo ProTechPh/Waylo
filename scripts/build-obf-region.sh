@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Bake ONE region's Vela obf and publish it to the `obf-regions` release - the successor pipeline to
+# Bake ONE region's Waylo obf and publish it to the `obf-regions` release - the successor pipeline to
 # build-routing-region.sh (issue #214). By default the obf carries the ROUTING section only, indexed
-# lean (scripts/VelaObfShim.java: no multipolygon, route-relation, proximity or country-region
+# lean (scripts/WayloObfShim.java: no multipolygon, route-relation, proximity or country-region
 # passes); address + POI come from the poi-packs SQLite, and MapLibre draws the map, GTFS covers
-# transit. VELA_OBF_SECTIONS / VELA_OBF_LEAN widen it. Routing-only lean is what fits a 16 GB CI
+# transit. WAYLO_OBF_SECTIONS / WAYLO_OBF_LEAN widen it. Routing-only lean is what fits a 16 GB CI
 # runner for a US-state-sized extract (measured 2026-09-04); the full set does not. The asset is
 # served RAW (an obf's blocks are already deflate-compressed), so download size == installed size.
 #
@@ -17,7 +17,7 @@ set -euo pipefail
 ID="${1:?region id}"
 NAME="${2:?display name}"
 PBF_URL="${3:?pbf url}"
-REPO="${VELA_REPO:-PimpinPumpkin/Vela}"
+REPO="${WAYLO_REPO:-PimpinPumpkin/Waylo}"
 TAG="obf-regions"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
@@ -54,10 +54,10 @@ BBOX="$(bake_header_bbox "$WORK/region.osm.pbf")"
 # did not change the outcome, only the time to reach it (50 min vs 3 h to the same OOM), so it is
 # still the right collector here: a doomed region should fail fast.
 # 12g, not 14g: a 16 GB runner OOM-kills the JVM itself above that, and the lean routing-only
-# bake (see VelaObfShim.java) was MEASURED to complete a 345 MB US state at 12g.
+# bake (see WayloObfShim.java) was MEASURED to complete a 345 MB US state at 12g.
 # ROUTING-ONLY bakes index a PRE-FILTERED extract (bake_obf_filter in bake-lib.sh says why).
 INDEX_PBF="region.osm.pbf"
-if [[ "${VELA_OBF_SECTIONS:-routing}" == "routing" ]]; then
+if [[ "${WAYLO_OBF_SECTIONS:-routing}" == "routing" ]]; then
   bake_obf_filter "$WORK/region.osm.pbf" "$WORK/region-routing.osm.pbf"
   FULL_MB=$(bake_mib "$WORK/region.osm.pbf")
   ROUT_MB=$(bake_mib "$WORK/region-routing.osm.pbf")
@@ -119,9 +119,9 @@ OBF="$(ls "$WORK"/*.obf | head -1)"  # generateObf names the output from the pbf
 mv "$OBF" "$WORK/$ID.obf"
 
 # Highway hierarchy for car and bicycle (bake_obf_hh in bake-lib.sh says why). A region too big
-# for it still ships, without HH, and routes as it always did; VELA_OBF_HH=0 skips the step.
+# for it still ships, without HH, and routes as it always did; WAYLO_OBF_HH=0 skips the step.
 HH=false
-if [[ "${VELA_OBF_HH:-1}" == "1" ]]; then
+if [[ "${WAYLO_OBF_HH:-1}" == "1" ]]; then
   BEFORE_MB=$(bake_mib "$WORK/$ID.obf")
   set +e
   bake_obf_hh "$WORK" "$WORK/$ID.obf" "$JAVA_HEAP" > "$WORK/hh.log" 2>&1
@@ -143,7 +143,7 @@ echo "→ $ID: ${SIZE} MB obf (download == installed), bbox $BBOX"
 
 gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1 || \
   gh release create "$TAG" --repo "$REPO" --prerelease --title "Offline obf regions" \
-    --notes "Vela-baked obf files (routing section only, lean bake) for offline routing. Data assets, not a code release."
+    --notes "Waylo-baked obf files (routing section only, lean bake) for offline routing. Data assets, not a code release."
 
 gh release upload "$TAG" "$WORK/$ID.obf" --clobber --repo "$REPO"
 

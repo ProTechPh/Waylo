@@ -11,8 +11,8 @@ osmium tags-filter "$PBF" \
   -o "$DIR/paint-roads.pbf" --overwrite
 osmium export "$DIR/paint-roads.pbf" -f geojsonseq --geometry-types=point,linestring -o "$DIR/paint-roads.geojsonseq" --overwrite
 (cd "$REPO" && ./gradlew -q :core:testDebugUnitTest --tests '*PaintedRoadsBakeTest' \
-  -DvelaPaintIn="$DIR/paint-roads.geojsonseq" -DvelaPaintOut="$DIR/paint-marks.geojsonseq" --rerun-tasks)
-grep -o 'PAINTBAKE[^<]*' "$REPO/core/build/test-results/testDebugUnitTest/TEST-app.vela.core.data.PaintedRoadsBakeTest.xml" || true
+  -DwayloPaintIn="$DIR/paint-roads.geojsonseq" -DwayloPaintOut="$DIR/paint-marks.geojsonseq" --rerun-tasks)
+grep -o 'PAINTBAKE[^<]*' "$REPO/core/build/test-results/testDebugUnitTest/TEST-app.waylo.core.data.PaintedRoadsBakeTest.xml" || true
 tippecanoe -o "$DIR/painted-$NAME.pmtiles" -l paint -z15 -Z15 -P -b 24 --no-feature-limit --no-tile-size-limit \
   --no-line-simplification --force --quiet "$DIR/paint-marks.geojsonseq"
 ls -la "$DIR/painted-$NAME.pmtiles"

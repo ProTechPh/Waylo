@@ -58,7 +58,7 @@ Regions come from four files in `tools/` that share ids.
 | `address-regions.json` | 52 | House numbers |
 
 The routing catalog has every country-level extract Geofabrik publishes, plus sub-areas for the
-countries Geofabrik divides (groups such as `germany-sub`) and four parts of Texas that Vela
+countries Geofabrik divides (groups such as `germany-sub`) and four parts of Texas that Waylo
 cuts itself (`texas-sub`). Twelve whole-country and whole-state rows carry `skip_obf: true`.
 Their sub-area rows cover them, so the routing, basemap and grid-cell bakes skip them and the
 places catalog leaves them out. A workflow matrix holds at most
@@ -313,7 +313,7 @@ The pass applies every published patch that starts from an installed revision, f
 archives, basemap archives and place packs, and downloads again any grid cell with a newer bake
 (a cell is a few MB). It never downloads a whole places, basemap or routing file; those wait for
 Update. A place pack whose delta fails to apply is downloaded whole. A tap on Update tries the
-patch first in every mode. Each attempt is logged under `VelaDelta`.
+patch first in every mode. Each attempt is logged under `WayloDelta`.
 
 The patch format and thresholds are in [SPEC section 7](../../SPEC.md). Downloading and deleting
 regions is [chapter 8](08-offline.md).

@@ -98,7 +98,7 @@ jobs:
             gh release view poi-packs --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
               gh release create poi-packs --repo "$GITHUB_REPOSITORY" --prerelease \
                 --title "Offline place packs" \
-                --notes "Prebuilt SQLite place/address packs (OpenStreetMap, ODbL) for Vela offline search. Data assets, not a code release."
+                --notes "Prebuilt SQLite place/address packs (OpenStreetMap, ODbL) for Waylo offline search. Data assets, not a code release."
           }
           gh_retry ensure_release
 
@@ -116,7 +116,7 @@ jobs:
       - name: Build ${{ matrix.id }} + upload zip + emit entry
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VELA_REPO: ${{ github.repository }}
+          WAYLO_REPO: ${{ github.repository }}
           MANIFEST_MODE: emit
           ENTRY_OUT: ${{ matrix.id }}.json
         run: bash scripts/build-poi-region.sh "${{ matrix.id }}" "${{ matrix.name }}" "${{ matrix.pbf_url }}"
@@ -142,7 +142,7 @@ jobs:
       - name: Merge entries into poi-pack-manifest.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VELA_REPO: ${{ github.repository }}
+          WAYLO_REPO: ${{ github.repository }}
         run: |
           shopt -s nullglob
           files=(entries/*.json)

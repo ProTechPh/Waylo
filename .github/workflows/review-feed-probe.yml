@@ -42,7 +42,7 @@ jobs:
           done
 
       - name: Probe the review feed
-        run: ./gradlew :core:testDebugUnitTest --tests '*ReviewFeedProbeTest' -DvelaFeedProbe=true --rerun-tasks --no-daemon
+        run: ./gradlew :core:testDebugUnitTest --tests '*ReviewFeedProbeTest' -DwayloFeedProbe=true --rerun-tasks --no-daemon
 
       - name: Report
         if: always()
