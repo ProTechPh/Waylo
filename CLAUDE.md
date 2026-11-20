@@ -229,9 +229,11 @@ map fonts, road features, cameras, grid cells, UK fuel prices. Those files exist
 
 ### GitHub Pages is one artifact
 
-There is no Pages workflow in this repo anymore (the F-Droid repo workflow was removed).
-The landing page, press page, privacy page and press kit are no longer published by CI.
-If you need them back, add a dedicated Pages workflow.
+`pages.yml` builds one artifact and deploys it: `site/` at the root, the MkDocs build under
+`/docs/`, and `calibration.json` with its signature at the root for the app's offline fallback.
+The Pages source in the repository settings is "GitHub Actions", not a branch folder. A change
+to `site/**`, `docs/**`, `calibration.json`, `calibration.json.sig` or the docs builder
+redeploys it.
 
 ### Keys
 
