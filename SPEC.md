@@ -31,7 +31,8 @@ subsystem in prose; section 16 lists the other documents.
 
 Waylo Maps (`app.waylo`) is a maps and navigation app for Android phones without Google Play
 services: search, places, routing, traffic-aware ETAs and turn-by-turn navigation. It targets
-GrapheneOS and other ROMs with no GMS. License GPLv3. Distribution is F-Droid and Obtainium.
+GrapheneOS and other ROMs with no GMS. License GPLv3. Distribution is GitHub releases and
+Obtainium.
 
 ### 1.2 Non-negotiables
 
@@ -6669,9 +6670,10 @@ carries `<prefix>-arm64.apk`, `-armv7.apk`, `-x86.apk`, `-x86_64.apk` and `<pref
 
 #### GitHub Pages
 
-The F-Droid repository workflow (and with it the Pages/Cloudflare deploy) was removed.
-The docs site (`/Waylo/docs/`) is the repository's Markdown built with MkDocs Material by
-`scripts/build-docs-site.py --strict` and `site/mkdocs.yml`. A page is published
+`pages.yml` builds one artifact: `site/` at the root, the MkDocs build under `/docs/`, the
+privacy page rendered from `PRIVACY.md`, and `calibration.json` with its signature. The docs
+site is the repository's Markdown built with MkDocs Material by
+`scripts/build-docs-site.py` and `site/mkdocs.yml`. A page is published
 only if it is in `PAGES` and in the nav.
 
 #### Keys
@@ -6679,7 +6681,7 @@ only if it is in `PAGES` and in the nav.
 The release keystore is outside the repository (`~/.waylo-signing/`), with CI secrets
 `WAYLO_KEYSTORE_BASE64`, `WAYLO_KEYSTORE_PASSWORD`, `WAYLO_KEY_ALIAS`. Losing it means installed
 builds can never update. The certificate's SHA-256 is in README
-(`apksigner verify --print-certs`) and is not the F-Droid index fingerprint. The calibration key
+(`apksigner verify --print-certs`). The calibration key
 is separate and also never committed. The `MAPTILER_KEY` secret reaches `BuildConfig` only.
 
 #### Other workflows
