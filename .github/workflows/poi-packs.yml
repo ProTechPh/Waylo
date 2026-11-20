@@ -38,7 +38,7 @@ on:
         default: ""
 
 permissions:
-  contents: write # create/upload assets on the poi-packs release
+  contents: read
 
 # Serialize runs so two dispatches never race their merge jobs against poi-pack-manifest.json.
 concurrency:
@@ -47,6 +47,8 @@ concurrency:
 
 jobs:
   prep:
+    permissions:
+      contents: write # create/upload assets on the poi-packs release
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.sel.outputs.matrix }}
@@ -103,6 +105,8 @@ jobs:
           gh_retry ensure_release
 
   build:
+    permissions:
+      contents: write # create/upload assets on the poi-packs release
     needs: prep
     runs-on: ubuntu-latest
     strategy:
@@ -127,6 +131,8 @@ jobs:
           retention-days: 1
 
   merge:
+    permissions:
+      contents: write # create/upload assets on the poi-packs release
     needs: build
     if: ${{ !cancelled() }} # merge whatever succeeded, even if some regions failed
     runs-on: ubuntu-latest

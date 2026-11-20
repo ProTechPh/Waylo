@@ -32,13 +32,15 @@ on:
         default: ''
 
 permissions:
-  contents: write
-  actions: write # dispatches ci.yml
+  contents: read
 
 concurrency: release-now
 
 jobs:
   cut:
+    permissions:
+      contents: write
+      actions: write # dispatches ci.yml
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.cut.outputs.tag }}
@@ -102,6 +104,9 @@ jobs:
           echo "Nightly ${TAG} is cut from ${GITHUB_SHA:0:9}." >> "$GITHUB_STEP_SUMMARY"
 
   promote:
+    permissions:
+      contents: write
+      actions: write # dispatches ci.yml
     if: inputs.channel == 'stable'
     needs: cut
     uses: ./.github/workflows/promote-stable.yml

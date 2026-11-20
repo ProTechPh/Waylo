@@ -28,13 +28,15 @@ on:
         default: false
 
 permissions:
-  contents: write # create/upload assets on the building-overlays release
+  contents: read
 # NB: run-level concurrency is intentionally NOT set — the `us`/`world`/`chunk` group dispatches must be able
 # to build concurrently. Only the MERGE job serializes (its own concurrency group below), so parallel runs
 # accumulate into the one manifest instead of clobbering it.
 
 jobs:
   prep:
+    permissions:
+      contents: write # create/upload assets on the building-overlays release
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.sel.outputs.matrix }}
@@ -71,6 +73,8 @@ jobs:
               --notes "Microsoft Building Footprints (US + Global ML, ODbL) as PMTiles for Waylo's gap-fill building overlay. Data assets, not a code release. Buildings © Microsoft, licensed ODbL."
 
   build:
+    permissions:
+      contents: write # create/upload assets on the building-overlays release
     needs: prep
     runs-on: ubuntu-latest
     strategy:
@@ -103,6 +107,8 @@ jobs:
           retention-days: 1
 
   merge:
+    permissions:
+      contents: write # create/upload assets on the building-overlays release
     needs: build
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest

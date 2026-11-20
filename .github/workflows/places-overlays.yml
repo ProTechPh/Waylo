@@ -31,10 +31,12 @@ on:
         default: ""
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   plan:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.m.outputs.matrix }}
@@ -86,6 +88,8 @@ jobs:
               --notes "Data release: the open places layer, Overture Maps Places baked to PMTiles per region. Not an app build. Overture Places is CDLA-Permissive 2.0."
 
   bake:
+    permissions:
+      contents: write
     needs: plan
     runs-on: ubuntu-latest
     strategy:
@@ -225,6 +229,8 @@ jobs:
           path: entries/
 
   manifest:
+    permissions:
+      contents: write
     needs: bake
     if: always()
     runs-on: ubuntu-latest

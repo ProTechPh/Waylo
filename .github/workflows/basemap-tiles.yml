@@ -31,10 +31,12 @@ on:
         required: false
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   plan:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.sel.outputs.matrix }}
@@ -76,6 +78,8 @@ jobs:
               --notes "Data release: the offline basemap, OpenStreetMap data baked per region into vector tiles (OpenMapTiles schema, PMTiles) by planetiler. Not an app build. OpenStreetMap data is ODbL."
 
   bake:
+    permissions:
+      contents: write
     needs: plan
     runs-on: ubuntu-latest
     strategy:
@@ -193,6 +197,8 @@ jobs:
           path: entries/
 
   manifest:
+    permissions:
+      contents: write
     needs: bake
     if: always()
     runs-on: ubuntu-latest

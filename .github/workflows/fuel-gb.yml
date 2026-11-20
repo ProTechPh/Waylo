@@ -22,8 +22,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: write # the fuel-gb release
-  issues: write   # the stale-source alert
+  contents: read
 
 concurrency:
   group: fuel-gb
@@ -31,6 +30,9 @@ concurrency:
 
 jobs:
   publish:
+    permissions:
+      contents: write # the fuel-gb release
+      issues: write   # the stale-source alert
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
