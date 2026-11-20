@@ -29,9 +29,6 @@ Set 2026-10-07.
    what is still open. It replaces the three closure steps in the places bake and later the
    merge itself. Blocked on its first published files. The bake then reads one file per
    state.
-5. F-Droid's own catalog. The official catalog builds every app from source and cannot take
-   the prebuilt voice runtime (sherpa-onnx) or the prebuilt Cronet. The work is a build
-   flavor that compiles or leaves out each of them, and reproducible output. Not started.
 
 Traffic incidents from official feeds (issue #688; Germany's Autobahn API, Mobilithek and the
 Hamburg traffic feed in issue #833) are out of this list. They belong in a sister project beside
@@ -143,7 +140,7 @@ one has turned into work, the item is named.
 - **"Degoogled" promises more than the app does.** A packet capture shows Google hosts, so the
   word gets called false. The README and site now say what is not on the phone (Google code, an
   account, a key) and call Waylo a hybrid of open maps and Google. Still to change: the welcome
-  tagline and the About hint in the app, and the F-Droid repository description. `PRIVACY.md`
+  tagline and the About hint in the app. `PRIVACY.md`
   should also list every host a capture will show, including the ones Google's own pages load in
   the hidden WebViews.
 - **It is written with AI.** Stated in `SECURITY.md`, and the templates ask which model helped.
@@ -652,7 +649,7 @@ off the list when it has been.
 - A recheck's heal no longer starts the reroute cooldown (it held a needed reroute 8 s): code
   only. Not driven.
 - One APK per chip type, on since 2026-10-22 (`ABI_SPLITS`, #680): not seen yet, a release
-  with the five files updated through Obtainium, the F-Droid repo and the in-app updater.
+  with the five files updated through Obtainium and the in-app updater.
 - Saved drives on from the first screens, deleted after 30 days (`trip_auto_clear`): seen on a
   4a with a fresh dev copy, the card with both switches on and both set after Continue. Not seen:
   a drive actually deleted at 30 days (unit test of the rule only).
@@ -864,7 +861,7 @@ the geocoder, speed limits, the basemap, transit, road features and cameras. It 
 pages and traffic, and the listing describes that app.
 
 Enabling the Google half after review breaks Play policy, which is enforced on the developer
-account. So there are two distributions: the full app on GitHub, Obtainium and F-Droid, and
+account. So there are two distributions: the full app on GitHub and Obtainium, and
 the Play build with a link to the project site. An in-app APK downloader is not allowed.
 
 Work, roughly in order:
@@ -958,7 +955,7 @@ traffic and replaces it where coverage is good.
 ### If GitHub goes away
 
 GitHub is the right home today: free unlimited Actions for a public repository, releases that
-served 74 TB of region files at no cost, the Obtainium and F-Droid audience, and a record of
+served 74 TB of region files at no cost, the Obtainium audience, and a record of
 keeping projects that toe a line. It is also one account that can be closed. What that would
 break, measured 2026-10-11, worst first.
 
@@ -972,10 +969,8 @@ break, measured 2026-10-11, worst first.
   six dollars a month at this size) does. Every manifest embeds absolute `github.com` asset
   URLs, so a move is a manifest rewrite or an app-side rebase onto the `releases` link. The
   93 GB basemap and 82 GB building bakes need big-disk runners to regenerate.
-- The channels that pin a URL: Obtainium points at the repository, F-Droid clients at the
-  Pages address. The F-Droid key is local, so the fingerprint survives; every user would add
-  the new address by hand. The APK is 116 MB, over Cloudflare Pages' 25 MB file limit, so a
-  mirror of the F-Droid repository lives on R2, not Pages.
+- The channels that pin a URL: Obtainium points at the repository, and every user would add
+  the new address by hand.
 - CI: 29 workflows, hourly to weekly crons, at least 55 runner hours a month, ten secrets (all
   regenerable or kept locally), the `gh` CLI in 41 scripts and workflows, artifact, Pages,
   CodeQL and Scorecard actions. GitLab's free tier is 400 minutes a month. Forgejo Actions runs
@@ -995,12 +990,10 @@ after GitHub's); the rest are not:
 1. A second settings-file address on GitHub Pages (protechph.github.io/Waylo), published by the same workflow
    as the site, so a closed account becomes one signed `links` push. Built. Not yet seen: an
    app reading the copy with GitHub blocked.
-2. The F-Droid repository mirrored on R2 behind a protechph.github.io/Waylo address, listed in the index as
-   a mirror so clients fail over by themselves, and in the README.
-3. Manifest asset URLs rebased app-side onto the `releases` link, so a storage move is a push,
+2. Manifest asset URLs rebased app-side onto the `releases` link, so a storage move is a push,
    not a rebake.
-4. A weekly export of issues and pull requests to R2.
-5. A GitLab pull mirror of the git history.
+3. A weekly export of issues and pull requests to R2.
+4. A GitLab pull mirror of the git history.
 
 ## Not planned
 

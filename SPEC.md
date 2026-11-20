@@ -31,7 +31,8 @@ subsystem in prose; section 16 lists the other documents.
 
 Waylo Maps (`app.waylo`) is a maps and navigation app for Android phones without Google Play
 services: search, places, routing, traffic-aware ETAs and turn-by-turn navigation. It targets
-GrapheneOS and other ROMs with no GMS. License GPLv3. Distribution is F-Droid and Obtainium.
+GrapheneOS and other ROMs with no GMS. License GPLv3. Distribution is GitHub releases and
+Obtainium.
 
 ### 1.2 Non-negotiables
 
