@@ -126,7 +126,7 @@ The website is **[velamaps.org](https://velamaps.org/)**, and the docs in this
 repository are published as a searchable site at
 **[protechph.github.io/Waylo/docs](https://protechph.github.io/Waylo/docs/)**.
 
-[![Support Waylo on Buy Me a Coffee](https://img.shields.io/badge/support%20waylo-buy%20me%20a%20coffee-ffdd00)](https://buymeacoffee.com/PimpinPumpkin)
+[![Support Waylo on Buy Me a Coffee](https://img.shields.io/badge/support%20waylo-buy%20me%20a%20coffee-ffdd00)](https://buymeacoffee.com/ProTechPh)
 
 ---
 

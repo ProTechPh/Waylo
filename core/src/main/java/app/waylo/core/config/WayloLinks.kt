@@ -56,7 +56,7 @@ object WayloLinks {
         // the website and must not become a redirect to it; installed apps and F-Droid clients
         // point here.
         PAGES to "https://protechph.github.io/Waylo",
-        DONATE to "https://buymeacoffee.com/PimpinPumpkin",
+        DONATE to "https://buymeacoffee.com/ProTechPh",
     )
 
     /** Key to (base key, path appended to the base). */

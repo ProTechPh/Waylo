@@ -26,7 +26,7 @@ by one developer.
 | License | GPLv3 |
 | Status | Beta |
 | Started | June 2026 |
-| Who makes it | One developer, who goes by PimpinPumpkin. Outside contributors send fixes and volunteers translate it. |
+| Who makes it | One developer, who goes by ProTechPh. Outside contributors send fixes and volunteers translate it. |
 | Languages | 19 |
 | Where to get it | GitHub releases or Obtainium. Not on Google Play. |
 | Source | https://github.com/ProTechPh/Waylo |
@@ -80,7 +80,7 @@ know about ones nobody has.
 
 ## Contact
 
-@PimpinPumpkin on GitHub: https://github.com/ProTechPh/Waylo
+@ProTechPh on GitHub: https://github.com/ProTechPh/Waylo
 
 Security problems: the private report form at
 https://github.com/ProTechPh/Waylo/security/advisories/new
