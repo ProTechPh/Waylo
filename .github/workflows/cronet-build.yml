@@ -21,7 +21,7 @@ on:
     - cron: '20 6 * * 1'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: cronet-runtime
@@ -29,6 +29,8 @@ concurrency:
 
 jobs:
   publish:
+    permissions:
+      contents: write
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:

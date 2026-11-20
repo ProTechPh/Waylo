@@ -105,7 +105,8 @@ class WayloApp : Application(), coil.ImageLoaderFactory {
         }
         // adb-only: `setprop debug.waylo.tune.netLog 1` also opens the WebViews to Chrome's remote
         // inspector (adb forward to webview_devtools_remote_<pid>), for reading their real headers.
-        if (app.waylo.ui.AppTune.localOn("netLog")) android.webkit.WebView.setWebContentsDebuggingEnabled(true)
+        // Debug builds only: a release build must never expose the inspector, whatever the prop.
+        if (BuildConfig.DEBUG && app.waylo.ui.AppTune.localOn("netLog")) android.webkit.WebView.setWebContentsDebuggingEnabled(true)
         // A test switch for the routes' fallbacks (ValhallaRouter.matchOff). adb only.
         app.waylo.core.data.ValhallaRouter.matchOff = app.waylo.ui.AppTune.localOn("noMatch")
         app.waylo.web.SessionRotation.appJar = http.cookieJar as? app.waylo.core.di.ResettableCookieJar

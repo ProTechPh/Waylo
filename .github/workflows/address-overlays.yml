@@ -23,10 +23,12 @@ on:
         default: false
 
 permissions:
-  contents: write # create/upload assets on the address-overlays release
+  contents: read
 
 jobs:
   prep:
+    permissions:
+      contents: write # create/upload assets on the address-overlays release
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.sel.outputs.matrix }}
@@ -58,6 +60,8 @@ jobs:
               --notes "OpenAddresses address points as PMTiles for Waylo's house-number labels. Data assets, not a code release. Addresses © OpenAddresses contributors, per-source open licenses."
 
   build:
+    permissions:
+      contents: write # create/upload assets on the address-overlays release
     needs: prep
     runs-on: ubuntu-latest
     strategy:
@@ -87,6 +91,8 @@ jobs:
           retention-days: 1
 
   merge:
+    permissions:
+      contents: write # create/upload assets on the address-overlays release
     needs: build
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest

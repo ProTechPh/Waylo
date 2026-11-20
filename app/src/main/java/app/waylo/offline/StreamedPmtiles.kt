@@ -65,7 +65,7 @@ object StreamedPmtiles : Interceptor {
     }
 
     private fun keyOf(url: String): String =
-        MessageDigest.getInstance("SHA-1").digest(url.toByteArray()).joinToString("") { "%02x".format(it) }.take(20)
+        MessageDigest.getInstance("SHA-256").digest(url.toByteArray()).joinToString("") { "%02x".format(it) }.take(20)
 
     private val TILE = Regex("""^/([0-9a-f]+)/(\d+)/(\d+)/(\d+)\.pbf$""")
 

@@ -12,8 +12,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  actions: write # dispatch and rerun the bakes
-  contents: write # the state file on the bake-conductor release
+  contents: read
 
 concurrency:
   group: bake-conductor
@@ -21,6 +20,9 @@ concurrency:
 
 jobs:
   conduct:
+    permissions:
+      actions: write # dispatch and rerun the bakes
+      contents: write # the state file on the bake-conductor release
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

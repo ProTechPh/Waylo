@@ -34,7 +34,7 @@ on:
         default: ""
 
 permissions:
-  contents: write # create/upload assets on the road-features release
+  contents: read
 
 # Serialize runs so two dispatches never race their merge jobs against road-features-manifest.json.
 concurrency:
@@ -43,6 +43,8 @@ concurrency:
 
 jobs:
   prep:
+    permissions:
+      contents: write # create/upload assets on the road-features release
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.sel.outputs.matrix }}
@@ -95,6 +97,8 @@ jobs:
               --notes "Baked per-region road features (traffic lights, stop signs, level crossings, speed humps, speed cameras) from OpenStreetMap (ODbL) for on-device use. INFRA release - do not delete."
 
   build:
+    permissions:
+      contents: write # create/upload assets on the road-features release
     needs: prep
     runs-on: ubuntu-latest
     strategy:
@@ -119,6 +123,8 @@ jobs:
           retention-days: 1
 
   merge:
+    permissions:
+      contents: write # create/upload assets on the road-features release
     needs: build
     if: ${{ !cancelled() }} # merge whatever succeeded, even if some regions failed
     runs-on: ubuntu-latest

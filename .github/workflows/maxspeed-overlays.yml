@@ -28,10 +28,12 @@ on:
         default: ""
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   prep:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.sel.outputs.matrix }}
@@ -69,6 +71,8 @@ jobs:
               --notes "OSM maxspeed road ways as PMTiles for Waylo's keyless posted speed-limit source. Data assets, not a code release. Speed limits © OpenStreetMap contributors, ODbL."
 
   build:
+    permissions:
+      contents: write
     needs: prep
     runs-on: ubuntu-latest
     strategy:
@@ -98,6 +102,8 @@ jobs:
           retention-days: 1
 
   merge:
+    permissions:
+      contents: write
     needs: build
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest

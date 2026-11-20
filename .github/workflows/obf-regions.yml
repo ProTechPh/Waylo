@@ -35,7 +35,7 @@ on:
         default: true
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: obf-regions-manifest
@@ -43,6 +43,8 @@ concurrency:
 
 jobs:
   prep:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.sel.outputs.matrix }}
@@ -87,6 +89,8 @@ jobs:
               --notes "Waylo-baked obf files (routing section only by default, no rendering section) for offline routing. Data assets, not a code release."
 
   build:
+    permissions:
+      contents: write
     needs: prep
     runs-on: ubuntu-latest
     strategy:
@@ -115,6 +119,8 @@ jobs:
           retention-days: 1
 
   merge:
+    permissions:
+      contents: write
     needs: build
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest

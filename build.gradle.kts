@@ -42,6 +42,12 @@ subprojects {
             "com.google.guava:guava:33.7.2-jre",
         )
     }
+    // Dagger/Hilt 2.60.1, the newest release, still asks its annotation processor for Guava
+    // 33.6.0-jre, which the deserialization advisory covers. The processors are build-time only;
+    // hold their classpath to the fixed release until Dagger moves on.
+    configurations.matching { it.name.startsWith("ksp") || it.name.startsWith("kapt") }.configureEach {
+        resolutionStrategy.force("com.google.guava:guava:33.7.2-jre")
+    }
     if (name == "baselineprofile") {
         configurations.configureEach {
             resolutionStrategy.force(

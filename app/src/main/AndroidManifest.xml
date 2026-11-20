@@ -92,13 +92,16 @@
              (geo:, share, maps links) so deep links never depend on the cosmetic choice. NB the one-time
              cost of moving the filter: pinned home-screen icons re-pin after this update.
              singleTask keeps one map: a link or a share from another app reaches the running map
-             instead of stacking a second one in the sender's task. allowEmbedded and
+             instead of stacking a second one in the sender's task. taskAffinity="" is the companion
+             fix for CWE-1021: without an affinity another app cannot graft its activity into this
+             task. allowEmbedded and
              resizeableActivity let Android Automotive 10 and 11 embed Waylo in the home screen's map
              pane (ActivityView); without them the car starts it full screen. -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
+            android:taskAffinity=""
             android:resizeableActivity="true"
             android:allowEmbedded="true"
             android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden|uiMode"

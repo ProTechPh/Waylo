@@ -18,10 +18,12 @@ on:
   workflow_dispatch: {} # manual full refresh whenever needed
 
 permissions:
-  actions: write # gh workflow run
+  contents: read
 
 jobs:
   dispatch:
+    permissions:
+      actions: write # gh workflow run
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
