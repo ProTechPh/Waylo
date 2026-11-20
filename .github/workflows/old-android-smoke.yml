@@ -48,7 +48,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
 
       - name: Fetch the runtimes CI fetches
-        # gh, not curl: the repository is private and an unauthenticated asset URL answers 404.
+        # gh, not curl, so the download carries the workflow token.
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

@@ -99,8 +99,8 @@ jobs:
       - name: Fetch obf routing runtime jars
         # OsmAnd's Java router + obf reader (:core's offline routing engine, GPLv3 like Waylo).
         # No Maven artifacts exist, so they live on the fixed-tag `obf-runtime` release,
-        # gitignored out of the repo - same arrangement as the TTS AAR above. gh, not curl: the
-        # repository is private, and an unauthenticated asset URL answers 404.
+        # gitignored out of the repo - same arrangement as the TTS AAR above. gh, not curl, so the
+        # download carries the workflow token.
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
