@@ -12,9 +12,9 @@ Live traffic, real place data and turn-by-turn navigation, with no Google accoun
 [![Build](https://img.shields.io/github/actions/workflow/status/ProTechPh/Waylo/ci.yml?branch=main&label=build)](https://github.com/ProTechPh/Waylo/actions/workflows/ci.yml)
 [![License: GPL v3](https://img.shields.io/github/license/ProTechPh/Waylo?color=blue)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/ProTechPh/Waylo?style=flat&color=ffd43b)](https://github.com/ProTechPh/Waylo/stargazers)
-[![Translation status](https://hosted.weblate.org/widget/vela-maps/app/svg-badge.svg)](https://hosted.weblate.org/engage/vela-maps/)
+[![Translation status](https://hosted.weblate.org/widget/waylo/app/svg-badge.svg)](https://hosted.weblate.org/engage/waylo/)
 
-[Install](#install) · [What you get](#what-you-get) · [Docs](https://protechph.github.io/Waylo/docs/) · [FAQ](docs/FAQ.md) · [The book](docs/book/README.md) · [Privacy](#privacy) · [How it works](SPEC.md) · [Build](docs/BUILDING.md) · [Discussions](https://github.com/ProTechPh/Waylo/discussions) · [Translate](https://hosted.weblate.org/engage/vela-maps/)
+[Install](#install) · [What you get](#what-you-get) · [Docs](https://protechph.github.io/Waylo/docs/) · [FAQ](docs/FAQ.md) · [The book](docs/book/README.md) · [Privacy](#privacy) · [How it works](SPEC.md) · [Build](docs/BUILDING.md) · [Discussions](https://github.com/ProTechPh/Waylo/discussions) · [Translate](https://hosted.weblate.org/engage/waylo/)
 
 [<img src="https://img.shields.io/badge/VISIT%20THE%20WEBSITE-149387?style=for-the-badge" alt="Visit the website">](https://protechph.github.io/Waylo/)
 
@@ -268,7 +268,7 @@ plainer words.
 | [`docs/FAQ.md`](docs/FAQ.md) | The questions people ask first |
 | [`ROADMAP.md`](ROADMAP.md) | What is open. What shipped or was dropped is in [`docs/ROADMAP-HISTORY.md`](docs/ROADMAP-HISTORY.md) |
 | [`docs/BUILDING.md`](docs/BUILDING.md) | Building from source |
-| [`docs/TRANSLATING.md`](docs/TRANSLATING.md) | The languages, and how to translate (in the browser on [Weblate](https://hosted.weblate.org/engage/vela-maps/)) |
+| [`docs/TRANSLATING.md`](docs/TRANSLATING.md) | The languages, and how to translate (in the browser on [Weblate](https://hosted.weblate.org/engage/waylo/)) |
 | [`docs/dpad.md`](docs/dpad.md) | Operation without a touchscreen |
 | [`CLAUDE.md`](CLAUDE.md) | Rules and traps for anyone changing the code, human or AI |
 

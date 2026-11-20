@@ -3,7 +3,7 @@
 Waylo's interface is offered in 19 languages. Translations are done by the community on
 Weblate:
 
-**<https://hosted.weblate.org/engage/vela-maps/>**
+**<https://hosted.weblate.org/engage/waylo/>**
 
 ## What works in each language
 
@@ -114,7 +114,7 @@ Add the new code to each and run `./gradlew :core:test`.
 
 ## The Weblate component (maintainers)
 
-The project is <https://hosted.weblate.org/projects/vela-maps/>, on hosted Weblate's free plan
+The project is <https://hosted.weblate.org/projects/waylo/>, on hosted Weblate's free plan
 for open source. One component, `app`:
 
 - Repo `https://github.com/ProTechPh/Waylo`, branch `main`
