@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# The place sheet opens focused on its drag handle, and its overflow (⋮) menu — a WayloMenu, which
+# The place sheet opens focused on its drag handle, and its overflow (⋮) menu, a WayloMenu, which
 # renders a raw-Dialog chooser under D-pad — opens focused on its first item ("Set as Home"). This
 # is the deep-navigation test; it needs a live network for the Coffee search, so if results don't
 # load it reports what it could and skips the rest. docs/dpad.md.

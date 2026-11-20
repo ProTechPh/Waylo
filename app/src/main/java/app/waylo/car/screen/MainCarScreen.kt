@@ -34,7 +34,7 @@ class MainCarScreen(carContext: CarContext, private val deps: CarDeps) :
 
     override fun onStart(owner: LifecycleOwner) {
         // Shared renderer, browse mode (clean live map, no route). Never clear the callback / stop the
-        // collector on transitions — the shared renderer lives for the session (WayloCarSession stops it).
+        // collector on transitions: the shared renderer lives for the session (WayloCarSession stops it).
         val renderer = deps.mapRenderer(carContext)
         renderer.follow()
         renderer.setDriveScreen(false)

@@ -13,7 +13,7 @@ import javax.inject.Singleton
 /**
  * Turns the opt-in [DiagLog] ring into a shareable bug-report bundle: a small
  * JSON file the user hands to a dev via the system share sheet (email, Signal,
- * Files…). **User-initiated and user-routed** — Waylo never uploads it; the user
+ * Files…). **User-initiated and user-routed**: Waylo never uploads it; the user
  * sees it's a file and chooses where it goes. This is the no-backend debugging
  * path from the telemetry plan; crowd-sourced upload is a later, separate phase.
  */

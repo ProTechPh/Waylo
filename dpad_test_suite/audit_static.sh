@@ -94,9 +94,9 @@ for path in walk():
         n = i + 1
         # A/B. Material menu/dialog shortcuts that can't auto-focus
         if base != "WayloMenu.kt" and has(RE_DROPDOWN, ln):
-            viol.append(("HIGH", f"{name}:{n}", "bare DropdownMenu — use WayloMenu"))
+            viol.append(("HIGH", f"{name}:{n}", "bare DropdownMenu: use WayloMenu"))
         if base != "WayloDialog.kt" and has(RE_ALERT, ln):
-            viol.append(("HIGH", f"{name}:{n}", "bare AlertDialog — use WayloDialog"))
+            viol.append(("HIGH", f"{name}:{n}", "bare AlertDialog: use WayloDialog"))
         # C. theme
         if base != "AppTheme.kt" and has(RE_ISSYS, ln):
             viol.append(("MED", f"{name}:{n}", "isSystemInDarkTheme() — use isAppInDarkTheme()"))
@@ -125,7 +125,7 @@ for path in walk():
             check.append(("slider", f"{name}:{n}", "Slider — confirm D-pad arrows adjust it and it's focus-reachable"))
         # H. raw Dialog/Popup outside the sanctioned files
         if base not in RAW_OK and (has(RE_RAWDIALOG, ln) or has(RE_POPUP, ln)):
-            check.append(("window", f"{name}:{n}", "raw Dialog/Popup — must auto-focus a .focusable() element (WayloDialog/WayloMenu pattern)"))
+            check.append(("window", f"{name}:{n}", "raw Dialog/Popup: must auto-focus a .focusable() element (WayloDialog/WayloMenu pattern)"))
         # I. text field escape
         if has(RE_FIELD, ln):
             if "dpadFieldEscape" not in "".join(lines[max(0,i-2):i+22]):

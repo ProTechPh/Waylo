@@ -20,7 +20,7 @@ import kotlinx.serialization.json.jsonArray
  * date + an upload-source tag — so there's no author here, see [Photo].)
  *
  * IMPORTANT — the full *user-contributed* gallery is **gated behind a Google
- * sign-in**: an anonymous (keyless) session — which is all Waylo ever has — gets
+ * sign-in**: an anonymous (keyless) session, which is all Waylo ever has, gets
  * back only **Street View thumbnails** (`streetviewpixels-pa.googleapis.com`) at
  * the same `[6][0]` leaf, not the `lh*.googleusercontent.com` user photos. So we
  * keep **only `googleusercontent` URLs**; on the anonymous session that's empty,

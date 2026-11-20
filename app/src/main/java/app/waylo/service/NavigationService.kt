@@ -45,7 +45,7 @@ import javax.inject.Inject
  * location grant has to be in the exact state the type demands; GrapheneOS is
  * especially strict), and an uncaught throw in `onStartCommand` crashes the whole
  * app. So this start is wrapped and, if it fails, the app simply falls back to
- * in-app (foreground) navigation — the [app.waylo.ui.map.MapViewModel] drives
+ * in-app (foreground) navigation: the [app.waylo.ui.map.MapViewModel] drives
  * `NavSession.onLocation` from its own location collector independently of this
  * service. The service is best-effort polish (background continuation +
  * notification), never a hard dependency of navigation.

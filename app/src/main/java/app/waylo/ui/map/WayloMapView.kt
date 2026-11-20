@@ -285,7 +285,7 @@ private const val SV_SRC = "waylo-sv-src"
 private const val SV_LAYER = "waylo-sv"
 private const val SV_IMG = "waylo-sv-img"
 private const val MARKER_INDEX_PROP = "waylo-marker-index"
-// Ambient Google POIs — small category dots (reusing PoiIcons' `waylo-poi-<group>` images), the
+// Ambient Google POIs: small category dots (reusing PoiIcons' `waylo-poi-<group>` images), the
 // "Google for the businesses" layer that replaces the OSM business POIs on the bare browse map.
 private const val AMBIENT_SRC = "waylo-ambient-src"
 private const val LOCAL_BASEMAP_SRC = "waylo-basemap" // the installed offline basemap archive, see withLocalBasemap
@@ -4206,7 +4206,7 @@ fun WayloMapView(
                         return@handleTap true
                     }
                     val box = RectF(p.x - r, p.y - r, p.x + r, p.y + r)
-                    // A tapped HOUSE-NUMBER label — the basemap `waylo-housenumber` (OSM addr:housenumber)
+                    // A tapped HOUSE-NUMBER label: the basemap `waylo-housenumber` (OSM addr:housenumber)
                     // or the streamed address overlay (`waylo-addr-*`). Snap the pin to that LABEL'S OWN
                     // point, not the finger, so tapping "5611" resolves to 5611's address instead of a
                     // fuzzy reverse-geocode of wherever the tap landed. The reverse-geocode at that exact

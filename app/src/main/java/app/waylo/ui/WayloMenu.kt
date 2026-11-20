@@ -2,7 +2,7 @@ package app.waylo.ui
 
 // D-pad-first menu (docs/dpad.md). A Compose `DropdownMenu` Popup can't be pre-focused (~8
 // approaches proven to fail), so on a D-pad-first device this renders the menu as a raw `Dialog`
-// chooser instead — which DOES auto-focus its first item (the gallery/WayloDialog pattern). Under
+// chooser instead, which DOES auto-focus its first item (the gallery/WayloDialog pattern). Under
 // TOUCH it renders the ordinary anchored `DropdownMenu`, unchanged, so touch stays byte-identical.
 // Same call shape as DropdownMenu: `WayloMenu(expanded, onDismissRequest) { item("A") { .. }; item("B") { .. } }`.
 import androidx.compose.foundation.focusable
@@ -44,7 +44,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
-/** Scope for [WayloMenu] content — call [item] once per menu entry (same order as it should show). */
+/** Scope for [WayloMenu] content: call [item] once per menu entry (same order as it should show). */
 class WayloMenuScope internal constructor(internal val dpad: Boolean) {
     internal var index = 0
 }

@@ -11,7 +11,7 @@ import app.waylo.core.model.TravelMode
  * The single seam every screen talks to. Two implementations exist:
  *  - [MockMapDataSource] — canned data, the default, lets the UI run with no
  *    network and no calibration.
- *  - [app.waylo.core.data.google.GoogleMapsDataSource] — the real scraper.
+ *  - [app.waylo.core.data.google.GoogleMapsDataSource]: the real scraper.
  *
  * Which one is live is chosen in [app.waylo.core.di.CoreModule] off
  * [app.waylo.core.WayloConfig.USE_GOOGLE_SOURCE]. Keeping this interface thin

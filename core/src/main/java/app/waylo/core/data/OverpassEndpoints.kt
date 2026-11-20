@@ -19,7 +19,7 @@ import java.net.URLEncoder
 object OverpassEndpoints {
     /** Overpass mirrors are community infrastructure and their policies want a contactable client,
      *  so this is the honest identifier, never the scrape's browser UA. Single-sourced from
-     *  [app.waylo.core.WayloConfig.WAYLO_UA] — the old local copy said "0.1" long after the app
+     *  [app.waylo.core.WayloConfig.WAYLO_UA]: the old local copy said "0.1" long after the app
      *  shipped 0.4, which is exactly the drift a contact string must not have. */
     private val USER_AGENT: String get() = app.waylo.core.WayloConfig.WAYLO_UA
 

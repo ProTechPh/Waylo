@@ -160,7 +160,7 @@ data class MapUiState(
     val myAccuracyM: Float? = null, // the last live fix's reported accuracy radius (m); null = unknown/simulated
     val parkingSpot: LatLng? = null, // one-tap "parked here" pin — survives restarts (prefs)
     val parkedAtMillis: Long = 0L,   // when it was saved (for the sheet/history labels)
-    val parkingHistory: List<app.waylo.core.model.ParkedSpot> = emptyList(), // recent saves, newest first — accidental-overwrite insurance
+    val parkingHistory: List<app.waylo.core.model.ParkedSpot> = emptyList(), // recent saves, newest first; accidental-overwrite insurance
     val lists: List<app.waylo.core.model.PlaceList> = emptyList(), // user place-lists (issue #1), newest first
     val openListId: String? = null, // the list currently shown as results (its name is in the bar)
     val pendingHiddenLayers: Set<String> = emptySet(), // layers of the unsaved custom map switched off
@@ -8392,7 +8392,7 @@ class MapViewModel @Inject constructor(
         downloadVoice(defaultVoiceId())
     }
 
-    /** The Waylo voice a fresh install downloads — the fleet default (calibration) for English,
+    /** The Waylo voice a fresh install downloads: the fleet default (calibration) for English,
      *  else the directions language's recommended voice. Public: the voice browser brands this id
      *  "Waylo voice" and offers a one-tap reinstall when it's missing (user 2026-07-18, after a
      *  crash mid-install left them hunting the list for which voice was the right one). */

@@ -80,11 +80,11 @@ class MainActivity : ComponentActivity() {
         vm.openStartView()
         setContent {
             // Read the theme at the call site (a recomposing scope) and pass it in
-            // — reading it inside WayloTheme's default arg didn't reliably invalidate
+            // because reading it inside WayloTheme's default arg didn't reliably invalidate
             // WayloTheme, so MaterialTheme never flipped when the user changed it.
             val dark = isAppInDarkTheme()
             // The system status/nav bar ICONS (clock, wifi, battery) must contrast with the
-            // MAP under them, which follows Waylo's own theme — not the system's. In light mode
+            // MAP under them, which follows Waylo's own theme, not the system's. In light mode
             // the map is white, so the icons must go DARK; edge-to-edge alone left them light
             // (white-on-white, unreadable). Flip the appearance whenever the app theme changes.
             androidx.compose.runtime.LaunchedEffect(dark) {

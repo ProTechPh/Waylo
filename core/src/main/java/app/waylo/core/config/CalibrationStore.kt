@@ -98,7 +98,7 @@ class CalibrationStore @Inject constructor(
     private fun fetchQuiet(url: String): String? = runCatching { fetch(url) }.getOrNull()
 
     private fun fetch(url: String): String? {
-        // Waylo's own repo — the honest, contactable identifier, not the scrape's browser UA.
+        // Waylo's own repo: the honest, contactable identifier, not the scrape's browser UA.
         val req = Request.Builder().url(url).header("User-Agent", WayloConfig.WAYLO_UA).build()
         return http.newCall(req).execute().use { resp ->
             if (resp.isSuccessful) resp.body?.string() else null

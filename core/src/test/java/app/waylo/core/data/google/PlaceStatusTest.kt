@@ -85,7 +85,7 @@ class PlaceStatusTest {
     }
 
     /** Owner-set temporary closure → first-class flag (the place-sheet banner + hours suppression;
-     *  the temp-closure resilience ask — when the owner DOES tell Google, Waylo must be loud about it).
+     *  the temp-closure resilience ask: when the owner DOES tell Google, Waylo must be loud about it).
      *  Multilingual CONTAINS matching: several languages put the closed word first. */
     @Test fun `a closed place's edit menu offers Reopen this place, an open one's does not`() {
         // The shape of [1][96][5] in a place's own reply: entries with their kind at [6]. Open

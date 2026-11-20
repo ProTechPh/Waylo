@@ -69,7 +69,7 @@ if [ ! -s "$GEOJSON" ]; then
   exit 0
 fi
 
-# House numbers render only at z>=17.5 (WayloMapView minZoom — Google street-level parity), so bake
+# House numbers render only at z>=17.5 (WayloMapView minZoom, Google street-level parity), so bake
 # -Z16 -z17: the app never requests tiles below 16 (dead pyramid weight), and maxzoom 17 quarters the
 # per-tile point count vs the old -z16 — at maxzoom tippecanoe keeps EVERY point, and overzooming a
 # dense urban z16 tile at a z17.5+ view handed MapLibre thousands of symbols to collide per frame

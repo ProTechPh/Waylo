@@ -4,7 +4,7 @@ import android.content.Context
 import java.io.File
 
 /**
- * Waylo's on-device neural voice ENGINE — one Piper VITS engine ([ENGINE_ID]) that can hold ANY of
+ * Waylo's on-device neural voice ENGINE: one Piper VITS engine ([ENGINE_ID]) that can hold ANY of
  * several downloadable Piper models. The *engine* is what shows in the Settings engine radios; the
  * *model* (voice) is chosen in the "Voice library" browser and persisted under [PREF_MODEL].
  *
@@ -17,7 +17,7 @@ import java.io.File
  * bundled sherpa-onnx (arm64). Kept UI-agnostic in `:core`; `:app`'s `PiperSynth` loads [resolved].
  */
 object WayloPiper {
-    const val ENGINE_ID = "waylo.piper" // STABLE — do not change (VoiceGuide routing + the voice_engine pref)
+    const val ENGINE_ID = "waylo.piper" // STABLE; do not change (VoiceGuide routing + the voice_engine pref)
     const val LABEL = "Waylo voice"
 
     /** The fleet default voice — what onboarding downloads and a fresh install activates. HFC Female is a

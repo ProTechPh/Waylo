@@ -2214,7 +2214,7 @@ internal fun DepartTimeChooser(
             }
         }
     }
-    // Material 3 pickers in a Waylo shell — the old android.app Holo dialogs looked nothing
+    // Material 3 pickers in a Waylo shell: the old android.app Holo dialogs looked nothing
     // like the app (part of the "kinda janky", user 2026-07-11). Confirm is the ONLY emit.
     if (showTimePicker) {
         // The app's own clock setting (Settings > Appearance > Clock), not a fixed 12-hour dial
@@ -2249,7 +2249,7 @@ internal fun DepartTimeChooser(
     }
 }
 
-/** A Waylo shell for the M3 time/date pickers: a raw Dialog (the D-pad house rule — an
+/** A Waylo shell for the M3 time/date pickers: a raw Dialog (the D-pad house rule, an
  *  AlertDialog can't be pre-focused), sheet colors, and the WayloDialog button grammar
  *  (filled confirm pill that auto-focuses, plain dismiss). */
 @Composable
@@ -3606,7 +3606,7 @@ internal fun HeaderCircleButton(
 /** Re-size a Google FIFE photo URL (…=w500-h350) to a target width for full view. */
 internal fun String.atWidth(w: Int): String = replace(Regex("=w\\d+(-h\\d+)?.*$"), "=w$w")
 
-/** Native search / sort / topic chips for the live reviews panel — Waylo's own UI driving the
+/** Native search / sort / topic chips for the live reviews panel: Waylo's own UI driving the
  *  panel's hidden Google controls (the originals are carved out once the chips arrive). Search
  *  is Google's server-side one (ALL reviews, not just those loaded); chips are Google's
  *  auto-parsed review topics; sort mirrors Google's four orders. */
@@ -4475,7 +4475,7 @@ private fun SharePill(place: Place) {
             item(stringResource(R.string.place_open_other_app)) { openInOtherApp() }
             item(stringResource(R.string.place_copy_name)) { copyName() }
             item(stringResource(R.string.place_copy_link)) { copyLink() }
-            // A geo: URI opens in ANY maps app (incl. Waylo) — no google.com, the
+            // A geo: URI opens in ANY maps app (incl. Waylo): no google.com, the
             // degoogled-friendly way to send a pin.
             item(stringResource(R.string.place_share_map_pin)) { share("${place.name}\ngeo:$lat,$lng?q=$lat,$lng(${Uri.encode(place.name)})") }
             item(stringResource(R.string.place_share_coordinates)) { share("$lat, $lng") }

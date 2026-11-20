@@ -16,7 +16,7 @@ import javax.inject.Singleton
  * need NO per-user token — only ordinary cookies. So this is deliberately tiny:
  * a single GET of the maps home page so the shared OkHttp cookie jar picks up
  * Google's consent/NID cookies, after which the data requests behave like one
- * logged-out browser. No API key, no extracted token — that's what keeps Waylo
+ * logged-out browser. No API key, no extracted token; that's what keeps Waylo
  * on the NewPipe footing.
  *
  * In consent-gated regions (much of the EU) a cookieless GET would redirect to a

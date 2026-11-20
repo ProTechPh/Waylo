@@ -239,7 +239,7 @@ class VoiceGuide @Inject constructor(
      *  currently loaded — so picking a different engine in Settings actually takes
      *  effect (the old idempotent guard ignored later picks). */
     fun init(enginePackage: String? = null) {
-        // One of Waylo's own in-process neural voices (waylo.piper) — no Android TextToSpeech
+        // One of Waylo's own in-process neural voices (waylo.piper): no Android TextToSpeech
         // involved. The right synth is wired into [neural] by MapViewModel first. Do NOT shut the
         // system `tts` down here — it stays as the fallback for languages the neural voice can't
         // speak (see speakViaSystem); an unused instance is cheap.

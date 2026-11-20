@@ -101,7 +101,7 @@ fun WayloDialog(
                 Spacer(Modifier.height(24.dp))
                 // FlowRow, not Row: confirm is a filled pill (higher-emphasis action), dismiss a
                 // plain text button. When the two labels don't fit on one line — a long "Download
-                // Waylo voice" pill beside "Use system voice", or a small screen — the pill wraps to
+                // Waylo voice" pill beside "Use system voice", or a small screen: the pill wraps to
                 // its own full-width line instead of being squeezed and breaking mid-word. Dismiss
                 // stays auto-focused (first OK activates it); confirm is reachable by arrow.
                 FlowRow(

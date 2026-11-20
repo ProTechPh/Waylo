@@ -40,7 +40,7 @@ import kotlin.math.ln
 import kotlin.math.roundToInt
 
 /**
- * Renders the REAL styled Waylo map (OpenFreeMap Liberty vector — streets, labels, POIs) onto an
+ * Renders the REAL styled Waylo map (OpenFreeMap Liberty vector: streets, labels, POIs) onto an
  * Android Auto template surface via MapLibre's stable public [MapSnapshotter] (off-screen map →
  * Bitmap), with the route + puck overlaid. Not 60 fps (a snapshot is ~100–300 ms), but for a nav
  * map that follows position it's a genuine moving map.

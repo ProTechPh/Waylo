@@ -591,7 +591,7 @@ class NavEngineTest {
         assertTrue("a prompt should use meters, got $spoken", spoken.any { it.contains("meter") })
     }
 
-    /** Waylo SPEAKS the road name — "turn right onto Larch Way" — not the bare "turn right" modern
+    /** Waylo SPEAKS the road name ("turn right onto Larch Way"), not the bare "turn right" modern
      *  Google Maps shortened its voice cue to. We reuse the written instruction (which keeps the
      *  name) for TTS, so the name must survive into the spoken event. */
     @Test

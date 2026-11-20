@@ -636,7 +636,7 @@ object PoiIcons {
     }
 
     /** Data-driven text color for the AMBIENT Google-POI layer: match the feature's `icon`
-     *  property ("waylo-poi-<group>") to the category label color, Google-style — the label
+     *  property ("waylo-poi-<group>") to the category label color, Google-style: the label
      *  reads as part of the icon. Default = the plain per-theme label gray. */
     fun ambientLabelColor(dark: Boolean): Expression {
         val sb = StringBuilder("""["match",["get","icon"]""")

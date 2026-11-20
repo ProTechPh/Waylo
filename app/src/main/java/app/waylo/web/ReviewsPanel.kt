@@ -50,7 +50,7 @@ import java.math.BigInteger
 /** A topic chip scraped off the panel ("potato dumplings" ×50; "All" has no count). */
 data class PanelChip(val label: String, val count: Int? = null)
 
-/** Drives the panel's hidden Google controls from Waylo's native UI. Safe to call any time —
+/** Drives the panel's hidden Google controls from Waylo's native UI. Safe to call any time,
  *  no-ops until the panel's WebView exists. */
 class ReviewsPanelController {
     internal var webView: WebView? = null
@@ -93,7 +93,7 @@ fun GoogleReviewsPanel(
     // Fires once the panel has painted (the internal spinner clears) — lets the caller drop any
     // loading teaser it shows alongside.
     onLoaded: () -> Unit = {},
-    // Topic chips scraped off the page ("All", "potato dumplings" ×50 …) — Waylo renders them
+    // Topic chips scraped off the page ("All", "potato dumplings" ×50 …), Waylo renders them
     // natively and drives the hidden originals via [controller].
     onChips: (List<PanelChip>) -> Unit = {},
     controller: ReviewsPanelController? = null,
@@ -373,14 +373,14 @@ private fun buildPanelWebView(
             }
         }
 
-        // The user started really scrolling the reviews — Waylo slides the sheet to full screen
+        // The user started really scrolling the reviews: Waylo slides the sheet to full screen
         // around them (Google-style). One-shot per engagement; the page re-arms it at the top.
         @JavascriptInterface
         fun onPanelEngaged() {
             wv.post { onEngaged() }
         }
 
-        // Topic chips ([{l,n?}…]) — rendered natively by Waylo; Google's chips + search rows are
+        // Topic chips ([{l,n?}…]), rendered natively by Waylo; Google's chips + search rows are
         // carved once this is sent (the native controls are the replacement).
         @JavascriptInterface
         fun onChips(json: String) {
@@ -394,7 +394,7 @@ private fun buildPanelWebView(
             wv.post { onChipsParsed(list) }
         }
 
-        // The page's rating distribution ([5★,4★,3★,2★,1★] counts) — rendered natively by Waylo;
+        // The page's rating distribution ([5★,4★,3★,2★,1★] counts), rendered natively by Waylo;
         // Google's in-panel summary block is hidden once this is sent.
         @JavascriptInterface
         fun onHistogram(json: String) {
@@ -551,7 +551,7 @@ private fun buildPanelWebView(
  * Maintenance passes keep re-applying for a while (the SPA re-attaches chrome on interaction).
  */
 private fun carveScript(dark: Boolean, fullScreen: Boolean): String {
-    // Waylo's own sheet color (SheetPalette Dark/Light) — the panel matches it EXACTLY so there's
+    // Waylo's own sheet color (SheetPalette Dark/Light), the panel matches it EXACTLY so there's
     // no seam with the surrounding place sheet.
     val bg = if (dark) "#1f1f1f" else "#ffffff"
     // Dark = a scoped invert on the PANEL CONTENT ONLY (main), NOT its background. The Waylo color
@@ -688,7 +688,7 @@ private fun carveScript(dark: Boolean, fullScreen: Boolean): String {
             // Two-phase carve. Phase 1 (immediately, even before cards): opacity — NO layout
             // change, so Google's mounting virtualized list is untouched, and the user never
             // sees a flash of Google's own histogram. Phase 2 (only well AFTER the feed proved
-            // healthy — __wayloFedOk + a few stable ticks): display:none to reclaim the blank
+            // healthy, __wayloFedOk + a few stable ticks): display:none to reclaim the blank
             // space. NEVER collapse earlier: a layout removal while the list mounts corrupts
             // its offset math and the SPA permanently unmounts every card (reproduced live
             // twice; un-hiding does not recover).
@@ -704,7 +704,7 @@ private fun carveScript(dark: Boolean, fullScreen: Boolean): String {
               if(collapse) b.style.setProperty('display','none','important');
             });
           }
-          // Waylo's app UI is the system Roboto; Google's page headings use "Google Sans" —
+          // Waylo's app UI is the system Roboto; Google's page headings use "Google Sans",
           // rewrite JUST those to Roboto for consistency (never touch icon fonts — "Google
           // Symbols"/"Material Icons" don't match the test). Each node checked ONCE (data-vf),
           // capped per pass; new cards get picked up by later passes.
@@ -1110,7 +1110,7 @@ private fun carveScript(dark: Boolean, fullScreen: Boolean): String {
               } else {
                 window.__wayloStable=(window.__wayloStable||0)+1;
                 if(!window.__wayloChipsSent && (window.__wayloStable||0)>2){
-                  window.__wayloChipsSent=1; // no topic chips on this business — unblock the native search/sort
+                  window.__wayloChipsSent=1; // no topic chips on this business; unblock the native search/sort
                   try{ WayloPanel.onChips('[]'); }catch(e){}
                 }
               }
