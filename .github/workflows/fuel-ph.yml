@@ -124,4 +124,7 @@ jobs:
           gh_retry gh release upload fuel-ph work/fuel-ph-manifest.json --repo "$REPO" --clobber || publish_failed
 
           summary "Published $(jq -r .rows work/fuel-ph-manifest.json) rows over $(jq -r .areas work/fuel-ph-manifest.json) areas, latest week end $(jq -r .latestWeekEnd work/fuel-ph-manifest.json)."
+          # The alert reads the week that is published NOW: on the first publish there is no
+          # previous manifest, and comparing against 1970 opened the issue on a healthy run.
+          pub_week="$(jq -r .latestWeekEnd work/fuel-ph-manifest.json)"
           alert
