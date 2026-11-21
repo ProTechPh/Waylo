@@ -18,7 +18,8 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write # the fuel-ph release
+  issues: write   # the stale-source alert
 
 concurrency:
   group: fuel-ph
@@ -26,9 +27,6 @@ concurrency:
 
 jobs:
   publish:
-    permissions:
-      contents: write # the fuel-ph release
-      issues: write   # the stale-source alert
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -55,6 +53,9 @@ jobs:
 
           STALE_ALERT_D=14
           ALERT_TITLE="Philippine fuel prices: the source has stopped updating"
+          # Says in the log which permissions this run's token actually carries: `push:false`
+          # means the repository's Actions setting, not this file, is read-only.
+          echo "token permissions: $(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/$REPO" | jq -c '.permissions // {}' 2>/dev/null || echo unknown)"
           summary() { echo "$1" >> "$GITHUB_STEP_SUMMARY"; }
           open_alert() { gh_retry gh issue list --repo "$REPO" --state open --search "\"$ALERT_TITLE\" in:title" --json number --jq '.[0].number // empty' 2>/dev/null || true; }
           published="$(curl -fsSL -m 60 "$REL/fuel-ph-manifest.json" 2>/dev/null || true)"
