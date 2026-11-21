@@ -561,6 +561,8 @@ class MapViewModel @Inject constructor(
     private val nav = NavController(appContext, viewModelScope, _state, navSession, locationProvider, dataSource, tripStore, voice, diag, http, navHost)
     // UK gas stations get their price from the Fuel Finder file (SPEC 5.8). Above init like nav.
     private val ukFuel = UkFuelPrices(appContext, viewModelScope, _state, http)
+    // Philippine ones get their city's DOE price, shown on the sheet only (SPEC 5.9).
+    private val phFuel = PhFuelPrices(appContext, viewModelScope, _state, http)
 
     // The voice mode written from outside this model (the car's on/off switch, CarVoice):
     // followed here so the phone's state and the drive button agree with it. A strong reference,
@@ -864,6 +866,7 @@ class MapViewModel @Inject constructor(
         app.waylo.data.StreamedSpeedLimit.http = http.newBuilder().addInterceptor(app.waylo.diag.NetCount).addInterceptor(app.waylo.offline.ReleaseRedirects).build()
         nav.bind()
         ukFuel.bind()
+        phFuel.bind()
         pruneOldTrips() // saved drives past their days, when that setting is on
         // Turning the transit lines on (or off) acts at once, not at the next pan.
         viewModelScope.launch {
@@ -1702,20 +1705,27 @@ class MapViewModel @Inject constructor(
 
     // --- Self-updater (GitHub releases) ------------------------------------------------------
 
-    /** Launch check, at most ~daily, gated by the Settings toggle. "Not now" on a version
-     *  silences that version (a NEWER release shows the card again).
+    /** Launch check, once a day, gated by the Settings toggle. "Not now" silences that release
+     *  by name (a NEWER release shows the card again).
      *  NB called from init{}, which runs BEFORE the later-declared `settingsPrefs` field
      *  initializer — resolve the prefs locally or this NPEs on launch (it did). */
     private fun maybeCheckForUpdate() {
         val prefs = appContext.getSharedPreferences("waylo_settings", Context.MODE_PRIVATE)
-        if (!prefs.getBoolean("self_update_check", true)) return
         val now = System.currentTimeMillis()
-        if (now - prefs.getLong("last_update_check_ms", 0L) < 20 * 60 * 60_000L) return
-        prefs.edit().putLong("last_update_check_ms", now).apply()
+        if (!app.waylo.update.launchCheckDue(now, prefs.getLong("last_update_check_ms", 0L), prefs.getBoolean("self_update_check", true))) return
         val channel = app.waylo.update.SelfUpdater.channel(prefs)
         viewModelScope.launch {
-            val info = selfUpdater.check(app.waylo.BuildConfig.VERSION_CODE, channel) ?: return@launch
-            if (info.versionCode <= prefs.getInt("update_dismissed_code", 0)) return@launch
+            val found = selfUpdater.check(app.waylo.BuildConfig.VERSION_CODE, channel)
+            // The day is spent only by a check that finished. One that failed (the network not
+            // up yet on a cold start, a rate-limited API) or was cut short when the app closed
+            // tries again at the next launch; stamping it before the attempt hid every update
+            // for 20 hours, which is why the card never appeared.
+            if (found.ok) prefs.edit().putLong("last_update_check_ms", System.currentTimeMillis()).apply()
+            val info = found.info ?: return@launch
+            // "Not now" is remembered by version name: the code it used to store went dead when
+            // the version line restarted (0.4.2374's code outran every 0.5.x release), and a
+            // stale dismissal silenced the launch card for good.
+            if (info.versionName == prefs.getString("update_dismissed_name", null)) return@launch
             _state.update { it.copy(updateInfo = info) }
         }
     }
@@ -1725,7 +1735,7 @@ class MapViewModel @Inject constructor(
     fun checkForUpdateNow(onResult: (Boolean) -> Unit) {
         val channel = app.waylo.update.SelfUpdater.channel(settingsPrefs)
         viewModelScope.launch {
-            val info = selfUpdater.check(app.waylo.BuildConfig.VERSION_CODE, channel)
+            val info = selfUpdater.check(app.waylo.BuildConfig.VERSION_CODE, channel).info
             if (info != null) _state.update { it.copy(updateInfo = info) }
             onResult(info != null)
         }
@@ -1859,9 +1869,10 @@ class MapViewModel @Inject constructor(
     }
 
     /** "Not now": hide the card and stay quiet about THIS version (a newer one re-offers). */
+    /** "Not now": hide the card and stay quiet about THIS release (a newer one re-offers). */
     fun dismissUpdate() {
         _state.value.updateInfo?.let {
-            settingsPrefs.edit().putInt("update_dismissed_code", it.versionCode).apply()
+            settingsPrefs.edit().putString("update_dismissed_name", it.versionName).remove("update_dismissed_code").apply()
         }
         _state.update { it.copy(updateInfo = null, updateDownloadPct = null) }
     }

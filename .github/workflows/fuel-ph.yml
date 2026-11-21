@@ -1,0 +1,125 @@
+# Philippine fuel prices (SPEC 5.9): reads the DOE's weekly pump-price PDFs with
+# tools/build-fuel-ph.py and hosts the trimmed table on the `fuel-ph` release, where the app
+# reads it for gas stations in the Philippines (Google's keyless search carries no PH price).
+#
+# The DOE publishes one PDF per field office (NCR, North Luzon, South Luzon, Visayas, Mindanao),
+# usually on Monday or Tuesday, so this checks weekly on its own cron rather than hourly like the
+# UK one: a run that finds nothing new publishes nothing, and the manifest's sha256 is compared
+# first so a quiet week costs no upload.
+#
+# A region whose newest PDF is a scan (no text layer) or whose page cannot be read is skipped
+# with a warning: its rows are left out of the file, and the app shows nothing for it rather than
+# a stale week's price. `fuel-ph` is an infra release: never delete it.
+name: Philippine fuel prices
+
+on:
+  schedule:
+    - cron: "20 4 * * 2" # Tuesday 04:20 UTC: after the DOE's Monday/Tuesday postings
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fuel-ph
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    permissions:
+      contents: write # the fuel-ph release
+      issues: write   # the stale-source alert
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          sparse-checkout: |
+            scripts
+            tools
+
+      - name: Python
+        run: python3 -m pip install --quiet pdfplumber
+
+      - name: Fetch, read and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -uo pipefail
+          source scripts/bake-lib.sh # CELLS_RELEASE_TARGET, the root commit data releases sit on
+          source scripts/gh-retry.sh
+          export GH_RETRY_TRIES=3
+          REL="https://github.com/$REPO/releases/download/fuel-ph"
+          mkdir -p work
+
+          STALE_ALERT_D=14
+          ALERT_TITLE="Philippine fuel prices: the source has stopped updating"
+          summary() { echo "$1" >> "$GITHUB_STEP_SUMMARY"; }
+          open_alert() { gh_retry gh issue list --repo "$REPO" --state open --search "\"$ALERT_TITLE\" in:title" --json number --jq '.[0].number // empty' 2>/dev/null || true; }
+          published="$(curl -fsSL -m 60 "$REL/fuel-ph-manifest.json" 2>/dev/null || true)"
+          pub_gen="$(jq -r '.generated // empty' <<<"$published" 2>/dev/null || true)"
+          pub_week="$(jq -r '.latestWeekEnd // empty' <<<"$published" 2>/dev/null || true)"
+
+          warn_end() { echo "::warning::$1"; summary "$1"; alert; exit 0; }
+          # Opens one issue once the published week is STALE_ALERT_D days old, two missed
+          # weeks, and closes it on the run that publishes a fresh one.
+          alert() {
+            local day age n
+            day="$(date -u -d "${pub_week:-1970-01-01}" +%s 2>/dev/null || echo 0)"
+            age=$(( ( $(date -u +%s) - day ) / 86400 ))
+            if [ "$age" -ge "$STALE_ALERT_D" ]; then
+              echo "::warning::The newest published PH fuel price week ended $age days ago."
+              n="$(open_alert)"
+              if [ -z "$n" ]; then
+                gh_retry gh issue create --repo "$REPO" --title "$ALERT_TITLE" --body "The newest week in the published PH fuel file (the \`fuel-ph\` release) ended $age days ago.
+
+          The file is built weekly by \`fuel-ph.yml\` from the DOE's pump-price PDFs. A field office that has gone to scanned (image-only) PDFs cannot be read without OCR and is skipped, so its region shows no prices.
+
+          To check: what the last runs of the Philippine fuel prices workflow logged. This issue is closed by the run that next publishes a fresh week." >/dev/null || true
+              fi
+            elif [ -n "$(open_alert)" ]; then
+              gh_retry gh issue close "$(open_alert)" --repo "$REPO" --comment "Fresh prices were published." >/dev/null || true
+            fi
+            return 0
+          }
+
+          rc=0
+          python3 tools/build-fuel-ph.py --out work || rc=$?
+          if [ "$rc" -ne 0 ] || [ ! -f work/fuel-ph-manifest.json ]; then
+            warn_end "No rows could be read from the DOE PDFs; the published file stays."
+          fi
+
+          sha="$(jq -r .fileSha256 work/fuel-ph-manifest.json)"
+          pub_sha="$(jq -r '.fileSha256 // empty' <<<"$published" 2>/dev/null || true)"
+          if [ -n "$pub_sha" ] && [ "$pub_sha" = "$sha" ]; then
+            echo "The published file is unchanged since $pub_gen."
+            summary "The published file is unchanged since $pub_gen. Nothing uploaded."
+            alert
+            exit 0
+          fi
+
+          publish_failed() {
+            local age=999
+            if [ -n "$pub_gen" ]; then age=$(( ( $(date -u +%s) - $(date -u -d "$pub_gen" +%s) ) / 86400 )); fi
+            [ "$age" -lt 3 ] && warn_end "Could not publish to the fuel-ph release; the next run tries again."
+            echo "::error::The fuel-ph release has not been updated for 3 days and this run could not publish."
+            exit 1
+          }
+
+          NOTES="Philippine fuel prices for Waylo Maps: the Department of Energy's weekly pump-price PDFs, read by tools/build-fuel-ph.py and checked weekly by fuel-ph.yml. Prices are per city and product (a range and a common price), not per station. Data files for the app; do not delete."
+          if ! view_err="$(gh release view fuel-ph --repo "$REPO" --json tagName 2>&1 >/dev/null)"; then
+            if grep -qi "not found" <<<"$view_err"; then
+              gh_retry gh release create fuel-ph --repo "$REPO" --prerelease --target "$CELLS_RELEASE_TARGET" \
+                --title "Philippine fuel prices" --notes "$NOTES" >/dev/null || publish_failed
+            else
+              echo "$view_err"
+              publish_failed
+            fi
+          fi
+          # The data file first, so a manifest never names a file that is not there yet.
+          gh_retry gh release upload fuel-ph work/fuel-ph.csv.gz --repo "$REPO" --clobber || publish_failed
+          gh_retry gh release upload fuel-ph work/fuel-ph-manifest.json --repo "$REPO" --clobber || publish_failed
+
+          summary "Published $(jq -r .rows work/fuel-ph-manifest.json) rows over $(jq -r .areas work/fuel-ph-manifest.json) areas, latest week end $(jq -r .latestWeekEnd work/fuel-ph-manifest.json)."
+          alert

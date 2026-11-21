@@ -64,6 +64,7 @@ logged-out browser's. They are not tied to an account.
 | **protechph.github.io/Waylo** (GitHub Pages) | at launch, only when the raw file host does not answer for the settings file | your IP. A plain file download, the same for everyone |
 | **GitHub release files** | downloading regions, voices and app updates, and streaming the place, building and house-number layers as you browse | your IP, and which file or byte range is fetched, which implies your rough map area |
 | **GitHub release files** (UK fuel prices) | a gas station in the UK shows up in your results or on a place page without a price; at most every 3 hours after that | your IP. The file is the same one nationwide for everyone, so it says only that you looked at a UK gas station |
+| **GitHub release files** (Philippine fuel prices) | you open a gas station in the Philippines; at most every day after that | your IP. The file is the same countrywide for everyone, so it says only that you looked at a Philippine gas station |
 
 None of these receives a Google account, a name, a device id or your contacts.
 
