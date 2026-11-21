@@ -7,9 +7,9 @@
 # UK one: a run that finds nothing new publishes nothing, and the manifest's sha256 is compared
 # first so a quiet week costs no upload.
 #
-# A region whose newest PDF is a scan (no text layer) or whose page cannot be read is skipped
-# with a warning: its rows are left out of the file, and the app shows nothing for it rather than
-# a stale week's price. `fuel-ph` is an infra release: never delete it.
+# A region whose newest PDFs are scans (no text layer) keeps its newest READABLE week, up to 42
+# days old, and the app shows that week's dates on every row; past that it is left out with a
+# warning. `fuel-ph` is an infra release: never delete it.
 name: Philippine fuel prices
 
 on:
@@ -74,7 +74,7 @@ jobs:
               if [ -z "$n" ]; then
                 gh_retry gh issue create --repo "$REPO" --title "$ALERT_TITLE" --body "The newest week in the published PH fuel file (the \`fuel-ph\` release) ended $age days ago.
 
-          The file is built weekly by \`fuel-ph.yml\` from the DOE's pump-price PDFs. A field office that has gone to scanned (image-only) PDFs cannot be read without OCR and is skipped, so its region shows no prices.
+          The file is built weekly by \`fuel-ph.yml\` from the DOE's pump-price PDFs. A field office that has gone to scanned (image-only) PDFs keeps its newest readable week, up to 42 days old, and its region is left out past that.
 
           To check: what the last runs of the Philippine fuel prices workflow logged. This issue is closed by the run that next publishes a fresh week." >/dev/null || true
               fi
