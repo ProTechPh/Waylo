@@ -3991,25 +3991,34 @@ Monday or Tuesday; there is nothing to check hourly).
 - It runs `tools/build-fuel-ph.py`, which reads the five region pages under
   `doe.gov.ph/data-and-prices/liquid-fuels/retail-pump-prices/` (NCR, North Luzon, South Luzon,
   Visayas, Mindanao), collects the PDF links on each, and reads the newest.
-- The newest PDF is not the first on the page and the filenames date themselves inconsistently
+- The newest PDF is not the first on the page, the filenames date themselves inconsistently
   ("NCR ... 27 October to 2 November 2026", "NEW VFO PRICE MONITORING 111726", "MFO LFRO ... 17-23
-  November 2026"). So the script scores each link's own words plus its filename, reads the three
-  newest, and keeps whichever PDF says inside that its week is the latest.
+  November 2026"), and a week is often several files: South Luzon files Region IV-A, IV-B and V
+  separately, North Luzon one report per field office. So the script scores each link's own words
+  plus its filename, reads every candidate whose date is within 8 weeks of the newest, and merges
+  the files that share the newest week. The week is its END date, because files of one week
+  disagree on its first day ("Oct 13-20" beside "Oct 14-20").
+- A region whose newest PDF is a scan (no text layer) keeps its newest **readable** week instead,
+  up to `MAX_REGION_AGE_D` (42 days), and the app shows that week's dates on every row. Past 42
+  days the region is left out with a warning. North Luzon's field office went to scanned PDFs in
+  November 2026, so it publishes the week ended 2026-10-20 while the others carry November.
 - A PDF is read by its text layer with `pdfplumber`. Rows sit 9.1 apart and a cell's parts (an
   area name in a smaller face, a two-line "DIESEL PLUS") up to a unit, so words are grouped
   within 4 and the product is the first RON/DIESEL/KEROSENE token of the line; the numbers either
-  side of the range's dash are the low and the high, the number after it the common price.
+  side of the range's dash are the low and the high, the number after it the common price. A
+  common price outside its own range is a typo in the sheet and is dropped.
 - An area's label is centred in its block, so it can sit beside any of the block's rows: a block
   starts at each `RON 100` row and a block with no label yields no rows rather than the previous
   area's price.
-- A region whose newest PDF is a scan (no text layer) is skipped with a warning and its rows are
-  left out: the app then shows nothing for it rather than an older week's price. North Luzon went
-  scanned in November 2026; 4 of the 5 regions read.
+- North Luzon, South Luzon and Mindanao print the province in a column left of the city ("ABRA
+  BANGUED CITY"). The header's own `PROVINCE` and `CITY` columns give the cut, so the area is
+  "BANGUED CITY", which is what an address names. A footer or a header that lands in that column
+  (a date line) is rejected: an area has no digits and no column title.
 - The PDFs draw ñ with a broken glyph, which comes out as U+FFFD: "Para\uFFFDaque" is Parañaque.
   The neighbouring letter gives the case, and that is the only dropped glyph seen so far.
 - Prices outside 30 to 250 pesos are placeholders ("0.00", "#N/A") and are dropped, as are rows
   that fail `low <= high`.
-- The file is `fuel-ph.csv.gz` (700 rows over 194 areas on the 2026-11-10..16 sheets, 7 KB) with
+- The file is `fuel-ph.csv.gz` (1,169 rows over 322 areas on the 2026-11 sheets, 11 KB) with
   the header `area,region,product,low,high,common,weekStart,weekEnd`, and
   `fuel-ph-manifest.json` beside it with `latestWeekEnd`, `rows`, `areas`, `regions`, `file`,
   `fileSha256` and `fileBytes`. Both sit on the `fuel-ph` release.

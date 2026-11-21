@@ -218,13 +218,14 @@ person's project and the only source a GitHub runner can reach.
 ### Philippine fuel prices
 
 The DOE publishes no feed, only a table per field office each week, as a PDF. `fuel-ph.yml` runs
-`tools/build-fuel-ph.py` weekly: it reads the five region pages, finds the newest PDF for each (the
-page order and the filenames both mislead, so it reads the three likeliest and keeps the one whose
-own week is latest), and pulls the city-and-product rows out of the text layer with `pdfplumber`.
-The result is about 700 rows over 190 areas, under 10 KB gzipped, holding each area's price range
-and common price per product, not a price per station, because the DOE does not publish one. A
-region whose newest PDF has gone to a scan is skipped with a warning and its rows are left out, so
-the app shows nothing there rather than an older week's price.
+`tools/build-fuel-ph.py` weekly: it reads the five region pages, finds the newest PDFs for each (the
+page order and the filenames both mislead, and one week is often several files, so it reads every
+candidate from the newest weeks and merges the files that share the newest week), and pulls the
+city-and-product rows out of the text layer with `pdfplumber`. The result is about 1,200 rows over
+320 areas, around 11 KB gzipped, holding each area's price range and common price per product, not
+a price per station, because the DOE does not publish one. A field office whose newest PDFs have
+gone to scans (North Luzon, November 2026) keeps its newest readable week, up to 42 days old, and
+the app shows that week's dates on every row; past that the region is left out with a warning.
 
 [How it shows on the phone is in `SPEC.md` (5.9): the place sheet only, labeled as the city's
 price.]

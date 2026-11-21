@@ -52,11 +52,20 @@ def fix_area(s):
     def repl(m):
         prev = s[m.start() - 1] if m.start() else ""
         return "Ñ" if prev.isupper() else "ñ"
-    return re.sub("\ufffd", repl, s.strip())
+    s = " ".join(re.sub("\ufffd", repl, s).replace(",", " ").split())
+    # A footer or a header ("DATE MONITORING: NOVEMBER 10-12, 2026") rides the column the area
+    # label uses. A place name has no digits, no column title and fits a row.
+    if len(s) > 40 or re.search(r"\d", s) or re.search(r"MONITORING|DATE|SOURCE|NOTE|PRICE|PRODUCT|RANGE|(^| )N/?A( |$)", s, re.I):
+        return ""
+    return s
 # A price outside this is a placeholder or a misread, not a pump price.
 MIN_P, MAX_P = 30.0, 250.0
 # A PDF page with fewer characters than this has no text layer (a scan).
 TEXT_PAGE_CHARS = 40
+# A region whose newest readable week is older than this is left out rather than published as
+# current: North Luzon's field office went to scanned PDFs in November 2026, so its newest
+# readable week trails the others by weeks.
+MAX_REGION_AGE_D = 42
 
 
 def fetch(url, timeout=120):
@@ -174,6 +183,12 @@ def parse_pdf(path, name_hint=""):
 
 def parse_page(pg):
     words = pg.extract_words()
+    # The field offices put the province in a column left of the city (North Luzon:
+    # "ABRA BANGUED CITY"). The address a phone sees names the city, so the province is cut
+    # by the header's own columns; NCR has no such column and keeps everything.
+    prov = next((w for w in words if w["text"].upper().startswith("PROVINCE")), None)
+    city = next((w for w in words if w["text"].upper().startswith("CITY")), None)
+    split_x = (prov["x1"] + city["x0"]) / 2 if prov and city else None
     # Rows sit 9.1 apart; a cell's parts (an area name in a smaller face, a two-line "DIESEL
     # PLUS") are up to a unit apart. Grouping within 4 keeps the row together and the next apart.
     groups = []
@@ -202,7 +217,8 @@ def parse_page(pg):
                 product, skip = "Kerosene", 1
             else:
                 continue
-            area = [t for t in ws[:i] if re.search(r"[A-Za-z]", t["text"])]
+            area = [t for t in ws[:i]
+                    if re.search(r"[A-Za-z]", t["text"]) and (split_x is None or t["x0"] >= split_x)]
             body = ws[i + skip:]
             entries.append([key, body, product, fix_area(" ".join(t["text"] for t in area))])
             break
@@ -245,6 +261,8 @@ def parse_page(pg):
                 continue
             lo, hi = before[-1], after[0]
             co = after[1] if len(after) > 1 else None
+            if co is not None and not (lo <= co <= hi):
+                co = None  # the sheet's own "common" outside its range is a typo, not a price
             if not (MIN_P <= lo <= hi <= MAX_P):
                 continue
             yield area, product, lo, hi, co
@@ -263,7 +281,6 @@ def main():
     regions = {}
     week = None
     for region, page in REGIONS:
-        hint = ""
         if args.local:
             w, rows = parse_pdf(os.path.join(args.local, region + ".pdf"), region)
             path = args.local
@@ -274,30 +291,53 @@ def main():
             except Exception as e:  # noqa: BLE001 - a region that fails must not stop the rest
                 print(f"::warning::{region}: page fetch failed: {e}", file=sys.stderr)
                 continue
-            # The newest PDF is not the first in the page's list and the filenames date
-            # themselves inconsistently ("NCR ... 27 October to 2 November 2026",
-            # "NEW VFO PRICE MONITORING 111726", "MFO LFRO ... 17-23 November 2026"), so:
-            # score the link's own words plus its filename, try the three newest, and keep
-            # whichever PDF says inside that its week is the latest.
+            # A region page carries several PDFs per week (South Luzon files Region IV-A and IV-B
+            # separately, North Luzon one report per field office) and years of older ones, and
+            # the filenames date themselves inconsistently ("NCR ... 27 October to 2 November
+            # 2026", "NEW VFO PRICE MONITORING 111726"). So: score each link's own words plus its
+            # filename, read the candidates from the newest three weeks, and merge every file that
+            # shares the newest week that has a text layer. A field office that has gone to scans
+            # yields nothing, and the region keeps the newest week that reads rather than nothing.
             links = list({(u, a) for u, a in
                           re.findall(r'href="(https://[^"]+\.pdf[^"]*)"[^>]*>([^<]*)</a>', html)})
             links.sort(key=lambda ua: date_key(ua[1] + " " + urllib.request.unquote(ua[0])), reverse=True)
-            best = None
-            for url, anchor in links[:3]:
-                name = urllib.request.unquote(url)
+            if not links:
+                print(f"::warning::{region}: no PDF links on the page", file=sys.stderr)
+                continue
+            newest = date_key(links[0][1] + " " + urllib.request.unquote(links[0][0]))
+            links = [ua for ua in links
+                     if date_key(ua[1] + " " + urllib.request.unquote(ua[0])) >= newest - dt.timedelta(days=56)][:8]
+            parsed = []  # (week, rows) of every readable file
+            for url, anchor in links:
+                name = urllib.request.unquote(url.split("?")[0]).rsplit("/", 1)[-1]
                 try:
                     blob = fetch(url)
                 except Exception as e:  # noqa: BLE001
-                    print(f"::warning::{region}: {url}: {e}", file=sys.stderr)
+                    print(f"::warning::{region}: {name}: {e}", file=sys.stderr)
                     continue
                 path = os.path.join(args.out, f"{region}.pdf")
                 with open(path, "wb") as f:
                     f.write(blob)
-                cw, crows = parse_pdf(path, anchor + " " + name)
-                if crows and cw and (best is None or cw[1] > best[1][1]):
-                    best = (crows, cw, path, anchor + " " + name)
-            if best:
-                rows, w, path, hint = best
+                cw, crows = parse_pdf(path, anchor + " " + urllib.request.unquote(url))
+                if cw and crows:
+                    parsed.append((cw, crows))
+                    print(f"{region}: read {name} ({len(crows)} rows, week {cw[0]}..{cw[1]})")
+                else:
+                    print(f"{region}: no text layer in {name}")
+            if not parsed:
+                print(f"::warning::{region}: no readable PDF on the page", file=sys.stderr)
+                continue
+            # Files of one week disagree on its first day ("Oct 13-20" beside "Oct 14-20"), so the
+            # week is its END and the files that share that end are one report set.
+            end = max(cw[1] for cw, _ in parsed)
+            age_d = (dt.datetime.now(dt.timezone.utc).date() - end).days
+            if age_d > MAX_REGION_AGE_D:
+                print(f"::warning::{region}: newest readable week ends {end}, {age_d} days old; "
+                      f"left out rather than shown as current", file=sys.stderr)
+                continue
+            same = [(cw, crows) for cw, crows in parsed if cw[1] == end]
+            w = (min(cw[0] for cw, _ in same), end)
+            rows = [r for _, crows in same for r in crows]
         if not rows:
             print(f"::warning::{region}: no readable PDF in {path or 'the page'}", file=sys.stderr)
             continue
