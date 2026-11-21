@@ -1232,6 +1232,23 @@ fun PlaceSheet(
                     )
                 }
             }
+            // Philippine gas stations: the DOE's price for the city and week (SPEC 5.9). It is a
+            // city's price, so the second line says so; it is never shown on a row or a pin.
+            place.fuelPh?.let { ph ->
+                val lines = ph.split('\n', limit = 2)
+                Row(Modifier.fillMaxWidth().padding(top = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Sym.LocalGasStation, contentDescription = null, tint = dim, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        buildAnnotatedString {
+                            withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = ink)) { append(lines[0]) }
+                            lines.getOrNull(1)?.let { withStyle(SpanStyle(color = dim)) { append("\n" + it) } }
+                        },
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+            }
             place.fullAddress()?.let { addr ->
                 Row(
                     Modifier.fillMaxWidth().padding(top = 14.dp),

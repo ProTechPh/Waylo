@@ -31,6 +31,7 @@ exist nowhere else, so nothing may delete these releases ([chapter 12](12-releas
 | Grid cells, a region in 0.5 degree pieces | OpenStreetMap and the region's places archive | `cells-<region>`, with `cells-manifest.json` on `grid-cells` | 30 days (`cells-us`, `cells-a`, `cells-b`) | The whole cell when `rev` is newer |
 | Surveillance cameras | DeFlock's camera nodes in OpenStreetMap | `flock-cameras`, `flock-manifest.json` | Its own cron, Mondays 08:17 UTC | At app start when `version` is newer |
 | UK fuel prices | The UK government's Fuel Finder, through matthewgall/fuelfinder-archive | `fuel-gb`, `fuel-gb-manifest.json` | Its own cron, hourly at :23 (`fuel-gb.yml`), published when the source changed | When a UK gas station needs a price, checked again at most every 3 hours |
+| Philippine fuel prices | The Department of Energy's weekly pump-price PDFs, per field office | `fuel-ph`, `fuel-ph-manifest.json` | Its own cron, Tuesdays 04:20 UTC (`fuel-ph.yml`), published when the source changed | When an opened Philippine gas station needs its city's price, checked again at most every day |
 | Buildings, where OSM has gaps | Microsoft building footprints (ODbL) | `building-overlays`, `building-overlay-manifest.json` | 90 days (`buildings-us`, `buildings-world`, `buildings-chunk`) | Streamed. A saved copy is never refreshed |
 | House numbers, where OSM has none | OpenAddresses | `address-overlays`, `address-overlay-manifest.json` | 90 days (`addresses`) | Streamed |
 | Speed limits without a routing download | OpenStreetMap `maxspeed` | `maxspeed-overlays`, `maxspeed-overlay-manifest.json` | 90 days (`maxspeed-a`, `maxspeed-b`) | Streamed |
@@ -213,6 +214,20 @@ more than 3 days old, or that cannot be fetched, ends the run green with a warni
 published file stays. When the newest published price is over 36 hours old the run opens an
 issue on the repository, once, and the next fresh publish closes it: the archive is one
 person's project and the only source a GitHub runner can reach.
+
+### Philippine fuel prices
+
+The DOE publishes no feed, only a table per field office each week, as a PDF. `fuel-ph.yml` runs
+`tools/build-fuel-ph.py` weekly: it reads the five region pages, finds the newest PDF for each (the
+page order and the filenames both mislead, so it reads the three likeliest and keeps the one whose
+own week is latest), and pulls the city-and-product rows out of the text layer with `pdfplumber`.
+The result is about 700 rows over 190 areas, under 10 KB gzipped, holding each area's price range
+and common price per product — not a price per station, because the DOE does not publish one. A
+region whose newest PDF has gone to a scan is skipped with a warning and its rows are left out, so
+the app shows nothing there rather than an older week's price.
+
+[How it shows on the phone is in `SPEC.md` (5.9): the place sheet only, labelled as the city's
+price.]
 
 The phone downloads the file the first time a UK gas station without a price shows up in
 results, on a place sheet or in the car's results, and checks the small manifest again at most

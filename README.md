@@ -201,7 +201,9 @@ Shops and points of interest are Overture Maps (CDLA-Permissive 2.0) and AllTheP
 OpenStreetMap. Transit boards come from Transitous and the operators' GTFS. UK fuel prices come from
 the government's Fuel Finder via
 [matthewgall/fuelfinder-archive](https://github.com/matthewgall/fuelfinder-archive), containing
-public sector information under the Open Government Licence v3.0. Satellite pictures are Esri's.
+public sector information under the Open Government Licence v3.0. Philippine fuel prices come from
+the Department of Energy's weekly pump-price reports, per city and product rather than per station.
+Satellite pictures are Esri's.
 Closures are spotted with Foursquare OS Places, OpenStreetMap and Wikidata.
 
 Waylo itself is Free Software under the [GPLv3](LICENSE): use it, read it, share it, improve it, and

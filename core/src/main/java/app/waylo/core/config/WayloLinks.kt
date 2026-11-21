@@ -44,6 +44,7 @@ object WayloLinks {
     const val MAP_FONTS_PACK = "mapFontsPack"
     const val ASR_MODELS = "asrModels"
     const val FUEL_GB = "fuelGb"
+    const val FUEL_PH = "fuelPh"
     const val PAINTED_ROADS = "paintedRoads"
 
     private val DEFAULTS: Map<String, String> = mapOf(
@@ -80,6 +81,7 @@ object WayloLinks {
         MAP_FONTS_PACK to (RELEASES to "/map-fonts/map-fonts.zip"),
         ASR_MODELS to (RELEASES to "/asr-models"),
         FUEL_GB to (RELEASES to "/fuel-gb/"),
+        FUEL_PH to (RELEASES to "/fuel-ph/"),
         PAINTED_ROADS to (RELEASES to "/painted-roads/painted-california.pmtiles?v=3"),
     )
 
@@ -136,5 +138,6 @@ object WayloLinks {
     fun mapFontsPack(): String = get(MAP_FONTS_PACK)
     fun asrModels(): String = get(ASR_MODELS)
     fun fuelGb(): String = get(FUEL_GB)
+    fun fuelPh(): String = get(FUEL_PH)
     fun paintedRoads(): String = get(PAINTED_ROADS)
 }

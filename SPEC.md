@@ -3974,6 +3974,82 @@ prices under the Open Government Licence v3.0.
   price does not frame the results again.
 - A place is filled once. A newer file reaches the next search or tap.
 
+### 5.9 Philippine fuel prices
+
+Google's keyless search carries a price for US gas stations and none for the Philippines, and
+Fuel Finder (5.8) covers Great Britain and Northern Ireland. For the Philippines Waylo reads the
+Department of Energy's weekly pump-price PDFs instead, which are **not per station**: each city
+and municipality gets a price range and a common price for each product (RON 100/97/95/91,
+Diesel, Diesel Plus, Kerosene). A station therefore shows its **city's** DOE price, and the text
+says so.
+
+#### The feed
+
+`.github/workflows/fuel-ph.yml` runs weekly, Tuesday 04:20 UTC, on its own cron (the DOE posts on
+Monday or Tuesday; there is nothing to check hourly).
+
+- It runs `tools/build-fuel-ph.py`, which reads the five region pages under
+  `doe.gov.ph/data-and-prices/liquid-fuels/retail-pump-prices/` (NCR, North Luzon, South Luzon,
+  Visayas, Mindanao), collects the PDF links on each, and reads the newest.
+- The newest PDF is not the first on the page and the filenames date themselves inconsistently
+  ("NCR ... 27 October to 2 November 2026", "NEW VFO PRICE MONITORING 111726", "MFO LFRO ... 17-23
+  November 2026"). So the script scores each link's own words plus its filename, reads the three
+  newest, and keeps whichever PDF says inside that its week is the latest.
+- A PDF is read by its text layer with `pdfplumber`. Rows sit 9.1 apart and a cell's parts (an
+  area name in a smaller face, a two-line "DIESEL PLUS") up to a unit, so words are grouped
+  within 4 and the product is the first RON/DIESEL/KEROSENE token of the line; the numbers either
+  side of the range's dash are the low and the high, the number after it the common price.
+- An area's label is centred in its block, so it can sit beside any of the block's rows: a block
+  starts at each `RON 100` row and a block with no label yields no rows rather than the previous
+  area's price.
+- A region whose newest PDF is a scan (no text layer) is skipped with a warning and its rows are
+  left out: the app then shows nothing for it rather than an older week's price. North Luzon went
+  scanned in November 2026; 4 of the 5 regions read.
+- The PDFs draw ñ with a broken glyph, which comes out as U+FFFD: "Para\uFFFDaque" is Parañaque.
+  The neighbouring letter gives the case, and that is the only dropped glyph seen so far.
+- Prices outside 30 to 250 pesos are placeholders ("0.00", "#N/A") and are dropped, as are rows
+  that fail `low <= high`.
+- The file is `fuel-ph.csv.gz` (700 rows over 194 areas on the 2026-11-10..16 sheets, 7 KB) with
+  the header `area,region,product,low,high,common,weekStart,weekEnd`, and
+  `fuel-ph-manifest.json` beside it with `latestWeekEnd`, `rows`, `areas`, `regions`, `file`,
+  `fileSha256` and `fileBytes`. Both sit on the `fuel-ph` release.
+- One run of the 2026-11 NCR sheet read 12 of its 17 cities: where the PDF draws two area names on
+  top of each other the text comes out interleaved ("MCuanlotioncluapna C Citiyty" is Manila and
+  Muntinlupa), and such a row never matches an address.
+- A run that publishes no rows leaves the file in place; a stale week opens one issue after 14
+  days, closed by the run that next publishes.
+
+#### On the phone
+
+`core/data/FuelPhStore` keeps the file in `fuelph/` under `StorageLocation.root`, shaped like
+`FuelGbStore` (5.8): nothing is fetched until a Philippine gas station is opened, the manifest's
+`fileSha256` is the change test, the download is checked for the gzip magic and the sha256 and
+swapped in with the old copy moved aside, and a failure is retried after 15 minutes. The check
+interval is a day (`CHECK_EVERY_MS`), because the sheet is weekly.
+
+- `ui/map/PhFuelPrices` watches `MapUiState.selected` only. The price is a city's, not the
+  station's, so it belongs on the place sheet and nowhere else: not on a result row, not on a
+  bubble, not on the car's rows.
+- `FuelPh.wants` gates the download: a gas station (`FuelGb.isGasStation` with the same category
+  fallback as 5.8) whose Google country is `PH` (`Place.countryCode`) and which has no city price
+  yet.
+
+#### Matching
+
+- The area is read from `Place.address`: lowercased, punctuation as spaces. The full name is
+  tried first ("Quezon City" for Quezon City), then the name without its trailing
+  "City"/"Municipality" ("Caloocan" for Caloocan City, which is how Google writes it). The longest
+  name the address contains wins, so an address in Cagayan de Oro never takes the province
+  Cagayan's row.
+- A bare name two published areas share ("Quezon" from Quezon City and from the municipality of
+  Quezon) is skipped rather than guessed: an address that says only "Quezon" gets no price.
+- The text goes in `Place.fuelPh`, two lines: `Diesel ₱92.00 · RON 95 ₱69.10`, then
+  `DOE Caloocan City, week of Nov 10–16 · city price, not this station's`. Diesel falls back to
+  Diesel Plus, petrol to RON 91 then RON 97; a missing common price shows the range's low.
+- `ui/place/PlaceSheet` draws it under the pump line Google's US prices use, with the same pump
+  glyph, the prices bold and the second line dim.
+- A place is filled once, and a newer file reaches the next tap.
+
 ---
 
 ## 6. Map rendering
@@ -4531,6 +4607,7 @@ exists and shows one status line asking the user to download those regions again
 | Maxspeed overlay | `maxspeed-overlays.yml`, `scripts/build-maxspeed-region.sh` | `maxspeed-overlays` | `maxspeed-overlay-manifest.json` | 90 days | streamed |
 | ALPR cameras | `flock-cameras.yml`, `scripts/build-flock-cameras.py` | `flock-cameras` | `flock-manifest.json` | Mondays 08:17 UTC | bundled asset, refreshed at launch |
 | UK fuel prices (5.8) | `fuel-gb.yml`, `tools/build-fuel-gb.py` | `fuel-gb` | `fuel-gb-manifest.json` | checked hourly, published when the source changed | `fuelgb/`, checked at most every 3 h when a UK gas station needs a price |
+| Philippine fuel prices (5.9) | `fuel-ph.yml`, `tools/build-fuel-ph.py` | `fuel-ph` | `fuel-ph-manifest.json` | checked weekly, published when the source changed | `fuelph/`, checked at most every day when a Philippine gas station is opened |
 | Glyphs | `scripts/build-map-fonts.sh` | `map-fonts`, asset `map-fonts.zip` | none | by hand | `glyphs/<stack>/<range>.pbf` |
 
 The glyph set is also unpacked to GitHub Pages (`/fonts`) for the online map. The releases
@@ -6660,8 +6737,14 @@ carries `<prefix>-arm64.apk`, `-armv7.apk`, `-x86.apk`, `-x86_64.apk` and `<pref
   GitHub publishes one.
 - The system installer gets the file through the FileProvider and enforces same package and
   same signature.
-- The launch check (pref `self_update_check`) runs at most every 20 hours. "Not now" pins the
-  dismissed code in `update_dismissed_code`.
+- The launch check (pref `self_update_check`) runs at most every 20 hours, and only a check
+  that FINISHED stamps the 20 hours (`launchCheckDue`, `LAUNCH_CHECK_EVERY_MS`): one that failed
+  (the network not up yet on a cold start, a rate-limited API) or was cut short when the app
+  closed tries again at the next launch. `SelfUpdater.check` says which it was (`Check.ok`).
+  A stamp from the future, a clock moved back, does not silence the check either.
+- "Not now" remembers the release by name in `update_dismissed_name`, so a newer release
+  re-offers. It was the version code, which went dead when the version line restarted
+  (`v0.4.2374`'s code outran every `v0.5.x` release) and silenced the card for good.
 - `InstallSource`: Android Auto lists a sideloaded navigation app only when its install source
   is Play, which AAEnabler and King Installer set and a self-install overwrites. When the
   installing or initiating package is Play, the downloaded APK is offered as a file for that
