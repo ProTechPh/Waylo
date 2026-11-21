@@ -45,7 +45,6 @@ jobs:
           REPO: ${{ github.repository }}
         run: |
           set -uo pipefail
-          source scripts/bake-lib.sh # CELLS_RELEASE_TARGET, the root commit data releases sit on
           source scripts/gh-retry.sh
           export GH_RETRY_TRIES=3
           REL="https://github.com/$REPO/releases/download/fuel-ph"
@@ -111,7 +110,10 @@ jobs:
           NOTES="Philippine fuel prices for Waylo Maps: the Department of Energy's weekly pump-price PDFs, read by tools/build-fuel-ph.py and checked weekly by fuel-ph.yml. Prices are per city and product (a range and a common price), not per station. Data files for the app; do not delete."
           if ! view_err="$(gh release view fuel-ph --repo "$REPO" --json tagName 2>&1 >/dev/null)"; then
             if grep -qi "not found" <<<"$view_err"; then
-              gh_retry gh release create fuel-ph --repo "$REPO" --prerelease --target "$CELLS_RELEASE_TARGET" \
+              # The target is this run's commit, not the root commit the data releases sit on:
+              # GitHub answers `--target <root commit>` with a 403 "Resource not accessible by
+              # integration" (measured 2026-11-22), which read like a token problem for a while.
+              gh_retry gh release create fuel-ph --repo "$REPO" --prerelease --target "$GITHUB_SHA" \
                 --title "Philippine fuel prices" --notes "$NOTES" >/dev/null || publish_failed
             else
               echo "$view_err"
@@ -123,4 +125,7 @@ jobs:
           gh_retry gh release upload fuel-ph work/fuel-ph-manifest.json --repo "$REPO" --clobber || publish_failed
 
           summary "Published $(jq -r .rows work/fuel-ph-manifest.json) rows over $(jq -r .areas work/fuel-ph-manifest.json) areas, latest week end $(jq -r .latestWeekEnd work/fuel-ph-manifest.json)."
+          # The alert reads the week that is published NOW: on the first publish there is no
+          # previous manifest, and comparing against 1970 opened the issue on a healthy run.
+          pub_week="$(jq -r .latestWeekEnd work/fuel-ph-manifest.json)"
           alert
