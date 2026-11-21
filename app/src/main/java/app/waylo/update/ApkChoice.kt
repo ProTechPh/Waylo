@@ -33,6 +33,20 @@ object ApkChoice {
  *  dev build, kept under 1000). */
 fun legacyCode(versionCode: Int): Int = if (versionCode >= 20000) versionCode / 10 else versionCode
 
+/** How often the launch check may look: once a day, as Settings says. */
+const val LAUNCH_CHECK_EVERY_MS = 20L * 60 * 60 * 1000
+
+/**
+ * Whether the launch check is due. [lastMs] is the stamp of the previous check that FINISHED
+ * (a failed or cut-short one leaves no stamp, so it retries at the next launch). A stamp from
+ * the future means the clock moved back and must not silence the check.
+ */
+fun launchCheckDue(nowMs: Long, lastMs: Long, enabled: Boolean): Boolean {
+    if (!enabled) return false
+    if (lastMs <= 0L || lastMs > nowMs) return true
+    return nowMs - lastMs >= LAUNCH_CHECK_EVERY_MS
+}
+
 /**
  * The app's release tags out of a tag-refs listing, as run number to tag, newest run first. The
  * tag is kept as GitHub names it, so a release is fetched by its real tag and a new version line

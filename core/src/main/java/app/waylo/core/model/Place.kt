@@ -27,6 +27,10 @@ data class Place(
     /** When the station last reported [fuelPrice], unix seconds. Set for UK prices only
      *  (Fuel Finder, SPEC 5.8); Google's US prices carry no time. */
     val fuelPriceAt: Long? = null,
+    /** Philippine gas stations only: the DOE's price for this station's city and week (SPEC 5.9),
+     *  two lines: the prices, then what they are ("DOE Caloocan City, week of Nov 10–16 · city
+     *  price, not this station's"). Never a claim about this station's own pump. */
+    val fuelPh: String? = null,
     /** Google's language-independent place type from the search reply ("SearchResult.TYPE_GAS_STATION"),
      *  null for places from other sources. */
     val placeType: String? = null,

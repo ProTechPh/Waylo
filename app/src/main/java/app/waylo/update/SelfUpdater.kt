@@ -69,13 +69,19 @@ class SelfUpdater @Inject constructor(
                 ?: if (prefs.getBoolean("update_nightly", false)) CHANNEL_NIGHTLY else CHANNEL_STABLE
     }
 
-    /** Newest release on [channel] if it's newer than this build, else null. Null on any error
-     *  too (the check is best-effort; a launch must never block or complain about it).
+    /** One check's outcome: [info] is the offer (null when nothing is newer) and [ok] is false
+     *  when the check could not be made at all (no network yet, a rate-limited API), so the
+     *  caller knows whether the attempt is worth counting. */
+    data class Check(val info: UpdateInfo? = null, val ok: Boolean = false)
+
+    /** Newest release on [channel] if it's newer than this build, else [Check.info] null. A
+     *  launch must never block or complain about it, so every failure comes back as
+     *  `ok = false` rather than an exception.
      *  stable = releases/latest; nightly = highest-code v0.* prerelease; canary = the rolling
      *  fixed-tag `canary` release (versionCode read from its notes, since the tag never
      *  changes), or the newest nightly when that is ahead and holds canary's commit
      *  ([canaryPick]). */
-    suspend fun check(installedVersionCode: Int, channel: String = CHANNEL_STABLE): UpdateInfo? = withContext(Dispatchers.IO) {
+    suspend fun check(installedVersionCode: Int, channel: String = CHANNEL_STABLE): Check = withContext(Dispatchers.IO) {
         val currentVersionCode = legacyCode(installedVersionCode)
         runCatching {
             fun releaseToInfo(o: JSONObject): UpdateInfo? {
@@ -150,12 +156,12 @@ class SelfUpdater @Inject constructor(
                 CHANNEL_NIGHTLY -> nightlyInfo()
                 else -> releaseToInfo(JSONObject(getJson(app.waylo.core.config.WayloLinks.api("/releases/latest"))))
             }
-            val picked = candidate?.takeIf { it.versionCode > currentVersionCode } ?: run { logCheck(null); return@runCatching null }
+            val picked = candidate?.takeIf { it.versionCode > currentVersionCode } ?: run { logCheck(null); return@runCatching Check(ok = true) }
             // Every release between the one installed and the one offered, newest first (issue
             // #330): a phone that skipped a few releases gets their notes too, not just the
             // last. Canary's rolling tag carries its own list already, and a failure here
             // falls back to the single release's notes.
-            if (channel == CHANNEL_CANARY) { logCheck(picked); return@runCatching picked }
+            if (channel == CHANNEL_CANARY) { logCheck(picked); return@runCatching Check(picked, ok = true) }
             // The releases between the installed and the offered one, one small fetch each,
             // capped so a phone many releases behind does not spend its API allowance.
             val history = runCatching {
@@ -167,10 +173,9 @@ class SelfUpdater @Inject constructor(
                     .filter { it.optBoolean("prerelease") == (channel != CHANNEL_STABLE) }
                     .mapNotNull { o -> releaseToInfo(o)?.let { it to o.optString("body") } }
             }.getOrDefault(emptyList())
-            picked.copy(notes = cumulativeNotes(history, currentVersionCode, picked)).also { logCheck(it) }
-        }.onFailure { android.util.Log.w("WayloUpdate", "check failed: $it") }.getOrNull()
+            Check(picked.copy(notes = cumulativeNotes(history, currentVersionCode, picked)).also { logCheck(it) }, ok = true)
+        }.onFailure { android.util.Log.w("WayloUpdate", "check failed: $it") }.getOrElse { Check() }
     }
-
 
     /** The release asset for this phone's chip type, else the all-in-one APK. */
     private fun pickApk(assets: JSONArray): JSONObject? {

@@ -140,7 +140,10 @@ promotion run without it (the Monday cron) leaves the notes to be edited by hand
 ### The in-app updater
 
 `SelfUpdater.check` runs at launch and from the Check for updates button. The launch check needs
-its switch (`self_update_check`) and runs at most once in 20 hours.
+its switch (`self_update_check`) and runs at most once in 20 hours, but only a check that
+finished counts as one: a failed attempt or one cut short by the app closing retries at the next
+launch, and a stamp from the future (a clock moved back) does not silence it either. "Not now"
+remembers the release by name, so only that release stays quiet.
 
 - Stable reads `releases/latest`. The promotion marks each stable Latest and the data releases are
   prereleases, so Latest is the newest stable.
