@@ -15,10 +15,10 @@ import java.util.zip.GZIPInputStream
  * Britain and Northern Ireland. The Department of Energy publishes a weekly table per field
  * office instead, and it is not per station: each city or municipality gets a price RANGE and a
  * COMMON price per product. So a Philippine gas station shows its city's DOE price, and the text
- * says so — it is never a claim about that station's own pump.
+ * says so: it is never a claim about that station's own pump.
  *
  * File format, gzipped CSV with a header:
- * `area,region,product,low,high,common,weekStart,weekEnd`. Prices are pesos per litre, [common]
+ * `area,region,product,low,high,common,weekStart,weekEnd`. Prices are pesos per liter, [common]
  * blank when the sheet names none, the week as ISO dates. Columns are read by name.
  */
 object FuelPh {

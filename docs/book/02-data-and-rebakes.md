@@ -222,11 +222,11 @@ The DOE publishes no feed, only a table per field office each week, as a PDF. `f
 page order and the filenames both mislead, so it reads the three likeliest and keeps the one whose
 own week is latest), and pulls the city-and-product rows out of the text layer with `pdfplumber`.
 The result is about 700 rows over 190 areas, under 10 KB gzipped, holding each area's price range
-and common price per product — not a price per station, because the DOE does not publish one. A
+and common price per product, not a price per station, because the DOE does not publish one. A
 region whose newest PDF has gone to a scan is skipped with a warning and its rows are left out, so
 the app shows nothing there rather than an older week's price.
 
-[How it shows on the phone is in `SPEC.md` (5.9): the place sheet only, labelled as the city's
+[How it shows on the phone is in `SPEC.md` (5.9): the place sheet only, labeled as the city's
 price.]
 
 The phone downloads the file the first time a UK gas station without a price shows up in

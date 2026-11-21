@@ -7,7 +7,7 @@ Kerosene) with a price range and a common price. There is no machine-readable fe
 pages on doe.gov.ph are HTML and the newest PDF is found there.
 
 Output is CSV (gzipped) with the header `area,region,product,low,high,common,weekStart,weekEnd`,
-prices in pesos per litre to two decimals, `weekStart`/`weekEnd` as YYYY-MM-DD, and a manifest
+prices in pesos per liter to two decimals, `weekStart`/`weekEnd` as YYYY-MM-DD, and a manifest
 beside it. A region whose newest PDF is a scan (no text layer) is skipped with a warning and its
 rows are left out; the app then shows nothing for that region rather than something stale.
 
