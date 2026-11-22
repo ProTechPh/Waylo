@@ -1,43 +1,165 @@
-/* Waylo's own colors on the Material theme: the logo's teal, dark ink on light, the landing page's
-   near-black on dark. */
-:root, [data-md-color-scheme="default"] {
-  --md-primary-fg-color: #0d3d43;
-  --md-primary-fg-color--light: #149387;
-  --md-primary-fg-color--dark: #082a2e;
+/* The docs wear the landing page's clothes: same paper, ink, teal and type scale, so /docs/ and /
+   read as one site. Material is themed through its own variables first, then a few components
+   (cards, tables, code, nav) are pulled towards the landing page's shapes. */
+
+:root,
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #062a2f;
+  --md-primary-fg-color--light: #0a746b;
+  --md-primary-fg-color--dark: #04191d;
   --md-primary-bg-color: #ffffff;
-  --md-accent-fg-color: #149387;
-  --md-typeset-a-color: #0f7d72;
+  --md-accent-fg-color: #0a746b;
+  --md-typeset-a-color: #0a746b;
+  --md-default-bg-color: #fbfbf9;
+  --md-code-bg-color: #f0f2ee;
+  --md-default-fg-color: #08110f;
+  --md-default-fg-color--light: #3d4b4e;
+  --md-default-fg-color--lighter: #68777a;
+  --md-default-fg-color--lightest: #e1e6df;
+  --waylo-card: #ffffff;
+  --waylo-rule: #e1e6df;
+  --waylo-ink: #08110f;
 }
+
 [data-md-color-scheme="slate"] {
-  --md-hue: 215;
-  --md-default-bg-color: #0a0e16;
-  --md-primary-fg-color: #06080d;
-  --md-primary-fg-color--light: #14b8a6;
-  --md-primary-fg-color--dark: #06080d;
-  --md-accent-fg-color: #2fd8c1;
-  --md-typeset-a-color: #2fd8c1;
-  --md-code-bg-color: #111723;
+  --md-hue: 190;
+  --md-default-bg-color: #0a1214;
+  --md-primary-fg-color: #071317;
+  --md-primary-fg-color--light: #0f2a2e;
+  --md-primary-fg-color--dark: #04191d;
+  --md-accent-fg-color: #43dcc7;
+  --md-typeset-a-color: #43dcc7;
+  --md-code-bg-color: #0f1a1c;
+  --md-footer-bg-color: #071317;
+  --md-footer-bg-color--dark: #04191d;
+  --md-default-fg-color: #eef3f1;
+  --md-default-fg-color--light: #a8b7b8;
+  --md-default-fg-color--lighter: #7b8a8c;
+  --md-default-fg-color--lightest: #223033;
+  --waylo-card: #0f1a1c;
+  --waylo-rule: #1d2b2e;
+  --waylo-ink: #eef3f1;
 }
-[data-md-color-scheme="slate"] .md-tabs { background-color: #06080d; }
+
 .md-header__button.md-logo img { height: 1.6rem; }
-.md-typeset table:not([class]) { font-size: .72rem; }
-.md-typeset table:not([class]) td { vertical-align: top; }
+.md-header { background-color: var(--md-primary-fg-color); }
+.md-tabs { background-color: color-mix(in srgb, var(--md-primary-fg-color) 86%, #000); }
+
 /* Long single-page documents (the specification, the feature list) read better a little narrower. */
 .md-grid { max-width: 1320px; }
-/* Home page cards */
+
+/* ---- type ---- */
+
+.md-typeset { line-height: 1.72; }
+.md-typeset h1 {
+  font-weight: 800; letter-spacing: -0.04em; line-height: 1.06; margin-bottom: 0.6rem;
+  color: var(--md-default-fg-color);
+}
+.md-typeset h2 {
+  font-weight: 750; letter-spacing: -0.03em; line-height: 1.15;
+  margin-top: 2.4rem; padding-top: 1.05rem; position: relative;
+  border-top: 1px solid var(--waylo-rule);
+}
+/* The same short accent tick the landing page puts above a section heading. */
+.md-typeset h2::before {
+  content: ""; position: absolute; top: -1px; left: 0; width: 2.4rem; height: 2px;
+  background: var(--md-accent-fg-color); border-radius: 2px;
+}
+.md-typeset h3 { font-weight: 700; letter-spacing: -0.015em; }
+.md-typeset h2, .md-typeset h3 { scroll-margin-top: 5rem; }
+
+.md-typeset a {
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-underline-offset: 0.18em;
+  transition: color .2s, text-decoration-color .2s;
+}
+.md-typeset a:hover { text-decoration-color: currentColor; }
+/* A link inside running text is marked by its underline, not by colour alone. */
+.md-typeset p a, .md-typeset li a, .md-typeset td a {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+}
+
+::selection { background: color-mix(in srgb, var(--md-accent-fg-color) 26%, transparent); }
+
+/* ---- blocks ---- */
+
+.md-typeset table:not([class]) {
+  border: 1px solid var(--waylo-rule);
+  border-radius: 0.7rem;
+  font-size: 0.72rem;
+}
+.md-typeset table:not([class]) td { vertical-align: top; }
+.md-typeset table:not([class]) th {
+  font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase;
+  background: color-mix(in srgb, var(--md-accent-fg-color) 6%, transparent);
+}
+.md-typeset table:not([class]) tbody tr { transition: background-color .15s; }
+.md-typeset table:not([class]) tbody tr:hover {
+  background-color: color-mix(in srgb, var(--md-accent-fg-color) 5%, transparent);
+}
+
+.md-typeset pre > code {
+  border-radius: 0.7rem;
+  box-shadow: inset 0 0 0 1px var(--waylo-rule);
+  transition: box-shadow .25s;
+}
+.md-typeset pre:hover > code { box-shadow: inset 0 0 0 1px var(--waylo-rule), 0 12px 28px -24px rgba(0, 0, 0, .6); }
+.md-typeset :not(pre) > code {
+  border-radius: 0.3rem; padding: 0.1em 0.36em;
+  box-shadow: inset 0 0 0 1px var(--waylo-rule);
+}
+
+.md-typeset .admonition, .md-typeset details {
+  border-radius: 0.8rem; border-width: 1px;
+  transition: box-shadow .25s;
+}
+.md-typeset .admonition:hover, .md-typeset details:hover { box-shadow: 0 14px 34px -26px rgba(0, 0, 0, .5); }
+
+.md-typeset .md-button { border-radius: 999px; font-weight: 650; }
+.md-typeset .md-button--primary {
+  background: var(--md-primary-fg-color); border-color: var(--md-primary-fg-color);
+}
+
+/* ---- navigation ---- */
+
+.md-nav__link { border-radius: 0.5rem; transition: color .15s, background-color .2s; }
+.md-nav__link:hover { background-color: color-mix(in srgb, var(--md-accent-fg-color) 9%, transparent); }
+.md-nav__link--active { font-weight: 650; }
+
+.md-header--shadow { box-shadow: 0 10px 30px -22px rgba(0, 0, 0, .6) !important; }
+
+.md-search__form { border-radius: 999px; }
+
+/* ---- home page cards ---- */
+
 .waylo-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: .8rem; margin: 1rem 0 1.6rem; }
-.waylo-cards a { display: block; padding: .9rem 1rem; border: 1px solid var(--md-default-fg-color--lightest);
-  border-radius: 14px; color: inherit !important; transition: border-color .15s, transform .15s; }
-.waylo-cards a:hover { border-color: var(--md-accent-fg-color); transform: translateY(-1px); }
+.waylo-cards a {
+  position: relative; overflow: hidden;
+  display: block; padding: .95rem 1.05rem 1.1rem;
+  background:
+    linear-gradient(var(--waylo-card), var(--waylo-card)) padding-box,
+    linear-gradient(160deg, color-mix(in srgb, var(--md-accent-fg-color) 26%, var(--waylo-rule)), var(--waylo-rule) 52%) border-box;
+  border: 1px solid transparent; border-radius: 1rem;
+  color: inherit !important;
+  transition: transform .2s cubic-bezier(.22, .61, .36, 1), box-shadow .25s;
+}
+.waylo-cards a:hover { transform: translateY(-2px); box-shadow: 0 18px 34px -28px rgba(0, 0, 0, .5); }
 .waylo-cards strong { display: block; color: var(--md-accent-fg-color); margin-bottom: .2rem; font-size: .85rem; }
 .waylo-cards span { font-size: .72rem; opacity: .8; line-height: 1.45; display: block; }
+.waylo-cards a::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--md-accent-fg-color) 15%, transparent) 50%, transparent 70%);
+  transform: translateX(-140%);
+}
+.waylo-cards a:hover::after { animation: waylo-sheen .8s cubic-bezier(.22, .61, .36, 1); }
 
 /* ---- motion ----
    Material's instant loading swaps the content on every navigation, so the page-enter animation
    replays without any extra script. Everything below is skipped under reduced motion. */
 
 @keyframes waylo-page-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-@keyframes waylo-sheen { from { transform: translateX(-130%); } to { transform: translateX(130%); } }
+@keyframes waylo-sheen { from { transform: translateX(-140%); } to { transform: translateX(140%); } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
@@ -46,32 +168,3 @@
 @media (prefers-reduced-motion: no-preference) {
   .md-content__inner { animation: waylo-page-in .45s cubic-bezier(.22, .61, .36, 1) both; }
 }
-
-.md-typeset h2, .md-typeset h3 { scroll-margin-top: 5rem; }
-
-.md-typeset a { text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); text-underline-offset: .18em; transition: color .2s, text-decoration-color .2s; }
-.md-typeset a:hover { text-decoration-color: currentColor; }
-
-.md-nav__link { border-radius: 6px; transition: color .15s, background-color .2s; }
-.md-nav__link:hover { background-color: color-mix(in srgb, var(--md-accent-fg-color) 9%, transparent); }
-.md-nav__link--active { font-weight: 600; }
-
-.md-header--shadow { box-shadow: 0 10px 30px -22px rgba(0, 0, 0, .6) !important; }
-
-.md-typeset .admonition, .md-typeset details { transition: box-shadow .25s, transform .25s; }
-.md-typeset .admonition:hover, .md-typeset details:hover { box-shadow: 0 14px 34px -26px rgba(0, 0, 0, .5); }
-
-.md-typeset table:not([class]) tbody tr { transition: background-color .15s; }
-.md-typeset table:not([class]) tbody tr:hover { background-color: color-mix(in srgb, var(--md-accent-fg-color) 6%, transparent); }
-
-.md-typeset pre > code { transition: box-shadow .25s; }
-.md-typeset pre:hover > code { box-shadow: 0 12px 28px -24px rgba(0, 0, 0, .6); }
-
-.waylo-cards a { position: relative; overflow: hidden; }
-.waylo-cards a:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -28px rgba(0, 0, 0, .5); }
-.waylo-cards a::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--md-accent-fg-color) 18%, transparent) 50%, transparent 70%);
-  transform: translateX(-130%);
-}
-.waylo-cards a:hover::after { animation: waylo-sheen .8s cubic-bezier(.22, .61, .36, 1); }

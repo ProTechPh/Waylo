@@ -58,7 +58,7 @@ object WayloLinks {
         // mirror. Installed apps and F-Droid clients point here, so it must keep serving them
         // (never a redirect to somewhere else).
         PAGES to "https://protechph.github.io/Waylo",
-        DONATE to "https://buymeacoffee.com/ProTechPh",
+        DONATE to "https://buymeacoffee.com/jerickogaro",
     )
 
     /** Key to (base key, path appended to the base). */

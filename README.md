@@ -213,4 +213,4 @@ keep any redistribution under the same terms. The bundled Google Sans Flex font 
 affiliation with Google and is not endorsed by it; Google Maps and Google Sans Flex are its
 trademarks.
 
-<p align="center"><sub>Made by <a href="https://github.com/ProTechPh">ProTechPh</a> · <a href="https://buymeacoffee.com/ProTechPh">Support</a></sub></p>
+<p align="center"><sub>Made by <a href="https://github.com/ProTechPh">ProTechPh</a> · <a href="https://buymeacoffee.com/jerickogaro">Support</a></sub></p>

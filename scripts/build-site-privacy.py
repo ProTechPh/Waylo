@@ -27,21 +27,23 @@ HEAD = """<!doctype html>
   <meta name="description" content="What leaves your phone when you use Waylo Maps, where it goes, and what does not: every service the app contacts and what each one receives.">
   <link rel="canonical" href="https://protechph.github.io/Waylo/privacy">
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0a1214" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" href="style.css">
   <script src="motion.js" defer></script>
 </head>
 <body>
 
 <header class="top">
-  <a class="brand" href="./"><img src="assets/logo.svg" alt=""> Waylo Maps</a>
+  <a class="brand" href="./"><img src="assets/logo.svg" alt=""> Waylo</a>
   <nav>
     <a href="./#what">What it does</a>
     <a href="privacy.html" aria-current="page">Privacy</a>
-    <a href="./#install">Install</a>
     <a href="./#docs">Docs</a>
     <a href="press.html">Press</a>
     <a href="https://github.com/ProTechPh/Waylo">GitHub</a>
   </nav>
+  <a class="btn sm cta" href="./#install">Install</a>
 </header>
 
 <main class="doc">
