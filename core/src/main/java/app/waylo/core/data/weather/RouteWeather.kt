@@ -76,4 +76,90 @@ object RouteWeather {
         distanceMeters >= MIN_ROUTE_M &&
         departAtMs <= nowMs + HORIZON_H * 3_600_000L &&
         arriveAtMs <= nowMs + HORIZON_H * 3_600_000L
+
+    enum class Kind { LIGHT, RAIN, HEAVY, SNOW, MAYBE }
+
+    /** The one stretch of the route worth saying: its kind, where it is, how long after leaving it
+     *  starts, and, for a chance of rain, the model's own percentage. */
+    data class Span(
+        val kind: Kind,
+        val fromMeters: Double,
+        val toMeters: Double,
+        val afterSeconds: Double,
+        val percent: Int?,
+    )
+
+    /**
+     * The span to show for one route. Each [samples] entry pairs with the [hours] entry at the same
+     * index (the caller slices the location list), and the weather read is the one at the hour the
+     * drive reaches that point. A wet span beats a chance of rain; a dry answer is null.
+     */
+    fun read(hours: List<Hourly>, samples: List<Sample>): Span? {
+        if (hours.isEmpty() || samples.isEmpty() || hours.size != samples.size) return null
+        val peakMm = DoubleArray(samples.size)
+        val pct = IntArray(samples.size)
+        val kinds = arrayOfNulls<Kind>(samples.size)
+        samples.forEachIndexed { i, s ->
+            val h = hours[i]
+            val idx = hourIndex(h, s.atMs / 1000L) ?: return@forEachIndexed
+            val mm = h.precipitation.getOrElse(idx) { 0.0 }
+            val p = h.probability.getOrElse(idx) { 0 }
+            val sn = h.snowfall.getOrElse(idx) { 0.0 }
+            val t = h.temperature.getOrElse(idx) { 99.0 }
+            peakMm[i] = mm
+            pct[i] = p
+            kinds[i] = when {
+                mm >= WET_MM && sn > 0.0 && t <= SNOW_C -> Kind.SNOW
+                mm >= WET_MM -> when {
+                    mm >= HEAVY_MM -> Kind.HEAVY
+                    mm >= LIGHT_MM -> Kind.RAIN
+                    else -> Kind.LIGHT
+                }
+                mm == 0.0 && p >= MAYBE_PCT -> Kind.MAYBE
+                else -> null
+            }
+        }
+
+        var bestWet: IntRange? = null
+        var bestWetMm = 0.0
+        var bestMaybe: IntRange? = null
+        var bestMaybePct = 0
+        var i = 0
+        while (i < samples.size) {
+            if (kinds[i] == null) { i++; continue }
+            val maybe = kinds[i] == Kind.MAYBE
+            var j = i
+            while (j + 1 < samples.size && kinds[j + 1] != null && (kinds[j + 1] == Kind.MAYBE) == maybe) j++
+            if (maybe) {
+                val p = (i..j).maxOf { pct[it] }
+                if (p > bestMaybePct) { bestMaybePct = p; bestMaybe = i..j }
+            } else {
+                val mm = (i..j).maxOf { peakMm[it] }
+                if (mm > bestWetMm) { bestWetMm = mm; bestWet = i..j }
+            }
+            i = j + 1
+        }
+        val run = bestWet ?: bestMaybe ?: return null
+        val first = run.first
+        val last = run.last
+        val from = if (first == 0) 0.0 else (samples[first - 1].meters + samples[first].meters) / 2
+        val to = if (last == samples.lastIndex) samples.last().meters else (samples[last].meters + samples[last + 1].meters) / 2
+        val kind = if (bestWet == null) Kind.MAYBE else kinds[run.maxByOrNull { peakMm[it] }!!]!!
+        val percent = if (bestWet == null) ((bestMaybePct + 5) / 10 * 10).coerceAtMost(100) else null
+        return Span(
+            kind = kind,
+            fromMeters = from,
+            toMeters = to,
+            afterSeconds = (samples[first].atMs - samples.first().atMs) / 1000.0,
+            percent = percent,
+        )
+    }
+
+    private fun hourIndex(h: Hourly, epochSec: Long): Int? {
+        for (i in h.time.indices) {
+            val t = h.time[i]
+            if (epochSec >= t && epochSec < t + 3_600L) return i
+        }
+        return null
+    }
 }
