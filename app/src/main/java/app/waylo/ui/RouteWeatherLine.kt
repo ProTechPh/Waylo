@@ -79,6 +79,8 @@ private suspend fun loadRouteWeather(routes: List<Route>, departAtMs: Long): Lis
     }
     if (used.isEmpty()) return List(routes.size) { null }
     val hours = RouteWeatherRepo.client.hourly(used.flatMap { perRoute[it] }) ?: return List(routes.size) { null }
+    // A reply shorter than the request would throw on the slice; say nothing instead.
+    if (hours.size < total) return List(routes.size) { null }
 
     val out = MutableList<RouteWeather.Span?>(routes.size) { null }
     var at = 0
