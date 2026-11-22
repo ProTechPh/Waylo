@@ -181,6 +181,10 @@ installed `.obf` files.
   `ENDPOINT_SNAP_M` (2 km) of a road in the data, or there is no offline route.
 - Avoid tolls, highways and ferries are applied from road attributes at calculation time.
   Walking and cycling use the same file.
+- Private roads (`access=private`, a gated village) are closed to the car profile unless
+  Settings > Offline, "Private roads in offline routes", is on. The switch is read per route.
+  A highway-hierarchy set has no private variant, so that route falls back to the plain search.
+  Routes from Google and OSRM are not affected.
 - Region files carry OsmAnd's highway hierarchy for car and bicycle. With it, 148 km across
   Delaware takes 0.7 s and 71 MB on a Pixel 4a. Without it the plain search runs inside
   `MEMORY_MB` (256) and fails somewhere between 60 and 150 km on a dense network.

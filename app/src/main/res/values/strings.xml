@@ -133,6 +133,7 @@
     <string name="settings_flock_nav_voice">Say when a plate camera is ahead</string>
     <string name="settings_flock_nav_voice_hint">While navigating, says \"License plate camera ahead\" as you get close to one on your route, about twelve seconds before you reach it. Follows your spoken-directions setting. Off by default.</string>
     <string name="nav_flock_camera_ahead">License plate camera ahead</string>
+    <string name="nav_ncap_road">%1$s is an NCAP-enforced road</string> <!-- format -->
     <string name="nav_flock_cameras_ahead">License plate cameras ahead</string>
     <string name="settings_speed_cams_hint">Shows fixed radar and speed cameras mapped in OpenStreetMap. Fixed installations only; coverage follows the map, strongest in Europe. Off by default.</string>
     <string name="exp_chooser_fastest">Fastest route now</string>
@@ -195,6 +196,8 @@
     <string name="settings_region_updates_mobile">On Wi-Fi and mobile data</string>
     <string name="settings_offline_places_with_downloads">Include places with downloads</string>
     <string name="settings_offline_places_with_downloads_hint">A region download also brings Waylo\'s place data for it, so the businesses on the map show with no signal. Around half a gigabyte for a big state. Off = places only stream while online.</string>
+    <string name="settings_offline_private_roads">Private roads in offline routes</string>
+    <string name="settings_offline_private_roads_hint">Lets the on-device router use roads tagged private, such as gated villages, when the route comes from a downloaded region. Off, it keeps out of them. Routes from Google are not affected.</string>
     <string name="settings_offline_cached_places">Keep viewed places for offline</string>
     <string name="settings_offline_cached_places_hint">Every place you open while online is kept on this phone with what was loaded for it (details, the reviews and photos you saw), so it still opens with no signal. The newest 400 are kept, for a month. Clear history and Delete all offline data remove them.</string>
     <string name="settings_offline_cached_places_clear">Clear cached places</string>
@@ -566,6 +569,8 @@
     <string name="place_fastest">Fastest</string>
     <string name="place_delta_min">+%1$d min</string> <!-- format -->
     <string name="place_via">via %1$s</string> <!-- format -->
+    <!-- Metro Manila only: the MMDA publishes NCAP-covered roads, not camera positions. -->
+    <string name="ncap_route_note">NCAP-enforced roads: %1$s</string> <!-- format -->
     <string name="place_live_traffic">live traffic</string>
     <string name="place_route_offline">offline route, no live traffic</string>
     <string name="place_traffic_light">light traffic</string>

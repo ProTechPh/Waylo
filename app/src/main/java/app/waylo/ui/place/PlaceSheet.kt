@@ -234,6 +234,7 @@ import app.waylo.core.model.TransitMode
 import app.waylo.core.model.TransitStep
 import app.waylo.core.model.TransitStopTime
 import app.waylo.core.model.TravelMode
+import app.waylo.core.nav.NcapRoads
 import coil.compose.AsyncImage
 import app.waylo.ui.RatingStars
 import app.waylo.ui.SheetPalette
@@ -2008,7 +2009,7 @@ fun DirectionsPanel(
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         routes.forEachIndexed { i, r ->
                             val selected = r === activeRoute || (activeRoute == null && i == 0)
-                            RouteOption(r, selected, fastestEtaSeconds = fastestEta, isFastest = i == fastestIdx, dark = dark, ink = ink, dim = dim, flockCount = flockOnRoute.getOrElse(i) { 0 }, weather = routeWeather.getOrElse(i) { null }) { onSelectRoute(i) }
+                            RouteOption(r, selected, fastestEtaSeconds = fastestEta, isFastest = i == fastestIdx, dark = dark, ink = ink, dim = dim, flockCount = flockOnRoute.getOrElse(i) { 0 }, ncap = if (currentMode == TravelMode.DRIVE) NcapRoads.roads(r) else emptyList(), weather = routeWeather.getOrElse(i) { null }) { onSelectRoute(i) }
                         }
                     }
                     Spacer(Modifier.height(14.dp))
@@ -2332,7 +2333,7 @@ private fun PickerDialog(onConfirm: () -> Unit, onDismiss: () -> Unit, content: 
  *  via, highlighted when it's the active one. The fastest carries a "Fastest" tag; each slower
  *  alternate shows how much longer it is ("+5 min") so the choice is legible at a glance. */
 @Composable
-private fun RouteOption(r: Route, selected: Boolean, fastestEtaSeconds: Double, isFastest: Boolean, dark: Boolean, ink: Color, dim: Color, flockCount: Int = 0, weather: RouteWeather.Span? = null, onClick: () -> Unit) {
+private fun RouteOption(r: Route, selected: Boolean, fastestEtaSeconds: Double, isFastest: Boolean, dark: Boolean, ink: Color, dim: Color, flockCount: Int = 0, ncap: List<String> = emptyList(), weather: RouteWeather.Span? = null, onClick: () -> Unit) {
     val etaSeconds = r.durationInTrafficSeconds ?: r.durationSeconds
     val eta = formatDuration(etaSeconds)
     val etaColor = trafficEtaColor(r) ?: ink
@@ -2409,6 +2410,16 @@ private fun RouteOption(r: Route, selected: Boolean, fastestEtaSeconds: Double, 
                         color = SheetPalette.TrafficAmber,
                     )
                 }
+            }
+            // MMDA camera enforcement (NCAP), by road: the agency publishes the roads, not camera
+            // positions. Driving only; walking Manila is not ticketed by plate.
+            if (ncap.isNotEmpty()) {
+                Spacer(Modifier.height(3.dp))
+                Text(
+                    stringResource(R.string.ncap_route_note, ncap.joinToString(", ")),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = SheetPalette.TrafficAmber,
+                )
             }
             weather?.let {
                 Spacer(Modifier.height(3.dp))

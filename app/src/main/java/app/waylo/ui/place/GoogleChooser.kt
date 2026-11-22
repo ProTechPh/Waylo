@@ -70,6 +70,7 @@ import androidx.compose.ui.unit.sp
 import app.waylo.R
 import app.waylo.core.model.Route
 import app.waylo.core.model.TravelMode
+import app.waylo.core.nav.NcapRoads
 import app.waylo.ui.SheetPalette
 import app.waylo.ui.RouteWeatherLine
 import app.waylo.ui.rememberRouteWeather
@@ -334,6 +335,12 @@ fun GoogleStyleDirectionsPanel(
                         if (cams > 0) {
                             Text(androidx.compose.ui.res.pluralStringResource(R.plurals.dir_cameras_on_route, cams, cams), style = MaterialTheme.typography.bodyMedium, color = SheetPalette.TrafficAmber)
                         }
+                        // MMDA camera enforcement (NCAP), by road: the agency publishes the roads, not
+                        // camera positions. Driving only; walking Manila is not ticketed by plate.
+                        val ncap = if (currentMode == TravelMode.DRIVE) NcapRoads.roads(route) else emptyList()
+                        if (ncap.isNotEmpty()) {
+                            Text(stringResource(R.string.ncap_route_note, ncap.joinToString(", ")), style = MaterialTheme.typography.bodyMedium, color = SheetPalette.TrafficAmber)
+                        }
                         // Why a slower route leads (discussion #676): with "Avoid surveillance cameras"
                         // on, the picker puts a route with fewer cameras first, and said nothing about it.
                         val fastestCams = flockOnRoute.getOrElse(routes.indexOfFirst { (it.durationInTrafficSeconds ?: it.durationSeconds) == fastest }) { 0 }
@@ -432,15 +439,17 @@ fun GoogleStyleDirectionsPanel(
                                             color = dim,
                                         )
                                     }
+                                    val ncap = if (currentMode == TravelMode.DRIVE) NcapRoads.roads(r) else emptyList()
                                     Text(
                                         listOfNotNull(
                                             formatDistance(r.distanceMeters),
                                             r.summary?.takeIf { it.isNotBlank() }?.let { stringResource(R.string.exp_chooser_via, it) },
                                             if (cams > 0) androidx.compose.ui.res.pluralStringResource(R.plurals.dir_cameras_on_route, cams, cams) else null,
                                             if (i == fewestCamIdx) stringResource(R.string.exp_chooser_fewest_cams) else null,
+                                            if (ncap.isNotEmpty()) stringResource(R.string.ncap_route_note, ncap.joinToString(", ")) else null,
                                         ).joinToString(" · "),
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = if (cams > 0) SheetPalette.TrafficAmber else dim,
+                                        color = if (cams > 0 || ncap.isNotEmpty()) SheetPalette.TrafficAmber else dim,
                                     )
                                     RouteWeatherLine(routeWeather.getOrElse(i) { null })
                                 }

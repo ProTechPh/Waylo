@@ -43,7 +43,12 @@ import java.util.concurrent.ConcurrentHashMap
  * [MEMORY_MB] and fail outright, so until the bake generates HH, offline obf routing is a
  * city/metro feature.
  */
-class ObfRouteEngine(private val obfRootOf: () -> File) : RouteEngine {
+class ObfRouteEngine(
+    private val obfRootOf: () -> File,
+    /** Whether a route may use ways tagged `access=private` (Settings > Offline, off by default):
+     *  gated villages and private compounds are routable then, as they are for the online routers. */
+    private val allowPrivate: () -> Boolean = { false },
+) : RouteEngine {
     constructor(root: File) : this({ root })
     private val obfRoot: File get() = obfRootOf()
 
@@ -134,6 +139,9 @@ class ObfRouteEngine(private val obfRootOf: () -> File) : RouteEngine {
                         // `avoid_ferries` is the car profile parameter id in the vendored
                         // routing.xml. DRIVE only, like the chip.
                         if (avoidFerries && mode == TravelMode.DRIVE) put("avoid_ferries", "true")
+                        // `allow_private` is the car profile's own switch for access=private ways
+                        // (routing.xml: access=private is -1 unless this is set).
+                        if (mode == TravelMode.DRIVE && allowPrivate()) put("allow_private", "true")
                     }
                     val config = builder().build(
                         profile,

@@ -259,6 +259,18 @@ off the list when it has been.
   reply and the release build compiles; not yet seen on a phone, and no route with rain on it has
   been looked at.
 
+- NCAP in Metro Manila (SPEC 4.13): the picker names the covered road a driving route uses, the
+  drive says it once on getting onto one, and the list is data (`tools/ncap-roads.tsv`, published
+  to the `ncap-ph` release and refreshed at launch) instead of code. Unit tested on synthetic
+  routes and on the bundled asset; not yet seen on a phone, no real Metro Manila route has been
+  checked against the lists, and the `ncap-ph` release does not exist until the workflow first
+  runs, so the hosted refresh has never executed end to end. San Juan's and Muntinlupa's rows are
+  reported coverage from dated sources, not a published camera list.
+
+- Private roads in offline routes (SPEC 4.5): "Private roads in offline routes" in Settings >
+  Offline passes `allow_private` to the on-device car profile. Wired and compiling; no gated
+  village has been routed through on a phone.
+
 - Highway steps on a route named from the tiles (`LineNamer`) come from the link roads: a turn
   straight onto or off a highway at an intersection says "Turn left onto", an exit is said once
   where the line leaves the highway and the end of the ramp is a plain turn, curves along a ramp
