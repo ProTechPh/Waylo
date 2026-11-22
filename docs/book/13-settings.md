@@ -12,7 +12,8 @@ Settings opens over the map as a list of twelve pages with a search field above 
   and English), where the map opens.
 - Places: "Place icons on the map", which places the map draws, what a place page loads.
 - Navigation: route picker, road-ahead bar, arrow, speed limit, road numbers first, zoom keys,
-  cameras ([chapter 3](03-cameras.md)), traffic rechecks.
+  cameras ([chapter 3](03-cameras.md)), traffic rechecks, weather along the route
+  ([chapter 4](04-navigation.md)).
 - Voice: spoken directions, street names, the voice library, speed and volume.
 - Search: voice search, on-device speech engines, contact search, and Quick search buttons,
   a page of its own under Search for which category chips show and in what order.

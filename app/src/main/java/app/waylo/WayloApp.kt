@@ -164,6 +164,7 @@ class WayloApp : Application(), coil.ImageLoaderFactory {
         app.waylo.ui.FlockRouteAlert.init(this) // load the persisted "warn about cameras on route" toggle
         app.waylo.ui.FlockDetour.init(this) // side-street detours around cameras (issue #600), nested under it
         app.waylo.ui.FlockNavAlert.init(this) // plate-camera card + spoken alert while navigating, off by default
+        app.waylo.ui.PrivateRoads.init(this) // private roads in on-device routes (Settings > Offline)
         // Parse the bundled on-device ALPR/Flock camera dataset off the main thread (map layer draws
         // instantly, route counts are reliable), then refresh from the hosted manifest so the data updates
         // without an app release (weekly CI cron re-hosts a newer version; a bump swaps it in on next launch).
@@ -175,6 +176,9 @@ class WayloApp : Application(), coil.ImageLoaderFactory {
             app.waylo.offline.RegionPolys.ensureLoaded(this@WayloApp)
             app.waylo.data.FlockCameras.ensureLoaded(this@WayloApp)
             app.waylo.data.FlockCameras.refresh(this@WayloApp, app.waylo.core.config.WayloLinks.flockManifest())
+            // The NCAP road list (Metro Manila), same two tiers: bundled floor, then the hosted copy.
+            app.waylo.data.NcapRoadList.ensureLoaded(this@WayloApp)
+            app.waylo.data.NcapRoadList.refresh(this@WayloApp, app.waylo.core.config.WayloLinks.ncapPh())
         }
         app.waylo.ui.SimLocation.onChange = {
             locationProvider.pinned = it
@@ -197,6 +201,7 @@ class WayloApp : Application(), coil.ImageLoaderFactory {
         app.waylo.ui.DetailsRetry.init(this)
         app.waylo.ui.OtherLocationsAuto.init(this)
         app.waylo.ui.RouteTrafficOnTap.init(this)
+        app.waylo.ui.RouteWeatherOn.init(this)
         app.waylo.core.data.RoutingPrefs.googleTraffic = !app.waylo.ui.RouteTrafficOnTap.on.value
         app.waylo.ui.HideAdult.init(this)
         app.waylo.ui.HideExternalLinks.init(this)

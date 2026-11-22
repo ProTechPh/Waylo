@@ -12,80 +12,98 @@
   <meta property="og:url" content="https://protechph.github.io/Waylo/">
   <link rel="canonical" href="https://protechph.github.io/Waylo/">
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0a1214" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" href="style.css">
   <script src="motion.js" defer></script>
 </head>
 <body>
 
 <header class="top">
-  <a class="brand" href="./"><img src="assets/logo.svg" alt=""> Waylo Maps</a>
+  <a class="brand" href="./"><img src="assets/logo.svg" alt=""> Waylo</a>
   <nav>
     <a href="#what">What it does</a>
     <a href="privacy.html">Privacy</a>
-    <a href="#install">Install</a>
     <a href="#docs">Docs</a>
     <a href="press.html">Press</a>
     <a href="https://github.com/ProTechPh/Waylo">GitHub</a>
   </nav>
+  <a class="btn sm cta" href="#install">Install</a>
 </header>
 
 <main>
 
-<div class="hero wide herogrid">
-  <div>
-    <div class="kicker">Android · free · open source · beta</div>
-    <h1>The best of OpenStreetMap and Google Maps, in one app.</h1>
-    <p class="lede">Waylo is a free, open-source Google Maps alternative for Android. The map is open data. Live traffic, hours and reviews come from Google when you ask, with no Google account, no Play Services and no Google code on your phone.</p>
-    <div class="get">
-      <a class="btn" href="#install">Install Waylo</a>
-      <a class="btn plain" href="https://github.com/ProTechPh/Waylo">See the source</a>
+<section class="hero">
+  <div class="wide herogrid">
+    <div>
+      <p class="kicker">Android · free · open source · beta</p>
+      <h1>The best of OpenStreetMap and Google Maps, in one app.</h1>
+      <p class="lede">Waylo is a free, open-source Google Maps alternative for Android. The map is open data. Live traffic, hours and reviews come from Google when you ask, with no Google account, no Play Services and no Google code on your phone.</p>
+      <div class="get">
+        <a class="btn" href="#install">Install Waylo</a>
+        <a class="btn plain" href="https://github.com/ProTechPh/Waylo">See the source</a>
+      </div>
+      <p class="small">Built for degoogled phones such as GrapheneOS, and it runs on stock Android too. Android 8 and up.</p>
     </div>
-    <p class="small">Built for degoogled phones such as GrapheneOS, and it runs on stock Android too. Android 8 and up.</p>
-  </div>
-  <figure class="phone herophone"><img src="assets/05-navigation.webp" width="720" height="1560" alt="Turn-by-turn navigation in Waylo, with the speed limit and the next turn"></figure>
-</div>
-
-<section class="tubsec">
-  <div class="col">
-    <h2>It looks like Google Maps. That is the point.</h2>
-    <p>You already know how to use it. Underneath, almost none of it is Google: it is a native Android app drawing open map tiles, with no Google SDK and nothing to sign in to.</p>
-    <p>It is <mark>not a wrapper</mark> around the Google Maps website and it is not a modified copy of the Google Maps app.</p>
+    <figure class="visual">
+      <div class="mapcard">
+        <img src="assets/hero-map.svg" width="1600" height="1080" alt="A night map with a driving route drawn across it">
+        <p class="chip"><span class="dot"></span>No Play Services</p>
+      </div>
+      <figure class="herophone"><img src="assets/05-navigation.webp" width="720" height="1560" alt="Turn-by-turn navigation in Waylo, with the speed limit and the next turn"></figure>
+    </figure>
   </div>
 </section>
 
-<div class="shots" aria-label="Screenshots of Waylo">
-  <figure class="phone"><img src="assets/01-map.webp" width="720" height="1560" alt="Waylo's map in dark mode with shops and restaurants marked" loading="lazy"><figcaption>The map is open data</figcaption></figure>
-  <figure class="phone"><img src="assets/03-place.webp" width="720" height="1560" alt="A place page in Waylo showing hours, rating and photos" loading="lazy"><figcaption>Hours, reviews, photos</figcaption></figure>
-  <figure class="phone"><img src="assets/04-directions.webp" width="720" height="1560" alt="Route options in Waylo with traffic-aware times" loading="lazy"><figcaption>Routes with real traffic</figcaption></figure>
-  <figure class="phone"><img src="assets/06-transit.webp" width="720" height="1560" alt="A transit departure board in Waylo" loading="lazy"><figcaption>Transit boards</figcaption></figure>
-  <figure class="phone"><img src="assets/08-map-light.webp" width="720" height="1560" alt="Waylo's map in light mode" loading="lazy"><figcaption>Light or dark</figcaption></figure>
+<div class="marquee" role="group" aria-label="Waylo at a glance">
+  <div class="marquee-track">
+    <span>No account</span><span>No ads</span><span>No analytics</span><span>No Play Services</span><span>Open source, GPLv3</span><span>19 languages</span><span>Android 8 and up</span><span>Interactive map works offline</span>
+  </div>
 </div>
 
-<section class="note">
-  <div class="col">
-    <h2>Why this exists</h2>
-    <p>I made Waylo to solve my own problem. I run GrapheneOS, and Google Maps stopped working for me without Google's services on the phone. I need traffic, and a handful of other things that pretty much only Google does well. I tried every maps app under the sun and none of them fit.</p>
-    <p>So I built one. The map is OpenStreetMap and other open data. When you search, tap a place or ask for a route, your phone asks Google the way a logged-out browser would, as anonymously as it can, and shows you the answer. No account, no API key, no server of mine in the middle. <span class="wavy">It is what NewPipe is to YouTube, for maps.</span></p>
-    <p>It looks like Google Maps on purpose. I think that interface is the best there is, and muscle memory matters when you are driving. I needed this to just work.</p>
-    <p>It is in beta and I am one person, so it has bugs. I build it with heavy use of AI assistants and test it on real phones. It is GPLv3 so it can outlive me, and I will never charge money for it.</p>
-    <p class="sig">ProTechPh, developer of Waylo</p>
+<section class="pull">
+  <div class="wide pullgrid">
+    <div>
+      <h2>It looks like Google Maps. That is the point.</h2>
+    </div>
+    <div>
+      <p>You already know how to use it. Underneath, almost none of it is Google: it is a native Android app drawing open map tiles, with no Google SDK and nothing to sign in to.</p>
+      <p>It is <mark>not a wrapper</mark> around the Google Maps website and it is not a modified copy of the Google Maps app.</p>
+    </div>
   </div>
 </section>
 
-<section id="what" class="tint">
-  <div class="wide">
-    <h2>What it does</h2>
-    <div class="things">
-      <div><h3>Traffic that is real</h3><p>Arrival times use the same live traffic Google Maps shows, and each route says light, moderate or heavy in plain words.</p></div>
-      <div><h3>Places you can trust</h3><p>Hours, ratings, reviews and photos for the place you tapped, looked up fresh when you ask.</p></div>
-      <div><h3>Works with no signal</h3><p>Download a state or a country once. The map, search, routing and navigation keep working offline.</p></div>
-      <div><h3>Transit that is live</h3><p>Departure boards and stop-by-stop timelines, from open transit data where it exists.</p></div>
-      <div><h3>Plate cameras on the map</h3><p>Flock and other license-plate readers from the community DeFlock project, plus fixed speed cameras, on the map and along your route.</p></div>
-      <div><h3>A voice that stays on the phone</h3><p>Spoken directions come from a neural voice that runs entirely on the device. Voice search works offline too.</p></div>
-      <div><h3>Street View, gas prices, parking</h3><p>Look around a street before you get there, see fuel prices in search results, and tap P to remember where you parked.</p></div>
-      <div><h3>The rest</h3><p>Saved lists (and importing a shared Google Maps list), 19 languages, light and dark, and full keypad control for dumbphones.</p></div>
+<section class="stage" role="group" aria-label="Screenshots of Waylo">
+  <div class="stage-pin">
+    <div class="rail">
+      <figure class="phone"><img src="assets/01-map.webp" width="720" height="1560" alt="Waylo's map in dark mode with shops and restaurants marked" loading="lazy"><figcaption>The map is open data</figcaption></figure>
+      <figure class="phone"><img src="assets/03-place.webp" width="720" height="1560" alt="A place page in Waylo showing hours, rating and photos" loading="lazy"><figcaption>Hours, reviews, photos</figcaption></figure>
+      <figure class="phone"><img src="assets/04-directions.webp" width="720" height="1560" alt="Route options in Waylo with traffic-aware times" loading="lazy"><figcaption>Routes with real traffic</figcaption></figure>
+      <figure class="phone"><img src="assets/06-transit.webp" width="720" height="1560" alt="A transit departure board in Waylo" loading="lazy"><figcaption>Transit boards</figcaption></figure>
+      <figure class="phone"><img src="assets/07-weather.webp" width="720" height="1640" alt="A driving route in Waylo saying where heavy rain is along it, and when the drive reaches it" loading="lazy"><figcaption>Rain on the way</figcaption></figure>
+      <figure class="phone"><img src="assets/08-map-light.webp" width="720" height="1560" alt="Waylo's map in light mode" loading="lazy"><figcaption>Light or dark</figcaption></figure>
     </div>
-    <p class="small more"><a href="docs/features/">The full feature list →</a></p>
+  </div>
+</section>
+
+<section id="what">
+  <div class="wide split">
+    <div class="spine">
+      <h2>What it does</h2>
+      <p class="small more"><a href="docs/features/">The full feature list →</a></p>
+    </div>
+    <div class="body">
+      <div class="bento">
+        <div><h3>Traffic that is real</h3><p>Arrival times use the same live traffic Google Maps shows, and each route says light, moderate or heavy in plain words.</p></div>
+        <div><h3>Places you can trust</h3><p>Hours, ratings, reviews and photos for the place you tapped, looked up fresh when you ask.</p></div>
+        <div><h3>Works with no signal</h3><p>Download a state or a country once. The map, search, routing and navigation keep working offline.</p></div>
+        <div><h3>Transit that is live</h3><p>Departure boards and stop-by-stop timelines, from open transit data where it exists.</p></div>
+        <div><h3>Plate cameras on the map</h3><p>Flock and other license-plate readers from the community DeFlock project, plus fixed speed cameras, on the map and along your route.</p></div>
+        <div><h3>A voice that stays on the phone</h3><p>Spoken directions come from a neural voice that runs entirely on the device. Voice search works offline too.</p></div>
+        <div><h3>Street View, gas prices, parking</h3><p>Look around a street before you get there, see fuel prices in search results, and tap P to remember where you parked.</p></div>
+        <div><h3>The rest</h3><p>Saved lists (and importing a shared Google Maps list), 19 languages, light and dark, and full keypad control for dumbphones.</p></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -118,6 +136,17 @@
 
 <section class="tint">
   <div class="col">
+    <h2>Why this exists</h2>
+    <p>I made Waylo to solve my own problem. I run GrapheneOS, and Google Maps stopped working for me without Google's services on the phone. I need traffic, and a handful of other things that pretty much only Google does well. I tried every maps app under the sun and none of them fit.</p>
+    <p>So I built one. The map is OpenStreetMap and other open data. When you search, tap a place or ask for a route, your phone asks Google the way a logged-out browser would, as anonymously as it can, and shows you the answer. No account, no API key, no server of mine in the middle. <span class="wavy">It is what NewPipe is to YouTube, for maps.</span></p>
+    <p>It looks like Google Maps on purpose. I think that interface is the best there is, and muscle memory matters when you are driving. I needed this to just work.</p>
+    <p>It is in beta and I am one person, so it has bugs. I build it with heavy use of AI assistants and test it on real phones. It is GPLv3 so it can outlive me, and I will never charge money for it.</p>
+    <p class="sig">ProTechPh, developer of Waylo</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
     <h2>The honest part</h2>
     <div class="box warn">
       <p><strong>Waylo is in beta.</strong> Things break. If you need a maps app you can bet a road trip on, keep a second one installed.</p>
@@ -133,35 +162,44 @@
 </section>
 
 <section id="install" class="band">
-  <div class="wide">
-    <h2>Install</h2>
-    <p>Free, no account, no ads. Take the APK from the releases page.</p>
-    <div class="ways">
-      <div class="way">
-        <h3>Plain APK</h3>
-        <p>Download the file from the releases page. The app checks for updates itself after that.</p>
-        <a class="go" href="https://github.com/ProTechPh/Waylo/releases/latest">Latest stable release →</a>
-      </div>
+  <div class="wide bandgrid">
+    <div>
+      <p class="kicker">Install</p>
+      <h2>Free. No account. No ads.</h2>
+      <p>Take the APK straight from the releases page. The app checks for updates itself after that.</p>
     </div>
-    <details>
-      <summary>Check that you got the real thing</summary>
-      <p class="small" style="margin-top:.8rem">Every Waylo build, on every channel, is signed with one key. Its SHA-256 certificate fingerprint is below. Android also refuses any update signed with a different key.</p>
-      <pre>CF:07:EB:D6:9C:AA:83:06:88:64:7F:00:26:6B:A8:7F:76:41:95:1F:D5:43:65:BA:73:DF:2F:E7:90:23:25:B9</pre>
-    </details>
+    <div>
+      <div class="ways">
+        <div class="way">
+          <h3>Plain APK</h3>
+          <p>Download the file from the releases page. Android 8 and up, on a degoogled phone or a stock one.</p>
+          <a class="btn" href="https://github.com/ProTechPh/Waylo/releases/latest">Download the APK</a>
+        </div>
+      </div>
+      <details>
+        <summary>Check that you got the real thing</summary>
+        <p class="small" style="margin-top:.8rem">Every Waylo build, on every channel, is signed with one key. Its SHA-256 certificate fingerprint is below. Android also refuses any update signed with a different key.</p>
+        <pre>CF:07:EB:D6:9C:AA:83:06:88:64:7F:00:26:6B:A8:7F:76:41:95:1F:D5:43:65:BA:73:DF:2F:E7:90:23:25:B9</pre>
+      </details>
+    </div>
   </div>
 </section>
 
 <section id="docs">
-  <div class="wide">
-    <h2>Every answer, written down</h2>
-    <p>Waylo is documented in the open, from "why is this shop missing" to the format of every request.</p>
-    <div class="docs">
-      <a class="doc" href="docs/faq/"><h3>Questions and answers</h3><p>What each part of the app uses, what works without Google, why a place is missing.</p></a>
-      <a class="doc" href="privacy.html"><h3>Privacy</h3><p>Every service Waylo contacts, when, and what it receives.</p></a>
-      <a class="doc" href="docs/book/"><h3>The Waylo book</h3><p>How each part works, in plain language: places, routing, navigation, offline, transit.</p></a>
-      <a class="doc" href="docs/spec/"><h3>Technical specification</h3><p>Every rule, constant and threshold, for people reading or changing the code.</p></a>
-      <a class="doc" href="docs/features/"><h3>Features</h3><p>One line for each thing the app does.</p></a>
-      <a class="doc" href="docs/roadmap/"><h3>Roadmap</h3><p>What is open, what is next, and what will not be built.</p></a>
+  <div class="wide split">
+    <div class="spine">
+      <h2>Every answer, written down</h2>
+      <p class="small">Waylo is documented in the open, from "why is this shop missing" to the format of every request.</p>
+    </div>
+    <div class="body">
+      <div class="docs">
+        <a class="doc" href="docs/faq/"><h3>Questions and answers</h3><p>What each part of the app uses, what works without Google, why a place is missing.</p></a>
+        <a class="doc" href="privacy.html"><h3>Privacy</h3><p>Every service Waylo contacts, when, and what it receives.</p></a>
+        <a class="doc" href="docs/book/"><h3>The Waylo book</h3><p>How each part works, in plain language: places, routing, navigation, offline, transit.</p></a>
+        <a class="doc" href="docs/spec/"><h3>Technical specification</h3><p>Every rule, constant and threshold, for people reading or changing the code.</p></a>
+        <a class="doc" href="docs/features/"><h3>Features</h3><p>One line for each thing the app does.</p></a>
+        <a class="doc" href="docs/roadmap/"><h3>Roadmap</h3><p>What is open, what is next, and what will not be built.</p></a>
+      </div>
     </div>
   </div>
 </section>
@@ -173,7 +211,7 @@
       <li><strong>Bugs go on GitHub</strong>, through <a href="https://github.com/ProTechPh/Waylo/issues/new/choose">the report form</a>. It asks for the version and the steps, which is what it takes to fix anything. Reports left on forums get lost.</li>
       <li><strong>Translate it.</strong> Waylo speaks 19 languages and <a href="https://hosted.weblate.org/engage/waylo/">translations happen in the browser on Weblate</a>.</li>
       <li><strong>Build it yourself.</strong> <a href="docs/building/">The build guide</a> says where every piece comes from.</li>
-      <li><strong>Buy me a coffee.</strong> Waylo costs nothing and has no ads. <a href="https://buymeacoffee.com/ProTechPh">If it saved you from reinstalling Google Maps, this is the tip jar.</a></li>
+      <li><strong>Buy me a coffee.</strong> Waylo costs nothing and has no ads. <a href="https://buymeacoffee.com/jerickogaro">If it saved you from reinstalling Google Maps, this is the tip jar.</a></li>
     </ul>
     <p class="small">Writing about Waylo? <a href="press.html">The press page</a> has the facts, the screenshots and the things people usually get wrong.</p>
   </div>
@@ -187,9 +225,9 @@
       <a class="brand" href="./"><img src="assets/logo.svg" alt=""> Waylo Maps</a>
       <p>Free software under the <a href="https://github.com/ProTechPh/Waylo/blob/main/LICENSE">GPLv3</a>.</p>
     </div>
-    <div><h4>The app</h4><a href="#install">Install</a><a href="docs/features/">Features</a><a href="privacy.html">Privacy</a><a href="docs/faq/">Questions</a></div>
-    <div><h4>The project</h4><a href="https://github.com/ProTechPh/Waylo">Source</a><a href="docs/roadmap/">Roadmap</a><a href="https://hosted.weblate.org/engage/waylo/">Translate</a><a href="press.html">Press</a></div>
-    <div><h4>The docs</h4><a href="docs/book/">The book</a><a href="docs/spec/">Specification</a><a href="docs/building/">Building</a><a href="docs/security/">Security</a></div>
+    <div><h3>The app</h3><a href="#install">Install</a><a href="docs/features/">Features</a><a href="privacy.html">Privacy</a><a href="docs/faq/">Questions</a></div>
+    <div><h3>The project</h3><a href="https://github.com/ProTechPh/Waylo">Source</a><a href="docs/roadmap/">Roadmap</a><a href="https://hosted.weblate.org/engage/waylo/">Translate</a><a href="press.html">Press</a></div>
+    <div><h3>The docs</h3><a href="docs/book/">The book</a><a href="docs/spec/">Specification</a><a href="docs/building/">Building</a><a href="docs/security/">Security</a></div>
   </div>
   <div class="wide legal">
     <p>Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors. Waylo is not affiliated with or endorsed by Google. Google Maps is a trademark of Google LLC.</p>

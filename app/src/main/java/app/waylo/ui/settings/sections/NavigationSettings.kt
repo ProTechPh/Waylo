@@ -97,6 +97,15 @@ internal fun NavigationSettingsScreen(vm: MapViewModel, onBack: () -> Unit) {
             onCheckedChange = { routeBar = it; vm.setRouteBar(it) },
             hint = stringResource(R.string.settings_route_bar_hint),
         )
+        // Rain on the route before leaving (SPEC 4.12). Open-Meteo, not Google, so the Google-free
+        // switch leaves it on.
+        GroupDivider()
+        ToggleRow(
+            label = stringResource(R.string.settings_route_weather),
+            checked = app.waylo.ui.RouteWeatherOn.on.value,
+            onCheckedChange = { app.waylo.ui.RouteWeatherOn.set(context, it) },
+            hint = stringResource(R.string.settings_route_weather_hint),
+        )
         GroupDivider()
         ToggleRow(
             label = stringResource(R.string.settings_nav_north_up),

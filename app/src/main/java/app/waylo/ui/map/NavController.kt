@@ -186,6 +186,7 @@ internal class NavController(
                     routeCamMeters = emptyList(); routeCamKey = null; spokenCams = emptySet()
                     app.waylo.car.CarBridge.clear()
                     clearRouteFlock()
+                    ncapAnnounced.clear()
                     clearRouteBridges()
                     speeding.reset()
                 }
@@ -203,7 +204,7 @@ internal class NavController(
                     if (ns.navigating && toStop != null) app.waylo.ui.nav.NavLegFigures.Leg(toStop, ns.nav.remainingDistance, ns.nav.remainingDuration) else null
                 // Speak an approach warning for a camera coming up (issue #229). Cheap per tick:
                 // a scan of a short list; the projection was done once when the route landed.
-                if (ns.navigating) { maybeWarnCamera(ns); maybeWarnFlock(ns); maybeWarnSpeeding(); maybeWarnBridge(ns) }
+                if (ns.navigating) { maybeWarnCamera(ns); maybeWarnFlock(ns); maybeWarnNcap(nsRoute, ns); maybeWarnSpeeding(); maybeWarnBridge(ns) }
                 _state.update {
                     it.copy(
                         navigating = ns.navigating,
@@ -1363,6 +1364,22 @@ internal class NavController(
         )
         if (app.waylo.ui.FlockNavAlert.card.value) host.flashStatus(msg, 6000L)
         if (app.waylo.ui.FlockNavAlert.voice.value) alert(msg)
+        app.waylo.car.CarBridge.toast(msg)
+    }
+
+    /** Roads already announced this drive, so a reroute does not repeat one. Cleared when nav ends. */
+    private var ncapAnnounced: MutableSet<String> = mutableSetOf()
+
+    /** Say when the drive gets onto a road NCAP watches (Metro Manila): the picker names them up
+     *  front, this is the reminder for a drive started without reading it. Once per road. */
+    private fun maybeWarnNcap(route: app.waylo.core.model.Route?, ns: app.waylo.core.nav.NavSession.State) {
+        if (_state.value.travelMode != TravelMode.DRIVE) return
+        val r = route ?: return
+        val road = app.waylo.core.nav.NcapRoads.roadAt(r, ns.nav.traveledM) ?: return
+        if (!ncapAnnounced.add(road)) return
+        val msg = appContext.getString(R.string.nav_ncap_road, road)
+        host.flashStatus(msg, 6000L)
+        alert(msg)
         app.waylo.car.CarBridge.toast(msg)
     }
 

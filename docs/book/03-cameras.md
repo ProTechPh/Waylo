@@ -140,6 +140,38 @@ processor core busy for the whole drive.
 The road-ahead bar marks a plate camera within 40 m that passes the facing test, and a speed
 camera within 40 m. [SPEC section 4.9](../../SPEC.md) has the remaining thresholds.
 
+## NCAP roads (Metro Manila)
+
+The MMDA enforces violations by camera under the No Contact Apprehension Policy on its
+circumferential and radial roads, C1 to C5 and R1 to R10. Manila, Quezon City, Muntinlupa and San
+Juan restarted their own systems on 2026-10-05; Parañaque deferred the next day and Valenzuela
+suspended for roadworks. No agency publishes camera positions: the list of camera locations
+shared online in 2025 was a fake the MMDA debunked. So Waylo names the road a route uses, not a
+camera it passes.
+
+The list is data, the way the camera dataset and the fuel prices are. `tools/ncap-roads.tsv`
+holds one row per alias with its city and the header carries the dated sources. A script checks
+it and writes the bundled asset; a workflow republishes it to the `ncap-ph` release when the file
+changes, and the app installs a newer copy at launch, so a corrected or newly published list
+reaches phones without an app release. There is no cron, because there is nothing to poll.
+
+Quezon City, Manila, Muntinlupa and San Juan are covered by road: the first two publish their
+intersections, San Juan says every major road is covered and names none, and Muntinlupa's
+intersections come from the city program's own posting. San Juan and Muntinlupa are therefore
+reported coverage, not a camera list.
+
+`NcapRoads.roads` matches the route's maneuver names, including a rename inside a leg, against
+that list. A road counts when the route stays on it for `MIN_SPAN_M` (200 m), so a junction
+crossing does not. Matching drops punctuation and expands Avenue, Boulevard and Highway, which
+is what lets "Epifanio de los Santos Avenue" stand for EDSA. A city's roads match only inside
+that city, and a route that never enters Metro Manila is skipped: Rizal Avenue in Cebu is a
+different street.
+
+Both route pickers show the line under the ETA, driving only, in the camera amber. Nothing is
+re-ranked or rerouted: choosing among the routes is the user's. Once the drive is on such a road,
+`NavController` says so once, as a card and spoken line, so a drive started without reading the
+picker still hears it. [SPEC section 4.13](../../SPEC.md).
+
 ## Limits
 
 - Coverage is what volunteers have mapped. A removed camera stays until someone edits OSM. Speed
@@ -158,3 +190,8 @@ camera within 40 m. [SPEC section 4.9](../../SPEC.md) has the remaining threshol
   the gap.
 - Warning about speed cameras while driving is restricted in some countries, so the spoken
   warning is its own switch.
+- NCAP is matched by road, not by intersection: a route that crosses a camera intersection along
+  the cross street is not warned, and a city's road is named only by that city's list. A road
+  that changed name after the list was published under-reports. San Juan and Muntinlupa publish
+  no camera list at all, so their rows are reported coverage: they can over-warn a road the city
+  watches only at one corner.

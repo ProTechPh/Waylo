@@ -1,0 +1,75 @@
+name: NCAP roads
+
+# Publish the Metro Manila NCAP road list so the app refreshes it WITHOUT an app update
+# (NcapRoadList.refresh reads ncap-manifest.json and installs a newer version).
+#
+# This one has no cron on purpose: no agency publishes a machine-readable feed, so there is nothing
+# to poll. The list is reviewed in tools/ncap-roads.tsv and this workflow republishes when that
+# file changes (or by hand). The `ncap-ph` release is an INFRA release (fixed tag, prerelease):
+# never delete it, the app's manifest URL points at its assets.
+
+on:
+  push:
+    paths:
+      - 'tools/ncap-roads.tsv'
+      - 'scripts/build-ncap-roads.py'
+      - '.github/workflows/ncap-roads.yml'
+  workflow_dispatch:
+
+concurrency: ncap-roads
+permissions:
+  contents: read
+
+jobs:
+  bake:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.x'
+
+      - name: Bake and check the list
+        id: bake
+        run: |
+          set -euo pipefail
+          VERSION=$(date -u +%Y%m%d)
+          OUT=$(VERSION="$VERSION" python3 scripts/build-ncap-roads.py)
+          echo "$OUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "rows=$(sed -n 's/^rows=//p' <<<"$OUT")" >> "$GITHUB_OUTPUT"
+          echo "sha256=$(sed -n 's/^sha256=//p' <<<"$OUT")" >> "$GITHUB_OUTPUT"
+          echo "size=$(sed -n 's/^size=//p' <<<"$OUT")" >> "$GITHUB_OUTPUT"
+          # The committed asset must match the source of truth (a hand-edited asset is a bug).
+          git diff --exit-code -- app/src/main/assets/ncap_roads.tsv || {
+            echo "::error::app/src/main/assets/ncap_roads.tsv is stale; run VERSION=<YYYYMMDD> python3 scripts/build-ncap-roads.py and commit it."
+            exit 1
+          }
+
+      - name: Write manifest
+        run: |
+          cat > ncap-manifest.json <<JSON
+          {
+            "version": ${{ steps.bake.outputs.version }},
+            "rows": ${{ steps.bake.outputs.rows }},
+            "sha256": "${{ steps.bake.outputs.sha256 }}",
+            "sizeBytes": ${{ steps.bake.outputs.size }},
+            "url": "https://github.com/${{ github.repository }}/releases/download/ncap-ph/ncap_roads.tsv",
+            "updatedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          JSON
+          cat ncap-manifest.json
+
+      - name: Publish to ncap-ph release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if ! gh release view ncap-ph >/dev/null 2>&1; then
+            gh release create ncap-ph --prerelease --title "NCAP road list" \
+              --notes "Metro Manila NCAP-covered roads (MMDA, Quezon City, Manila) for the route picker and the drive alert. Republished when tools/ncap-roads.tsv changes. INFRA release - do not delete."
+          fi
+          gh release upload ncap-ph app/src/main/assets/ncap_roads.tsv --clobber
+          gh release upload ncap-ph ncap-manifest.json --clobber

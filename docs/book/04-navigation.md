@@ -14,6 +14,8 @@ with the whole trip on a line below. Around them:
 - A speed-limit badge, and an optional voice that says when you are over the limit.
 - On Android 16, the drive as a live update: a chip in the status bar and a route bar on the lock
   screen.
+- Before leaving, under each driving route in the directions panel, one quiet line about rain on
+  it: "Light rain around 40-60 km, about 25 min after you leave", or "No rain on this route".
 
 How these are drawn is [chapter 11](11-drive-chrome.md).
 
@@ -43,6 +45,10 @@ How these are drawn is [chapter 11](11-drive-chrome.md).
 - Bridge openings in the Netherlands come from NDW, the Dutch national road data office. Its
   open feed lists the movable bridges on the main road network, each planned opening, and the
   bridges open now. A drive asks for it only when its route enters the Netherlands.
+- The weather on the route comes from Open-Meteo, an open forecast service with no key and no
+  account: hourly rain, the chance of rain, snowfall and temperature for three days, on a grid of
+  about 9 km outside Europe. Its data is CC BY 4.0 and credited under Settings > About. The free service
+  is for non-commercial use, which Waylo is.
 
 ## How it is decided
 
@@ -541,8 +547,27 @@ choice. In
 of speaking, and nothing else is said: the sound a driver who turned the turns off still wants.
 Off is silent throughout. The car's own switch is on or off and leaves "Alerts only"; the phone's
 setting follows whatever the car chose.
-### Bridge openings
 
+### Weather on the route
+
+The directions panel asks Open-Meteo once for every route it is showing. Each route's line is
+sampled every 10 km, both ends included, up to 12 points a route and 36 a panel, and each sample is
+read at the hour the drive reaches it, not at the hour you asked. So "about 25 min after you leave"
+is the forecast for that stretch at that time.
+
+An hour counts as wet from 0.2 mm of rain, said as light, rain or heavy by the usual WMO breaks
+(2.5 and 7.6 mm), and as snow below 1 °C when the model forecasts snowfall. With no amount but a
+chance of at least 60%, the line says "Maybe rain" and the model's own percentage. A route with rain
+beats one with a chance of rain, so the line shows the worst stretch; the km range is the midpoint
+between the last dry point and the first wet one, rounded to 5 km. A route with nothing wet on it
+says "No rain on this route". No line at all means no answer: the switch is off, the drive is under
+3 km, the phone is on a constrained link, the drive starts past 72 hours, or the request failed.
+
+The forecast is kept in memory for 15 minutes, keyed by the sample coordinates, so re-timing a
+route or refetching it for traffic does not ask again. A failure is retried no sooner than ten
+minutes later and is never remembered as "no rain".
+
+### Bridge openings
 In the Netherlands a movable bridge opens for ships many times a day, and a closed road can hold
 you up for ten minutes or more. Settings > Navigation > Road alerts > "Bridge openings" (on by
 default) announces a bridge on your route once it is within 5 km. "Bridge ahead is open" when
@@ -626,3 +651,6 @@ with today's code instead of playing the recorded swaps.
   read from the OsmAnd library. It has not been confirmed on a device.
 - Speed limits are only as good as OpenStreetMap. Many roads carry no `maxspeed` tag, and there
   the badge is blank.
+- The weather on a route is a forecast on a grid about 9 km wide, which cannot see a shower sitting
+  on one pass and not the next. It is also a forecast, not radar: a storm that builds after you
+  leave is not in the line you read. A drive over a mountain road is the case it gets wrong most.

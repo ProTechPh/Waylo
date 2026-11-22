@@ -109,6 +109,9 @@ What Waylo Maps does today, one line per feature. How each one works is in [SPEC
   "Stops" sheet comes back to it, so you can drag it into place and add the next. A stop added
   during a drive goes last; open the sheet to move it.
 - Avoid tolls, highways, ferries or cameras. Set Leave now, Depart at or Arrive by.
+- In Metro Manila, each drive route says which NCAP-covered roads, where the MMDA and the cities
+  enforce by camera, it uses, and the drive says so once more when it gets onto one. The list
+  updates without an app release.
 - Walking uses the open foot router. "Bike routes prefer bike lanes and quiet streets" is on by
   default.
 - A step list before you start. Tap a step to see it on the map.
@@ -117,6 +120,8 @@ What Waylo Maps does today, one line per feature. How each one works is in [SPEC
 - "Add to home screen" pins a trip as a shortcut. The share button sends the trip as text.
 - A warning when the destination or a stop closes around your arrival.
 - "Live traffic only when I tap" plans on the open router until you tap Show traffic.
+- Each driving route says where rain or snow is on it and about when you reach it, from Open-Meteo.
+  "Weather along the route" in Settings > Navigation turns it off.
 
 ## Navigation
 
@@ -229,7 +234,8 @@ What Waylo Maps does today, one line per feature. How each one works is in [SPEC
   also with the town added or the last word half typed.
   A name is found with or without its accents: "cafe" finds "Café".
 - Offline routes cover driving, walking and cycling, with spoken turns, speed limits and avoid
-  options, and are labeled offline.
+  options, and are labeled offline. "Private roads in offline routes" lets a driving route use
+  roads tagged private, such as gated villages (off by default; Google's routes are unaffected).
 - "Update downloaded regions" applies small updates on Wi-Fi (the default), on mobile data too, or
   never by itself, and an "Update all" button does every region with an update in turn. Each
   installed region says when it was last updated.

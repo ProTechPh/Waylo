@@ -71,7 +71,14 @@ object CoreModule {
     @Provides
     @Singleton
     fun routeEngine(@ApplicationContext context: Context): RouteEngine =
-        ObfRouteEngine { File(app.waylo.core.data.OfflineRoot.dir ?: context.filesDir, "obf") }
+        ObfRouteEngine(
+            { File(app.waylo.core.data.OfflineRoot.dir ?: context.filesDir, "obf") },
+            // Read per route, not once: the Settings toggle applies to the next plan with no restart.
+            allowPrivate = {
+                context.getSharedPreferences("waylo_settings", Context.MODE_PRIVATE)
+                    .getBoolean("allow_private_roads", false)
+            },
+        )
 }
 
 /** A cookie jar the app can empty (Settings > Privacy "Start a new Google session"). */

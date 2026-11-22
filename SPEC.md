@@ -1541,6 +1541,11 @@ Memory and highway hierarchy (HH):
   default set is about 3.5% of the file, the second about 2%.
 - Bicycle set: `--routing_profile=bicycle`, best effort, about 9% of the file. A region it fails
   on keeps the car sets. Without it a bike route loses 0.1 to 0.6 s before the fallback.
+- Private roads: the vendored `routing.xml` gives the car profile `access=private` as -1, so a
+  gated village is closed to the router. Settings > Offline, "Private roads in offline routes"
+  (pref `allow_private_roads`, off by default) passes `allow_private=true` per DRIVE route, read
+  at call time. There is no HH set for it, so such a route falls back to the plain search.
+  Routes from Google and OSRM are not affected, which is most drives.
 - Walking has no set and stays on the plain search, which failed past about 28 km on that state
   file. Grid cells (`build-cells-region.sh`) get no HH.
 - HH asks `OsmandRegions.getRegionsToDownload` which regions hold the trip's ends. Waylo ships no
@@ -2945,6 +2950,124 @@ bar.
   possible.
 - The offer is drawn on the map as a red "+" teardrop (`PoiIcons.CANDIDATE_PIN`), by the effect
   that draws numbered stops and the destination flag.
+
+### 4.12 Weather along the route
+
+Before leaving, each driving route card in the directions panel carries one line saying where rain
+or snow is on it, and roughly when the drive reaches that stretch. It answers the question the
+route list is already open for: pick a dry route, or go and be ready. Nothing appears during a
+drive.
+
+**Where the data comes from.** Open-Meteo (`core/data/weather/OpenMeteo.kt`), keyless and free for
+non-commercial use, its data under CC BY 4.0, credited under Settings > About, Map data. Its free API is
+limited to 10,000 calls a day, 5,000 an hour and 600 a minute per IP; the app spends one call when a
+route list opens.
+
+**One request.** Every route's sample points go into one call as comma separated coordinates:
+`GET https://api.open-meteo.com/v1/forecast?latitude=..&longitude=..&hourly=precipitation,precipitation_probability,snowfall,temperature_2m&forecast_days=3&timeformat=unixtime&timezone=GMT`.
+The reply is a JSON list, one entry per point in request order (`forecast_days=3` covers every
+drive inside `HORIZON_H`).
+
+**Sample points** (`RouteWeather.samples`). Every `SAMPLE_EVERY_M` (10,000) along the polyline,
+both ends always included, at most `MAX_SAMPLES_PER_ROUTE` (12) per route and `MAX_SAMPLES_TOTAL`
+(36) per panel. On a long drive the stride grows to `total / 11`, so a 300 km route is sampled
+every 27 km rather than leaving its middle unread. Each sample carries its arrival time,
+`departure + (durationInTrafficSeconds ?: durationSeconds) * meters / total`.
+
+**Departure.** The panel's own picked instant when the user picked one (`DepartPick.peek`, "depart
+at" as picked, "arrive by" minus the drive time, never in the past), otherwise now, through
+`RouteWeather.departureMs`. `peek` reads the pick without the dropped-flag side effect `restore`
+has.
+
+**One span per route** (`RouteWeather.read`). The hour read is the forecast hour containing the
+sample's arrival, so a point 90 minutes out is read 90 minutes out. An hour is wet at
+`precipitation >= WET_MM` (0.2 mm), said as light, rain or heavy by the WMO breaks `LIGHT_MM`
+(2.5) and `HEAVY_MM` (7.6); snow when `snowfall > 0` at or below `SNOW_C` (1.0 °C); a chance of rain
+when the amount is zero and `precipitation_probability >= MAYBE_PCT` (60). Consecutive samples of
+one class form a run. A wet run beats a chance of rain; among wet runs the largest amount wins,
+among chance runs the highest probability. The span's bounds are the midpoints between the last dry
+sample and the first wet one, and between the last wet sample and the next dry one, so the line
+claims an interval the samples bound. The percentage shown is the model's own, rounded to the
+nearest 10. A sample whose arrival falls past the payload is no answer at all: that route shows no
+line, never "No rain on this route".
+
+**The line.** One of: "Light rain around 40-60 km, about 25 min after you leave", "Rain ...",
+"Heavy rain ...", "Snow ...", "Maybe rain ... 70%", or "No rain on this route" when the forecast
+arrived and nothing wet is on it. No line at all when the switch is off, the mode is not driving,
+the route is shorter than `MIN_ROUTE_M` (3,000 m), `LowDataMode` is on, the departure or arrival is
+past `HORIZON_H` (72 h), or the request failed.
+
+**Cache.** `RouteWeatherClient` keeps the parsed hourly arrays in memory, keyed by
+`RouteWeather.key`: the sample coordinates to 3 decimals. Durations are not part of the key, so a
+provisional alternate that was re-timed, or a route set refetched for traffic, reads the same entry.
+`CACHE_TTL_MS` 15 minutes, `MAX_CACHED` 4 entries, nothing across restarts. A failure is retried no
+sooner than `RETRY_AFTER_MS` (10 minutes) and is never stored as an empty answer.
+
+**The switch.** Settings > Navigation, "Weather along the route", pref `route_weather`, on by
+default. It does not follow "Use Waylo without Google": Open-Meteo is not Google.
+
+### 4.13 NCAP roads
+
+Metro Manila only. The MMDA enforces traffic violations by camera under the No Contact
+Apprehension Policy on its circumferential and radial roads (C1-C5, R1-R10). Manila, Quezon City,
+Muntinlupa and San Juan restarted their own systems on 2026-10-05; Parañaque deferred the next
+day and Valenzuela suspended for roadworks. No agency publishes camera positions, and the list of
+camera locations that circulated in June 2025 was debunked as fake. So Waylo names the covered
+road a drive uses, never a camera it passes.
+
+**The list is data, not code.** No agency serves a machine-readable feed, so the "feed" is a
+reviewed file:
+
+- `tools/ncap-roads.tsv` is the source of truth: `road<TAB>city<TAB>alias`, one row per alias,
+  `city` one of `MM` (an MMDA road, all of Metro Manila), `QC`, `MNL`, `SJ` or `MUNTI`. Its
+  header carries the sources and their dates. The MMDA road list as reported (Rappler,
+  2025-05-24, and ABS-CBN); Quezon City's 15 intersections for its 2022-07-01 start (TopGear
+  Philippines, 2022-06-28, repeated by NewsToGov and Motoring Today); Manila's six at its
+  2020-12-07 launch (Manila Bulletin); San Juan, which announced from 2026-10-05 that every major
+  road is covered (GMA News), with the five corridors named in coverage guides (Jon to the World,
+  2026-10-18); Muntinlupa's covered intersections from 2026-10-05, as posted by the city program.
+  The fake camera list: VERA Files, 2025-06-11.
+- The `SJ` and `MUNTI` blocks are reported coverage, not a camera-by-camera list: neither city
+  publishes one. The MMDA, QC and Manila blocks are the agencies' own road lists.
+- `scripts/build-ncap-roads.py` validates it (three columns, known city, normalized lowercase
+  alias, no alias naming two roads, at least 40 rows), sorts it, and writes
+  `app/src/main/assets/ncap_roads.tsv` plus `ncap_roads_version.txt` (YYYYMMDD). A failed check
+  writes nothing and exits 3.
+- `.github/workflows/ncap-roads.yml` runs on a push that touches the list, not on a cron: there
+  is no upstream to poll. It bakes, fails when the committed asset no longer matches the source,
+  and publishes `ncap_roads.tsv` and `ncap-manifest.json` (`version`, `rows`, `sha256`,
+  `sizeBytes`, `url`, `updatedAt`) to the `ncap-ph` release. That release is infrastructure: the
+  app's manifest URL points at it, so it is never deleted.
+
+**On the phone.** `app/data/NcapRoadList` reads the same two tiers as the camera dataset:
+
+- The bundled `assets/ncap_roads.tsv` is the floor, so a fresh install and an offline phone have
+  the list.
+- Once per launch, `refresh` reads `WayloLinks.ncapPh()` and installs a newer version from the
+  release. The version is compared as an integer, the downloaded text is parsed before anything
+  on disk is replaced (a truncated file never swaps in), and the parse and install happen under
+  `NcapRoads.install`. Until the floor has loaded, `NcapRoads` matches nothing: that under-reports
+  rather than guessing. The list is under 3 KB (69 rows on 2026-11-22), so the whole refresh is
+  one small GET.
+
+Matching:
+
+- `NcapRoads.roads` reads the route's own maneuver names (`road`, and each `renames` entry inside
+  a leg) and keeps a road only when the route holds it for `MIN_SPAN_M` (200 m). Crossing EDSA at
+  a junction is a few dozen meters and does not count.
+- Names are compared lowercased, without punctuation, with `ave`, `blvd` and `hwy` expanded, so
+  "Quezon Ave." and "Epifanio de los Santos Avenue" both match their road.
+- A city's road (the LGU rows) matches only when the stretch starts inside that city's box:
+  Quezon City 14.58-14.79 N, 120.97-121.12 E; Manila 14.55-14.64 N, 120.95-121.02 E; San Juan
+  14.595-14.635 N, 121.020-121.055 E; Muntinlupa 14.35-14.46 N, 120.99-121.10 E. The "Kalayaan
+  Avenue" in Makati is not Quezon City's, and Muntinlupa's National Road is not any other.
+- A route is checked only when one of its polyline points lies inside Metro Manila
+  (14.35-14.80 N, 120.90-121.13 E). "Rizal Avenue" exists in other cities and is not R9 there.
+- The line shows on each route row of both pickers, driving only, amber like the camera count.
+  It is a note: no route is re-ranked, rerouted or hidden because of it.
+- While driving, `NcapRoads.roadAt` names the covered road under the car. `NavController` says
+  "%s is an NCAP-enforced road" once per road per drive as a card, a spoken line and an Android
+  Auto toast. A reroute does not repeat it; ending the drive resets the list.
 
 ---
 
@@ -4617,6 +4740,7 @@ exists and shows one status line asking the user to download those regions again
 | ALPR cameras | `flock-cameras.yml`, `scripts/build-flock-cameras.py` | `flock-cameras` | `flock-manifest.json` | Mondays 08:17 UTC | bundled asset, refreshed at launch |
 | UK fuel prices (5.8) | `fuel-gb.yml`, `tools/build-fuel-gb.py` | `fuel-gb` | `fuel-gb-manifest.json` | checked hourly, published when the source changed | `fuelgb/`, checked at most every 3 h when a UK gas station needs a price |
 | Philippine fuel prices (5.9) | `fuel-ph.yml`, `tools/build-fuel-ph.py` | `fuel-ph` | `fuel-ph-manifest.json` | checked weekly, published when the source changed | `fuelph/`, checked at most every day when a Philippine gas station is opened |
+| NCAP roads (4.13) | `ncap-roads.yml`, `scripts/build-ncap-roads.py`, source `tools/ncap-roads.tsv` | `ncap-ph` | `ncap-manifest.json` | on a change to the list, no cron | bundled asset, refreshed at launch |
 | Glyphs | `scripts/build-map-fonts.sh` | `map-fonts`, asset `map-fonts.zip` | none | by hand | `glyphs/<stack>/<range>.pbf` |
 
 The glyph set is also unpacked to GitHub Pages (`/fonts`) for the online map. The releases
@@ -6796,6 +6920,8 @@ is separate and also never committed. The `MAPTILER_KEY` secret reaches `BuildCo
 - `bake-conductor.yml` starts the data bakes (section 7.3).
 - `fuel-gb.yml` publishes the UK fuel prices hourly on its own cron (section 5.8), and opens an
   issue when their source stops updating.
+- `ncap-roads.yml` republishes the NCAP road list when `tools/ncap-roads.tsv` changes (section
+  4.13). No cron: no agency serves a feed to poll.
 - `old-android-smoke.yml` installs a release build on Android 8.0 (API 26, the minimum) and
   Android 9 emulators and checks that it starts, loads Cronet, runs a search and opens a place
   without a crash. It runs every Sunday, the day before the weekly promotion to stable, from the

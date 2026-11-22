@@ -45,6 +45,7 @@ object WayloLinks {
     const val ASR_MODELS = "asrModels"
     const val FUEL_GB = "fuelGb"
     const val FUEL_PH = "fuelPh"
+    const val NCAP_PH = "ncapPh"
     const val PAINTED_ROADS = "paintedRoads"
 
     private val DEFAULTS: Map<String, String> = mapOf(
@@ -57,7 +58,7 @@ object WayloLinks {
         // mirror. Installed apps and F-Droid clients point here, so it must keep serving them
         // (never a redirect to somewhere else).
         PAGES to "https://protechph.github.io/Waylo",
-        DONATE to "https://buymeacoffee.com/ProTechPh",
+        DONATE to "https://buymeacoffee.com/jerickogaro",
     )
 
     /** Key to (base key, path appended to the base). */
@@ -82,6 +83,7 @@ object WayloLinks {
         ASR_MODELS to (RELEASES to "/asr-models"),
         FUEL_GB to (RELEASES to "/fuel-gb/"),
         FUEL_PH to (RELEASES to "/fuel-ph/"),
+        NCAP_PH to (RELEASES to "/ncap-ph/ncap-manifest.json"),
         PAINTED_ROADS to (RELEASES to "/painted-roads/painted-california.pmtiles?v=3"),
     )
 
@@ -139,5 +141,6 @@ object WayloLinks {
     fun asrModels(): String = get(ASR_MODELS)
     fun fuelGb(): String = get(FUEL_GB)
     fun fuelPh(): String = get(FUEL_PH)
+    fun ncapPh(): String = get(NCAP_PH)
     fun paintedRoads(): String = get(PAINTED_ROADS)
 }

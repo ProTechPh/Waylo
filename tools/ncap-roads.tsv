@@ -1,0 +1,97 @@
+# NCAP-covered roads, Metro Manila. Source of truth for app/src/main/assets/ncap_roads.tsv.
+# Baked by scripts/build-ncap-roads.py, published to the `ncap-ph` release, and refreshed by the
+# app without an app release.
+#
+# Columns: road<TAB>city<TAB>alias. city is MM (an MMDA road, applies across Metro Manila), or the
+# city that lists it: QC, MNL, SJ, MUNTI. alias is the normalized form a route's street name
+# contains: lowercase, no punctuation, "Avenue"/"Boulevard"/"Highway" spelled out.
+#
+# Sources, all dated. MMDA's C1-C5 and R1-R10 list as reported (Rappler 2025-05-24, ABS-CBN
+# 2025-05-26). Quezon City's 15 intersections at its 2022-07-01 start (TopGear Philippines
+# 2022-06-28, repeated by NewsToGov and Motoring Today). Manila's six intersections at its
+# 2020-12-07 launch (Manila Bulletin). San Juan, which announced from 2026-10-05 that every major
+# road is covered (GMA News), with the corridors named in coverage guides (Jon to the World,
+# 2026-10-18). Muntinlupa's covered intersections from 2026-10-05, from the city program's posted
+# notice. MMDA publishes no camera positions; the list that circulates online was debunked (VERA
+# Files, 2025-06-11).
+#
+# Where the MMDA list names a corridor, one row per road. The SJ and MUNTI blocks are reported
+# coverage, not an official camera-by-camera list: those cities publish none.
+#
+# Status on 2026-11-22: MMDA active (since 2025-05-26); Manila, Quezon City, Muntinlupa and San
+# Juan active from 2026-10-05; Parañaque deferred on 2026-10-06; Valenzuela suspended for roadworks
+# on 2026-10-05. Cebu City and Mandaue are outside this list.
+
+EDSA	MM	edsa
+EDSA	MM	epifanio de los santos avenue
+Recto Avenue	MM	recto avenue
+President Quirino Avenue	MM	president quirino avenue
+President Quirino Avenue	MM	pres quirino avenue
+President Quirino Avenue	MM	quirino avenue
+Mendoza Street	MNL	mendoza street
+Araneta Avenue	MM	araneta avenue
+C.P. Garcia Avenue	MM	c p garcia avenue
+C.P. Garcia Avenue	MM	cp garcia avenue
+Katipunan Avenue	MM	katipunan avenue
+Tandang Sora Avenue	MM	tandang sora avenue
+Roxas Boulevard	MM	roxas boulevard
+Taft Avenue	MM	taft avenue
+South Superhighway	MM	south superhighway
+South Superhighway	MM	osmeña highway
+South Superhighway	MM	osmena highway
+Shaw Boulevard	MM	shaw boulevard
+Ortigas Avenue	MM	ortigas avenue
+Magsaysay Boulevard	MM	magsaysay boulevard
+Aurora Boulevard	MM	aurora boulevard
+Quezon Avenue	MM	quezon avenue
+Commonwealth Avenue	MM	commonwealth avenue
+Andres Bonifacio Avenue	MM	andres bonifacio avenue
+Andres Bonifacio Avenue	MM	a bonifacio avenue
+Rizal Avenue	MM	rizal avenue
+Del Pan	MM	del pan
+Marcos Highway	MM	marcos highway
+MacArthur Highway	MM	macarthur highway
+MacArthur Highway	MM	mcarthur highway
+
+Quirino Highway	QC	quirino highway
+E. Rodriguez Sr. Avenue	QC	e rodriguez sr avenue
+E. Rodriguez Sr. Avenue	QC	e rodriguez avenue
+E. Rodriguez Sr. Avenue	QC	eulogio rodriguez sr avenue
+Tomas Morato Avenue	QC	tomas morato avenue
+Gilmore Avenue	QC	gilmore avenue
+Hemady Street	QC	hemady street
+Broadway Avenue	QC	broadway avenue
+20th Avenue	QC	20th avenue
+West Avenue	QC	west avenue
+East Avenue	QC	east avenue
+BIR Road	QC	bir road
+Kamias Road	QC	kamias road
+Kalayaan Avenue	QC	kalayaan avenue
+P. Tuazon Boulevard	QC	p tuazon boulevard
+13th Avenue	QC	13th avenue
+15th Avenue	QC	15th avenue
+
+P. Ocampo Street	MNL	p ocampo street
+P. Ocampo Street	MNL	vito cruz street
+San Marcelino Street	MNL	san marcelino street
+M.H. Del Pilar Street	MNL	m h del pilar street
+M.H. Del Pilar Street	MNL	mh del pilar street
+P. Burgos Avenue	MNL	p burgos avenue
+P. Burgos Avenue	MNL	padre burgos avenue
+Maria Orosa Street	MNL	maria orosa street
+España Boulevard	MNL	espana boulevard
+España Boulevard	MNL	españa boulevard
+Lacson Avenue	MNL	lacson avenue
+
+N. Domingo Street	SJ	n domingo street
+Pinaglabanan Street	SJ	pinaglabanan street
+P. Guevarra Street	SJ	p guevarra street
+F. Blumentritt Street	SJ	f blumentritt street
+Wilson Street	SJ	wilson street
+
+National Road	MUNTI	national road
+National Road	MUNTI	maharlika highway
+National Road	MUNTI	manila south road
+Rizal Street	MUNTI	rizal street
+Alabang-Zapote Road	MUNTI	alabang zapote road
+Madrigal Avenue	MUNTI	madrigal avenue
