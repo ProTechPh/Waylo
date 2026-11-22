@@ -156,7 +156,7 @@ merely sit inside. Both ends round to 5 km (or 5 mi). The distance is formatted 
 ### Docs in the same commit
 
 - `SPEC.md`: a new 4.12, the constants, the URL, the failure rule.
-- `docs/book/04-navigation.md`: what it does, where the data comes from, its licence and host, the
+- `docs/book/04-navigation.md`: what it does, where the data comes from, its license and host, the
   limits (grid size, no nowcast).
 - `FEATURES.md`: one line under driving.
 - `PRIVACY.md`: one table row (IP, sampled coordinates, 90 day logs at Open-Meteo).

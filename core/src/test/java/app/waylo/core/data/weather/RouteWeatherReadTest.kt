@@ -113,7 +113,7 @@ class RouteWeatherReadTest {
             )
         }
         val span = RouteWeather.read(h, s)!!
-        // Samples 4 to 7 all arrive inside the wet hour, so the span is bounded by their neighbours.
+        // Samples 4 to 7 all arrive inside the wet hour, so the span is bounded by their neighbors.
         assertEquals((s[3].meters + s[4].meters) / 2, span.fromMeters, 1.0)
         assertEquals((s[7].meters + s[8].meters) / 2, span.toMeters, 1.0)
     }

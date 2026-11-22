@@ -353,7 +353,7 @@ Expected: PASS, no new warnings in `RouteWeatherLine.kt`.
 - [ ] **Step 6: Write the docs**
 
 - `SPEC.md` 4.12 "Weather along the route": the switch, the constants, the URL, one request per panel, one span per route, silent on failure, drive only, `MIN_ROUTE_M`, the 72 h horizon, the coordinates-only cache key, and the note that Open-Meteo is non-commercial only.
-- `docs/book/04-navigation.md`: in the traffic rechecks part, one paragraph in the book's four-part shape (what you see, where the data comes from with licence and host, how the span is chosen, limits: about 9 km grid, no nowcast, mountains can read dry).
+- `docs/book/04-navigation.md`: in the traffic rechecks part, one paragraph in the book's four-part shape (what you see, where the data comes from with license and host, how the span is chosen, limits: about 9 km grid, no nowcast, mountains can read dry).
 - `FEATURES.md`: one line under driving.
 
 - [ ] **Step 7: Commit**
