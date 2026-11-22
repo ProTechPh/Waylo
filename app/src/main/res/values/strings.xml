@@ -1547,4 +1547,6 @@
     <string name="route_weather_snow">Snow %1$s, %2$s after you leave</string>
     <string name="route_weather_maybe">Maybe rain %1$s, %2$s after you leave, %3$s</string>
     <string name="route_weather_none">No rain on this route</string>
+    <string name="settings_route_weather">Weather along the route</string>
+    <string name="settings_route_weather_hint">Shows rain, snow or a chance of rain along each driving route before you leave, from Open-Meteo. One request when the route list opens, carrying up to 36 points along your routes. On by default.</string>
 </resources>
