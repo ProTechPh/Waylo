@@ -50,6 +50,7 @@ Degoogled systems like GrapheneOS are the target, and it installs on ordinary An
     <td align="center"><img src="docs/screenshots/05-navigation.png" width="210" alt="Navigation with lane guidance"><br><sub><b>On the road</b>: lanes, exit shields, posted limit</sub></td>
     <td align="center"><img src="docs/screenshots/03-place.png" width="210" alt="A place page"><br><sub><b>Place pages</b> with hours, reviews and photos</sub></td>
     <td align="center"><img src="docs/screenshots/04-directions.png" width="210" alt="Route options"><br><sub><b>Route choices</b> ranked by real traffic</sub></td>
+    <td align="center"><img src="docs/screenshots/07-weather.png" width="210" alt="A route with heavy rain marked along it"><br><sub><b>Rain on the route</b>: where it falls, and when you reach it</sub></td>
   </tr>
   <tr>
     <td align="center"><img src="docs/screenshots/01-map.png" width="210" alt="The map in dark mode"><br><sub><b>Open tiles</b> in Google's palette</sub></td>
