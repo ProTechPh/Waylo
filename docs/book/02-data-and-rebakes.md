@@ -225,7 +225,9 @@ city-and-product rows out of the text layer with `pdfplumber`. The result is abo
 320 areas, around 11 KB gzipped, holding each area's price range and common price per product, not
 a price per station, because the DOE does not publish one. A field office whose newest PDFs have
 gone to scans (North Luzon, November 2026) keeps its newest readable week, up to 42 days old, and
-the app shows that week's dates on every row; past that the region is left out with a warning.
+the app shows that week's dates on every row; past that the region is left out with a warning. The
+workflow prints any region more than four weeks behind in the run summary, so a field office that
+stays scanned is visible instead of quietly aging.
 
 [How it shows on the phone is in `SPEC.md` (5.9): the place sheet only, labeled as the city's
 price.]

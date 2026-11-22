@@ -125,6 +125,15 @@ jobs:
           gh_retry gh release upload fuel-ph work/fuel-ph-manifest.json --repo "$REPO" --clobber || publish_failed
 
           summary "Published $(jq -r .rows work/fuel-ph-manifest.json) rows over $(jq -r .areas work/fuel-ph-manifest.json) areas, latest week end $(jq -r .latestWeekEnd work/fuel-ph-manifest.json)."
+          # A field office that has gone to scanned PDFs keeps its newest readable week, so its
+          # region trails the others. Say which, every run: the app labels each row with its own
+          # week, but a region four weeks behind is worth a look in the log.
+          cutoff="$(date -u -d '-28 days' +%F)"
+          behind="$(jq -r --arg cut "$cutoff" '.regions | to_entries[] | select(.value.week[1] < $cut) | "\(.key) (\(.value.week[1]))"' work/fuel-ph-manifest.json)"
+          if [ -n "$behind" ]; then
+            echo "::warning::Region weeks more than 4 weeks behind ${cutoff}: ${behind//$'\n'/, }"
+            summary "Behind: ${behind//$'\n'/, }"
+          fi
           # The alert reads the week that is published NOW: on the first publish there is no
           # previous manifest, and comparing against 1970 opened the issue on a healthy run.
           pub_week="$(jq -r .latestWeekEnd work/fuel-ph-manifest.json)"
