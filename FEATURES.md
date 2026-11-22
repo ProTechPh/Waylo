@@ -117,6 +117,8 @@ What Waylo Maps does today, one line per feature. How each one works is in [SPEC
 - "Add to home screen" pins a trip as a shortcut. The share button sends the trip as text.
 - A warning when the destination or a stop closes around your arrival.
 - "Live traffic only when I tap" plans on the open router until you tap Show traffic.
+- Each driving route says where rain or snow is on it and about when you reach it, from Open-Meteo.
+  "Weather along the route" in Settings > Navigation turns it off.
 
 ## Navigation
 

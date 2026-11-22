@@ -44,8 +44,21 @@ fun formatDistance(meters: Double): String =
         else String.format(Locale.US, "%.1f km", meters / 1000.0)
     }
 
-/** An area in the user's units: sq ft, acres, sq mi, or m², hectares, km². */
-fun formatArea(m2: Double): String =
+/** A stretch of a route in the user's units, both ends rounded to 5 km or 5 mi: "40-60 km". */
+fun formatDistanceRange(fromMeters: Double, toMeters: Double): String {
+    fun round5(v: Double) = (v / 5.0).roundToInt() * 5
+    return if (Units.imperial.value) {
+        val a = round5(fromMeters / 1609.344)
+        val b = round5(toMeters / 1609.344)
+        if (a == b) "$a mi" else "$a-$b mi"
+    } else {
+        val a = round5(fromMeters / 1000.0)
+        val b = round5(toMeters / 1000.0)
+        if (a == b) "$a km" else "$a-$b km"
+    }
+}
+
+/** An area in the user's units: sq ft, acres, sq mi, or m², hectares, km². */fun formatArea(m2: Double): String =
     if (Units.imperial.value) {
         val sqft = m2 * 10.7639
         when {

@@ -1220,7 +1220,7 @@
     <string name="map_satellite_attribution_google" translatable="false">Google</string>
     <string name="map_osm_attribution" translatable="false">© OpenStreetMap</string>
     <string name="settings_map_data">Map data</string>
-    <string name="settings_map_data_hint">The map, its streets, labels and house numbers are OpenStreetMap data, available under the Open Database License, served as vector tiles by OpenFreeMap. The businesses on the map in covered regions are places data from the Overture Maps Foundation (sourced from Meta and Microsoft), available under the Community Data License Agreement, Permissive 2.0. Place details, reviews, routing and traffic come from Google. Satellite imagery is from Esri and Google. How the voice says some 3,500 place names comes from English Wikipedia and its contributors, under CC BY-SA 4.0.</string>
+    <string name="settings_map_data_hint">The map, its streets, labels and house numbers are OpenStreetMap data, available under the Open Database License, served as vector tiles by OpenFreeMap. The businesses on the map in covered regions are places data from the Overture Maps Foundation (sourced from Meta and Microsoft), available under the Community Data License Agreement, Permissive 2.0. Place details, reviews, routing and traffic come from Google. Satellite imagery is from Esri and Google. How the voice says some 3,500 place names comes from English Wikipedia and its contributors, under CC BY-SA 4.0. The weather along each route is from Open-Meteo.</string>
     <string name="settings_map_data_button">OpenStreetMap copyright</string>
     <string name="settings_map_data_overture_button">Overture Maps license</string>
     <string name="settings_map_data_fuel_gb">UK fuel prices come from the UK government\'s Fuel Finder, republished by matthewgall/fuelfinder-archive on GitHub. Contains public sector information licensed under the Open Government Licence v3.0.</string>
@@ -1541,4 +1541,10 @@
     <string name="place_avoid_short_ferries">Ferries</string>
     <string name="place_avoid_short_cameras">Cameras</string>
     <string name="trip_shortcut_themed">Match themed icons</string>
+    <string name="route_weather_light_rain">Light rain %1$s, %2$s after you leave</string>
+    <string name="route_weather_rain">Rain %1$s, %2$s after you leave</string>
+    <string name="route_weather_heavy_rain">Heavy rain %1$s, %2$s after you leave</string>
+    <string name="route_weather_snow">Snow %1$s, %2$s after you leave</string>
+    <string name="route_weather_maybe">Maybe rain %1$s, %2$s after you leave, %3$s</string>
+    <string name="route_weather_none">No rain on this route</string>
 </resources>

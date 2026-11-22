@@ -71,6 +71,8 @@ import app.waylo.R
 import app.waylo.core.model.Route
 import app.waylo.core.model.TravelMode
 import app.waylo.ui.SheetPalette
+import app.waylo.ui.RouteWeatherLine
+import app.waylo.ui.rememberRouteWeather
 import app.waylo.ui.dpadHighlight
 import app.waylo.ui.formatDistance
 import app.waylo.ui.formatDuration
@@ -135,6 +137,8 @@ fun GoogleStyleDirectionsPanel(
     val ink = SheetPalette.ink(dark)
     val dim = SheetPalette.dim(dark)
     val collapsed = remember { mutableStateOf(true) } // Google opens at the summary, not the list
+    // Rain on the route (SPEC 4.12): under the chosen summary and every alternate.
+    val routeWeather = rememberRouteWeather(routes, currentMode, activeRoute)
     val firstFocus = app.waylo.ui.rememberDpadAutoFocus() // D-pad: the panel opens on the Drive tab
     // A third, smaller state below the summary (issue #616): the time and Start on one line, so a
     // small screen can see the route. Handle tap: summary <-> minimized (list -> summary); swipe
@@ -325,6 +329,7 @@ fun GoogleStyleDirectionsPanel(
                             color = dim,
                         )
                         val idx = routes.indexOf(route).coerceAtLeast(0)
+                        RouteWeatherLine(routeWeather.getOrElse(idx) { null })
                         val cams = flockOnRoute.getOrElse(idx) { 0 }
                         if (cams > 0) {
                             Text(androidx.compose.ui.res.pluralStringResource(R.plurals.dir_cameras_on_route, cams, cams), style = MaterialTheme.typography.bodyMedium, color = SheetPalette.TrafficAmber)
@@ -437,6 +442,7 @@ fun GoogleStyleDirectionsPanel(
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = if (cams > 0) SheetPalette.TrafficAmber else dim,
                                     )
+                                    RouteWeatherLine(routeWeather.getOrElse(i) { null })
                                 }
                                 if (chosen) Icon(Sym.Check, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                             }

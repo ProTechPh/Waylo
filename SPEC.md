@@ -2946,6 +2946,59 @@ bar.
 - The offer is drawn on the map as a red "+" teardrop (`PoiIcons.CANDIDATE_PIN`), by the effect
   that draws numbered stops and the destination flag.
 
+### 4.12 Weather along the route
+
+Before leaving, each driving route card in the directions panel carries one line saying where rain
+or snow is on it, and roughly when the drive reaches that stretch. It answers the question the
+route list is already open for: pick a dry route, or go and be ready. Nothing appears during a
+drive.
+
+**Where the data comes from.** Open-Meteo (`core/data/weather/OpenMeteo.kt`), keyless and free for
+non-commercial use, its data under CC BY 4.0, credited in Settings > Map, Map data. Its free API is
+limited to 10,000 calls a day, 5,000 an hour and 600 a minute per IP; the app spends one call when a
+route list opens.
+
+**One request.** Every route's sample points go into one call as comma separated coordinates:
+`GET https://api.open-meteo.com/v1/forecast?latitude=..&longitude=..&hourly=precipitation,precipitation_probability,snowfall,temperature_2m&forecast_days=3&timeformat=unixtime&timezone=GMT`.
+The reply is a JSON list, one entry per point in request order (`forecast_days=3` covers every
+drive inside `HORIZON_H`).
+
+**Sample points** (`RouteWeather.samples`). Every `SAMPLE_EVERY_M` (10,000) along the polyline,
+both ends always included, at most `MAX_SAMPLES_PER_ROUTE` (12) per route and `MAX_SAMPLES_TOTAL`
+(36) per panel. On a long drive the stride grows to `total / 11`, so a 300 km route is sampled
+every 27 km rather than leaving its middle unread. Each sample carries its arrival time,
+`departure + (durationInTrafficSeconds ?: durationSeconds) * meters / total`.
+
+**Departure.** The panel's own picked instant when the user picked one (`DepartPick.peek`, "depart
+at" as picked, "arrive by" minus the drive time), otherwise now. `peek` reads the pick without the
+dropped-flag side effect `restore` has.
+
+**One span per route** (`RouteWeather.read`). The hour read is the forecast hour containing the
+sample's arrival, so a point 90 minutes out is read 90 minutes out. An hour is wet at
+`precipitation >= WET_MM` (0.2 mm), said as light, rain or heavy by the WMO breaks `LIGHT_MM`
+(2.5) and `HEAVY_MM` (7.6); snow when `snowfall > 0` at or below `SNOW_C` (1.0 °C); a chance of rain
+when the amount is zero and `precipitation_probability >= MAYBE_PCT` (60). Consecutive samples of
+one class form a run. A wet run beats a chance of rain; among wet runs the largest amount wins,
+among chance runs the highest probability. The span's bounds are the midpoints between the last dry
+sample and the first wet one, and between the last wet sample and the next dry one, so the line
+claims an interval the samples bound. The percentage shown is the model's own, rounded to the
+nearest 10.
+
+**The line.** One of: "Light rain around 40-60 km, about 25 min after you leave", "Rain ...",
+"Heavy rain ...", "Snow ...", "Maybe rain ... 70%", or "No rain on this route" when the forecast
+arrived and nothing wet is on it. No line at all when the switch is off, the mode is not driving,
+the route is shorter than `MIN_ROUTE_M` (3,000 m), `LowDataMode` is on, the departure or arrival is
+past `HORIZON_H` (72 h), or the request failed.
+
+**Cache.** `RouteWeatherClient` keeps the parsed hourly arrays in memory, keyed by
+`RouteWeather.key`: the sample coordinates to 3 decimals. Durations are not part of the key, so a
+provisional alternate that was re-timed, or a route set refetched for traffic, reads the same entry.
+`CACHE_TTL_MS` 15 minutes, `MAX_CACHED` 4 entries, nothing across restarts. A failure is retried no
+sooner than `RETRY_AFTER_MS` (10 minutes) and is never stored as an empty answer.
+
+**The switch.** Settings > Navigation, "Weather along the route", pref `route_weather`, on by
+default. It does not follow "Use Waylo without Google": Open-Meteo is not Google.
+
 ---
 
 ## 5. Places

@@ -168,6 +168,8 @@ import androidx.compose.ui.input.key.type
 import app.waylo.ui.dpadHighlight
 import app.waylo.ui.dpadFieldEscape
 import app.waylo.ui.rememberDpadAutoFocus // D-pad-first initial focus (docs/dpad.md)
+import app.waylo.ui.RouteWeatherLine
+import app.waylo.ui.rememberRouteWeather
 import app.waylo.ui.WayloMenu // D-pad-first menu (docs/dpad.md)
 import app.waylo.ui.item
 import androidx.compose.ui.Alignment
@@ -219,6 +221,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import app.waylo.core.model.AboutSection
+import app.waylo.core.data.weather.RouteWeather
 import app.waylo.core.model.LatLng
 import app.waylo.core.model.Place
 import app.waylo.core.model.fullAddress
@@ -1660,6 +1663,8 @@ fun DirectionsPanel(
     // Keyed to the destination so opening directions for a different place starts
     // expanded again instead of inheriting the previous session's collapsed state.
     val collapsed = remember(destinationName) { mutableStateOf(false) }
+    // Rain on the route, one line per card (SPEC 4.12). Drive only, and silent until it answers.
+    val routeWeather = rememberRouteWeather(routes, currentMode, activeRoute)
     // The body height is HAND-DRIVEN, the place/results sheets' exact grammar (user 2026-07-11:
     // the old collapse was a 6px threshold flip - no finger tracking, no inertia): drags move it
     // 1:1, release projects the throw's decay to the nearest end (0 = minimized, bodyMax = open)
@@ -2003,7 +2008,7 @@ fun DirectionsPanel(
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         routes.forEachIndexed { i, r ->
                             val selected = r === activeRoute || (activeRoute == null && i == 0)
-                            RouteOption(r, selected, fastestEtaSeconds = fastestEta, isFastest = i == fastestIdx, dark = dark, ink = ink, dim = dim, flockCount = flockOnRoute.getOrElse(i) { 0 }) { onSelectRoute(i) }
+                            RouteOption(r, selected, fastestEtaSeconds = fastestEta, isFastest = i == fastestIdx, dark = dark, ink = ink, dim = dim, flockCount = flockOnRoute.getOrElse(i) { 0 }, weather = routeWeather.getOrElse(i) { null }) { onSelectRoute(i) }
                         }
                     }
                     Spacer(Modifier.height(14.dp))
@@ -2117,6 +2122,15 @@ internal object DepartPick {
     }
 
     fun dropped(): Boolean = droppedOne.also { droppedOne = false }
+
+    /** The pick for [forKey] without [restore]'s side effects (the dropped flag): the weather line
+     *  times itself by this while the chooser still owns the pick. */
+    fun peek(forKey: Any?, now: java.time.LocalDateTime = java.time.LocalDateTime.now()): Pick? {
+        val p = pick ?: return null
+        if (key != forKey) return null
+        if (p.mode != 3 && p.date.atTime(p.time).isBefore(now)) return null
+        return p
+    }
 }
 
 /** "Leave now / Depart at / Arrive by" chooser. "Leave now" uses the live
@@ -2318,7 +2332,7 @@ private fun PickerDialog(onConfirm: () -> Unit, onDismiss: () -> Unit, content: 
  *  via, highlighted when it's the active one. The fastest carries a "Fastest" tag; each slower
  *  alternate shows how much longer it is ("+5 min") so the choice is legible at a glance. */
 @Composable
-private fun RouteOption(r: Route, selected: Boolean, fastestEtaSeconds: Double, isFastest: Boolean, dark: Boolean, ink: Color, dim: Color, flockCount: Int = 0, onClick: () -> Unit) {
+private fun RouteOption(r: Route, selected: Boolean, fastestEtaSeconds: Double, isFastest: Boolean, dark: Boolean, ink: Color, dim: Color, flockCount: Int = 0, weather: RouteWeather.Span? = null, onClick: () -> Unit) {
     val etaSeconds = r.durationInTrafficSeconds ?: r.durationSeconds
     val eta = formatDuration(etaSeconds)
     val etaColor = trafficEtaColor(r) ?: ink
@@ -2395,6 +2409,10 @@ private fun RouteOption(r: Route, selected: Boolean, fastestEtaSeconds: Double, 
                         color = SheetPalette.TrafficAmber,
                     )
                 }
+            }
+            weather?.let {
+                Spacer(Modifier.height(3.dp))
+                RouteWeatherLine(it)
             }
         }
         if (selected) Icon(Sym.Check, contentDescription = null, tint = MaterialTheme.colorScheme.primary)

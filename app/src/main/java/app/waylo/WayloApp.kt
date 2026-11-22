@@ -197,6 +197,7 @@ class WayloApp : Application(), coil.ImageLoaderFactory {
         app.waylo.ui.DetailsRetry.init(this)
         app.waylo.ui.OtherLocationsAuto.init(this)
         app.waylo.ui.RouteTrafficOnTap.init(this)
+        app.waylo.ui.RouteWeatherOn.init(this)
         app.waylo.core.data.RoutingPrefs.googleTraffic = !app.waylo.ui.RouteTrafficOnTap.on.value
         app.waylo.ui.HideAdult.init(this)
         app.waylo.ui.HideExternalLinks.init(this)

@@ -77,7 +77,7 @@ object RouteWeather {
         departAtMs <= nowMs + HORIZON_H * 3_600_000L &&
         arriveAtMs <= nowMs + HORIZON_H * 3_600_000L
 
-    enum class Kind { LIGHT, RAIN, HEAVY, SNOW, MAYBE }
+    enum class Kind { LIGHT, RAIN, HEAVY, SNOW, MAYBE, NONE }
 
     /** The one stretch of the route worth saying: its kind, where it is, how long after leaving it
      *  starts, and, for a chance of rain, the model's own percentage. */

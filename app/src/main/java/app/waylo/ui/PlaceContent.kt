@@ -152,6 +152,24 @@ object RouteTrafficOnTap {
     private const val KEY = "route_traffic_on_tap"
 }
 
+/** Rain on the route before leaving (pref `route_weather`, on). Unlike [RouteTrafficOnTap] this
+ *  asks Open-Meteo, not Google, so it stays on with "Use Waylo without Google". */
+object RouteWeatherOn {
+    val on = mutableStateOf(true)
+
+    fun init(context: Context) {
+        on.value = prefs(context).getBoolean(KEY, true)
+    }
+
+    fun set(context: Context, value: Boolean) {
+        on.value = value
+        prefs(context).edit().putBoolean(KEY, value).apply()
+    }
+
+    private fun prefs(c: Context) = c.getSharedPreferences("waylo_settings", Context.MODE_PRIVATE)
+    private const val KEY = "route_weather"
+}
+
 /** Place photos load only when the user taps Show photos (pref `photos_on_tap`, off). */
 object PhotosOnTap {
     val on = mutableStateOf(false)
