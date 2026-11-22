@@ -47,7 +47,7 @@ How these are drawn is [chapter 11](11-drive-chrome.md).
   bridges open now. A drive asks for it only when its route enters the Netherlands.
 - The weather on the route comes from Open-Meteo, an open forecast service with no key and no
   account: hourly rain, the chance of rain, snowfall and temperature for three days, on a grid of
-  about 9 km outside Europe. Its data is CC BY 4.0 and credited in Settings > Map. The free service
+  about 9 km outside Europe. Its data is CC BY 4.0 and credited under Settings > About. The free service
   is for non-commercial use, which Waylo is.
 
 ## How it is decided

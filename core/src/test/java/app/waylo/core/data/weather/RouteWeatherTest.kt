@@ -75,4 +75,19 @@ class RouteWeatherTest {
         assertFalse(RouteWeather.eligible(50_000.0, now + 73 * 3_600_000L, now + 74 * 3_600_000L, now, on = true, lowData = false))
         assertTrue(RouteWeather.eligible(50_000.0, now, now + 3_600_000L, now, on = true, lowData = false))
     }
+
+    @Test fun theDepartureFollowsThePick() {
+        val now = 1_000_000L
+        assertEquals(now, RouteWeather.departureMs(mode = 0, pickEpochMs = null, durationSeconds = 3_600.0, nowMs = now))
+        assertEquals(5_000_000L, RouteWeather.departureMs(mode = 1, pickEpochMs = 5_000_000L, durationSeconds = 3_600.0, nowMs = now))
+        assertEquals(
+            5_000_000L - 3_600_000L,
+            RouteWeather.departureMs(mode = 2, pickEpochMs = 5_000_000L, durationSeconds = 3_600.0, nowMs = now),
+        )
+        // Arrive in ten minutes on an hour's drive: the departure cannot be in the past.
+        assertEquals(
+            now,
+            RouteWeather.departureMs(mode = 2, pickEpochMs = now + 600_000L, durationSeconds = 3_600.0, nowMs = now),
+        )
+    }
 }

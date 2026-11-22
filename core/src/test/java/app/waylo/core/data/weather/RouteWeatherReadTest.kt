@@ -76,4 +76,45 @@ class RouteWeatherReadTest {
     @Test fun aDryRouteIsNull() {
         assertNull(RouteWeather.read(hours(0.0, 0.0, 0.0), samples(3)))
     }
+
+    @Test fun aSamplePastThePayloadIsNoAnswer() {
+        // Five arrivals, but the payload stops after the first hour: the last four are unread.
+        val h = Hourly(
+            time = LongArray(1) { it * 3_600L },
+            precipitation = DoubleArray(1) { 1.0 },
+            probability = IntArray(1),
+            snowfall = DoubleArray(1),
+            temperature = DoubleArray(1) { 20.0 },
+        )
+        assertNull(RouteWeather.read(List(5) { h }, samples(5)))
+    }
+
+    @Test fun samplesAtTheRealStrideStillBoundTheSpan() {
+        // The 27 km stride of a 300 km drive, joined to read: the span must not reach past the
+        // samples that bound it.
+        val route = app.waylo.core.model.Route(
+            polyline = listOf(app.waylo.core.model.LatLng(38.5, -121.7), app.waylo.core.model.LatLng(38.5 + 300_000.0 / 111_320.0, -121.7)),
+            legs = emptyList(),
+            distanceMeters = 300_000.0,
+            durationSeconds = 10_800.0,
+            durationInTrafficSeconds = null,
+        )
+        val s = RouteWeather.samples(route, departAtMs = 0L)
+        val hoursCovered = 4 // the sample at 4 of 11 arrives inside the second hour
+        val wetHour = (s[4].atMs / 3_600_000L).toInt()
+        val wet = DoubleArray(hoursCovered) { if (it == wetHour) 3.0 else 0.0 }
+        val h = List(s.size) {
+            Hourly(
+                time = LongArray(hoursCovered) { i -> i * 3_600L },
+                precipitation = wet,
+                probability = IntArray(hoursCovered),
+                snowfall = DoubleArray(hoursCovered),
+                temperature = DoubleArray(hoursCovered) { 20.0 },
+            )
+        }
+        val span = RouteWeather.read(h, s)!!
+        // Samples 4 to 7 all arrive inside the wet hour, so the span is bounded by their neighbours.
+        assertEquals((s[3].meters + s[4].meters) / 2, span.fromMeters, 1.0)
+        assertEquals((s[7].meters + s[8].meters) / 2, span.toMeters, 1.0)
+    }
 }

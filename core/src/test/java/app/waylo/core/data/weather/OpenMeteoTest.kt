@@ -103,6 +103,14 @@ class OpenMeteoTest {
         assertNotNull(c.hourly(samples(2)))
     }
 
+    @Test fun aNullInAnArrayReadsAsZero() {
+        val json = """[{"hourly":{"time":[0],"precipitation":[null],"precipitation_probability":[null],""" +
+            """"snowfall":[null],"temperature_2m":[null]}}]"""
+        val h = OpenMeteo.parse(json)!!.single()
+        assertEquals(0.0, h.precipitation[0], 0.0)
+        assertEquals(0, h.probability[0])
+    }
+
     @Test fun moreThanTheCapEvictsTheOldest() = runBlocking {
         val f = Fetcher(fixture)
         val c = RouteWeatherClient({ f.fetch(it) }, { 0L })

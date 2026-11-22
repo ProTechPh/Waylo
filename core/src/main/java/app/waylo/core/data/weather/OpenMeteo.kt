@@ -3,15 +3,9 @@ package app.waylo.core.data.weather
 import app.waylo.core.WayloConfig
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.double
-import kotlinx.serialization.json.int
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
-import kotlinx.serialization.json.long
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.util.Locale
@@ -26,6 +20,19 @@ class Hourly(
     val temperature: DoubleArray,
 )
 
+/** The shape of one point's reply: only the hourly block is read. */
+@Serializable
+private data class Reply(val hourly: HourlyDto? = null)
+
+@Serializable
+private data class HourlyDto(
+    val time: List<Long> = emptyList(),
+    val precipitation: List<Double?> = emptyList(),
+    @SerialName("precipitation_probability") val probability: List<Int?> = emptyList(),
+    val snowfall: List<Double?> = emptyList(),
+    @SerialName("temperature_2m") val temperature: List<Double?> = emptyList(),
+)
+
 /**
  * The Open-Meteo forecast request (SPEC 4.12). Keyless and free for non-commercial use, CC BY 4.0;
  * one call carries every sample point as a comma separated coordinate list, and the reply to that
@@ -37,6 +44,8 @@ class Hourly(
 object OpenMeteo {
     const val BASE_URL = "https://api.open-meteo.com/v1/forecast"
     private const val HOURLY = "precipitation,precipitation_probability,snowfall,temperature_2m"
+
+    private val jsonParser = Json { ignoreUnknownKeys = true }
 
     private val http: OkHttpClient by lazy {
         OkHttpClient.Builder().callTimeout(10, TimeUnit.SECONDS).readTimeout(15, TimeUnit.SECONDS).build()
@@ -50,26 +59,28 @@ object OpenMeteo {
     }
 
     /** The reply for the requested points, in request order, or null on any shape it does not know. */
-    fun parse(json: String): List<Hourly>? = runCatching {
-        val root = Json.parseToJsonElement(json)
-        val objects = when (root) {
-            is JsonArray -> root.map { it.jsonObject }
-            is JsonObject -> listOf(root)
-            else -> return null
+    fun parse(json: String): List<Hourly>? {
+        val replies = runCatching { jsonParser.decodeFromString<List<Reply>>(json) }.getOrNull()
+            ?: runCatching { listOf(jsonParser.decodeFromString<Reply>(json)) }.getOrNull()
+            ?: return null
+        if (replies.isEmpty()) return null
+        val out = replies.map { reply ->
+            val h = reply.hourly ?: return null
+            val n = h.time.size
+            if (n == 0) return null
+            if (h.precipitation.size != n || h.probability.size != n || h.snowfall.size != n || h.temperature.size != n) return null
+            Hourly(
+                time = h.time.toLongArray(),
+                // A null in an array is a gap in the model, read as no rain and no wind: the plan's
+                // "coerce absent counts to 0", which also keeps one null from blanking every route.
+                precipitation = DoubleArray(n) { h.precipitation[it] ?: 0.0 },
+                probability = IntArray(n) { h.probability[it] ?: 0 },
+                snowfall = DoubleArray(n) { h.snowfall[it] ?: 0.0 },
+                temperature = DoubleArray(n) { h.temperature[it] ?: 0.0 },
+            )
         }
-        val out = objects.map { o ->
-            val h = o["hourly"]?.jsonObject ?: return null
-            val time = h["time"]?.jsonArray?.map { it.jsonPrimitive.long } ?: return null
-            val mm = h["precipitation"]?.jsonArray?.map { it.jsonPrimitive.double } ?: return null
-            val pct = h["precipitation_probability"]?.jsonArray?.map { it.jsonPrimitive.int } ?: return null
-            val snow = h["snowfall"]?.jsonArray?.map { it.jsonPrimitive.double } ?: return null
-            val temp = h["temperature_2m"]?.jsonArray?.map { it.jsonPrimitive.double } ?: return null
-            Hourly(time.toLongArray(), mm.toDoubleArray(), pct.toIntArray(), snow.toDoubleArray(), temp.toDoubleArray())
-        }
-        out.takeIf { list ->
-            list.isNotEmpty() && list.all { it.time.size > 0 && it.precipitation.size == it.time.size && it.probability.size == it.time.size }
-        }
-    }.getOrNull()
+        return out
+    }
 
     fun get(url: String): String? = runCatching {
         http.newCall(Request.Builder().url(url).header("User-Agent", WayloConfig.WAYLO_UA).build()).execute().use { r ->

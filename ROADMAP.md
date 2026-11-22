@@ -254,6 +254,11 @@ Small items, one pull request each.
 Each of these passed its unit tests and has not been seen or heard where it matters. Take one
 off the list when it has been.
 
+- Weather on the route before leaving (SPEC 4.12): one rain line under each driving route, timed by
+  a picked departure, with the Settings > Navigation switch. Unit tested on a captured Open-Meteo
+  reply and the release build compiles; not yet seen on a phone, and no route with rain on it has
+  been looked at.
+
 - Highway steps on a route named from the tiles (`LineNamer`) come from the link roads: a turn
   straight onto or off a highway at an intersection says "Turn left onto", an exit is said once
   where the line leaves the highway and the end of the ramp is a plain turn, curves along a ramp

@@ -77,6 +77,14 @@ object RouteWeather {
         departAtMs <= nowMs + HORIZON_H * 3_600_000L &&
         arriveAtMs <= nowMs + HORIZON_H * 3_600_000L
 
+    /** The departure the line is timed by: the pick when there is one ("depart at" as picked,
+     *  "arrive by" minus the route's own drive time, never in the past), otherwise now. */
+    fun departureMs(mode: Int, pickEpochMs: Long?, durationSeconds: Double, nowMs: Long): Long = when {
+        pickEpochMs == null || mode == 0 -> nowMs
+        mode == 2 -> (pickEpochMs - (durationSeconds * 1000.0).toLong()).coerceAtLeast(nowMs)
+        else -> pickEpochMs
+    }
+
     enum class Kind { LIGHT, RAIN, HEAVY, SNOW, MAYBE, NONE }
 
     /** The one stretch of the route worth saying: its kind, where it is, how long after leaving it
@@ -101,7 +109,8 @@ object RouteWeather {
         val kinds = arrayOfNulls<Kind>(samples.size)
         samples.forEachIndexed { i, s ->
             val h = hours[i]
-            val idx = hourIndex(h, s.atMs / 1000L) ?: return@forEachIndexed
+            // An hour the payload does not cover is no answer at all, never a dry one.
+            val idx = hourIndex(h, s.atMs / 1000L) ?: return null
             val mm = h.precipitation.getOrElse(idx) { 0.0 }
             val p = h.probability.getOrElse(idx) { 0 }
             val sn = h.snowfall.getOrElse(idx) { 0.0 }

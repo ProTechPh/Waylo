@@ -47,14 +47,27 @@ fun RouteWeatherLine(span: RouteWeather.Span?) {
 @Composable
 fun rememberRouteWeather(routes: List<Route>, mode: TravelMode, active: Route?): List<RouteWeather.Span?> {
     val on = RouteWeatherOn.on.value
-    val departAt = remember(active?.summary, nowMinute()) { departAtMs(active) }
+    // The pick is a plain object read, not Compose state: key on its contents, or the line keeps
+    // timing itself by when the panel first opened.
+    val pick = DepartPick.peek(active?.summary)
+    val departAt = remember(active?.summary, pick?.mode, pick?.date, pick?.time) {
+        RouteWeather.departureMs(
+            mode = pick?.mode ?: 0,
+            pickEpochMs = pick?.date?.atTime(pick.time)
+                ?.atZone(java.time.ZoneId.systemDefault())?.toInstant()?.toEpochMilli(),
+            durationSeconds = active?.durationInTrafficSeconds ?: active?.durationSeconds ?: 0.0,
+            nowMs = System.currentTimeMillis(),
+        )
+    }
     return produceState<List<RouteWeather.Span?>>(List(routes.size) { null }, routes, departAt, on, mode) {
-        value = if (mode != TravelMode.DRIVE || !on || routes.isEmpty()) List(routes.size) { null }
-        else withContext(Dispatchers.IO) { loadRouteWeather(routes, departAt) }
+        // Clear the previous set's lines before the IO hop: the state is remembered across key
+        // changes, so without this the last place's weather shows under the new place's routes.
+        value = List(routes.size) { null }
+        if (mode == TravelMode.DRIVE && on && routes.isNotEmpty()) {
+            value = withContext(Dispatchers.IO) { loadRouteWeather(routes, departAt) }
+        }
     }.value
 }
-
-private fun nowMinute(): Long = System.currentTimeMillis() / 60_000L
 
 private suspend fun loadRouteWeather(routes: List<Route>, departAtMs: Long): List<RouteWeather.Span?> {
     val now = System.currentTimeMillis()
@@ -91,20 +104,4 @@ private suspend fun loadRouteWeather(routes: List<Route>, departAtMs: Long): Lis
         at += n
     }
     return out
-}
-
-/** The picked departure for the chooser's active route, else now. "Arrive by" is the pick minus
- *  the route's drive time. */
-private fun departAtMs(active: Route?): Long {
-    val now = System.currentTimeMillis()
-    val pick = DepartPick.peek(active?.summary) ?: return now
-    val picked = pick.date.atTime(pick.time)
-        .atZone(java.time.ZoneId.systemDefault())
-        .toInstant()
-        .toEpochMilli()
-    return when (pick.mode) {
-        1 -> picked
-        2 -> (picked - ((active?.durationInTrafficSeconds ?: active?.durationSeconds ?: 0.0) * 1000.0).toLong()).coerceAtLeast(now)
-        else -> now
-    }
 }

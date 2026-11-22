@@ -2954,7 +2954,7 @@ route list is already open for: pick a dry route, or go and be ready. Nothing ap
 drive.
 
 **Where the data comes from.** Open-Meteo (`core/data/weather/OpenMeteo.kt`), keyless and free for
-non-commercial use, its data under CC BY 4.0, credited in Settings > Map, Map data. Its free API is
+non-commercial use, its data under CC BY 4.0, credited under Settings > About, Map data. Its free API is
 limited to 10,000 calls a day, 5,000 an hour and 600 a minute per IP; the app spends one call when a
 route list opens.
 
@@ -2970,8 +2970,9 @@ every 27 km rather than leaving its middle unread. Each sample carries its arriv
 `departure + (durationInTrafficSeconds ?: durationSeconds) * meters / total`.
 
 **Departure.** The panel's own picked instant when the user picked one (`DepartPick.peek`, "depart
-at" as picked, "arrive by" minus the drive time), otherwise now. `peek` reads the pick without the
-dropped-flag side effect `restore` has.
+at" as picked, "arrive by" minus the drive time, never in the past), otherwise now, through
+`RouteWeather.departureMs`. `peek` reads the pick without the dropped-flag side effect `restore`
+has.
 
 **One span per route** (`RouteWeather.read`). The hour read is the forecast hour containing the
 sample's arrival, so a point 90 minutes out is read 90 minutes out. An hour is wet at
@@ -2982,7 +2983,8 @@ one class form a run. A wet run beats a chance of rain; among wet runs the large
 among chance runs the highest probability. The span's bounds are the midpoints between the last dry
 sample and the first wet one, and between the last wet sample and the next dry one, so the line
 claims an interval the samples bound. The percentage shown is the model's own, rounded to the
-nearest 10.
+nearest 10. A sample whose arrival falls past the payload is no answer at all: that route shows no
+line, never "No rain on this route".
 
 **The line.** One of: "Light rain around 40-60 km, about 25 min after you leave", "Rain ...",
 "Heavy rain ...", "Snow ...", "Maybe rain ... 70%", or "No rain on this route" when the forecast
