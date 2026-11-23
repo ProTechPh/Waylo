@@ -3327,3 +3327,15 @@ snapshot,tag,assets,downloads,kind
 2026-11-16,poi-packs,921,57472,downloaded
 2026-11-16,road-features,463,178464,downloaded
 2026-11-16,tts-runtime,1,4048,ci
+2026-11-23,asr-models,6,6,downloaded
+2026-11-23,cronet-runtime,2,78,downloaded
+2026-11-23,flock-cameras,2,32,downloaded
+2026-11-23,fuel-gb,2,2,downloaded
+2026-11-23,fuel-ph,2,7,downloaded
+2026-11-23,grid-cells,1,1,downloaded
+2026-11-23,map-fonts,2,2,downloaded
+2026-11-23,ncap-ph,2,7,downloaded
+2026-11-23,obf-runtime,4,316,ci
+2026-11-23,obf-tools,1,1,ci
+2026-11-23,painted-roads,1,1,downloaded
+2026-11-23,tts-runtime,1,78,ci

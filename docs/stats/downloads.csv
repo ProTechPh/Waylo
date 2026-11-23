@@ -291,3 +291,14 @@ snapshot,tag,channel,published,asset,downloads
 2026-11-16,v0.5.2741,prerelease,2026-11-09,vela-maps-armv7.apk,20
 2026-11-16,v0.5.2741,prerelease,2026-11-09,vela-maps-x86.apk,11
 2026-11-16,v0.5.2741,prerelease,2026-11-09,vela-maps-x86_64.apk,32
+2026-11-23,v0.5.43,stable,2026-11-20,waylo-maps-v0.5.43.apk,3
+2026-11-23,v0.5.66,prerelease,2026-11-20,waylo-maps-all.apk,1
+2026-11-23,v0.5.66,prerelease,2026-11-20,waylo-maps-arm64.apk,1
+2026-11-23,v0.5.66,prerelease,2026-11-20,waylo-maps-armv7.apk,1
+2026-11-23,v0.5.66,prerelease,2026-11-20,waylo-maps-x86.apk,1
+2026-11-23,v0.5.66,prerelease,2026-11-20,waylo-maps-x86_64.apk,1
+2026-11-23,v0.5.93,stable,2026-11-22,waylo-maps-all.apk,1
+2026-11-23,v0.5.93,stable,2026-11-22,waylo-maps-arm64.apk,2
+2026-11-23,v0.5.93,stable,2026-11-22,waylo-maps-armv7.apk,1
+2026-11-23,v0.5.93,stable,2026-11-22,waylo-maps-x86.apk,1
+2026-11-23,v0.5.93,stable,2026-11-22,waylo-maps-x86_64.apk,1
